@@ -14,6 +14,8 @@ dependencies = [
     "pydantic>=2.13.5",
     "pydantic-ai-slim[openai]>=2.54.0",
     "python-multipart>=0.0.32",
+    "torch>=2.14.1",
+    "torchvision>=0.29.1",
     "uvicorn>=0.54.0",
     "zova>=1.1.0",
 ]
@@ -31,3 +33,13 @@ dev = [
     "pytest-asyncio>=1.4.0",
     "ruff>=0.16.10",
 ]
+
+# Keep Linux containers CPU-only; macOS PyPI wheels already omit CUDA.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux' or sys_platform == 'win32'" }]
+torchvision = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux' or sys_platform == 'win32'" }]
