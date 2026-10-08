@@ -105,7 +105,7 @@ Simülasyon yalnızca İngiltere'yi kapsadığı için İskoçya ve Galler yolla
 |---|---|---|
 | 1 | İlk karar tanımı | `min(izin, red, SoS izin, SoS red)`. Redsiz temyizde temyiz tarihi karar sayılır. Geri çekilme karardan önceyse olay geri çekilmedir |
 | 2 | Filtreler | Eğitim: tarihi olmayan ya da sonucu tarihsiz 254 kayıt ve hatalı tarihli kayıtlar çıkar; özel yollar bayrakla kalır. Simülasyon: yalnızca İngiltere, National Infrastructure ve deniz üstü rüzgâr hariç; >5 yıl bekleyenler `stale_or_uncertain` (38 dosya) |
-| 3 | Gerçek sayılar | Yukarıdaki tablolar. Canlı kuyruk 936; ortak veri setinde kapsam dışı teknolojiler (hidrojen vb.) de çıkınca **921** (36 tanesi `stale_or_uncertain`) |
+| 3 | Gerçek sayılar | Yukarıdaki tablolar. Canlı kuyruk 936; ortak veri setinde kapsam dışı teknolojiler, mükerrer kayıtlar ve aynı başvurunun ikinci bileşenleri (ör. güneş + batarya) çıkınca **800** (35 tanesi `stale_or_uncertain`) |
 | 4 | Biyoenerji | Açık: Berke ile. Canlı kuyrukta yalnızca 25 AD + 7 diğer var; dışarıda bırakmak demoyu etkilemez |
 | 5 | Azami bekleme | Öneri: 365 gün (13 haftanın yaklaşık 4 katı; kararların %79'u bu sürede çıkıyor; 180 günde %61). Duyarlılık için 180 gün |
 | 6 | Yıl yıl eğitim | 2019 ve 2020 kuyrukları küçük. Öneri: ana sonuç 2021–2023; 2019–2020 ekte |
