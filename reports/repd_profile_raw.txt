@@ -1,0 +1,152 @@
+satir=14657  kurum=388  basvuru sahibi=6797
+
+## Tarih dolulugu
+d_submitted           0.980
+d_withdrawn           0.061
+d_refused             0.145
+d_appeal_lodged       0.044
+d_appeal_withdrawn    0.004
+d_appeal_refused      0.026
+d_appeal_granted      0.039
+d_granted             0.685
+d_sos_intervened      0.002
+d_sos_refused         0.002
+d_sos_granted         0.001
+d_expired             0.444
+d_construction        0.170
+d_operational         0.214
+
+## Snapshot sonrasi tarihler (> 2026-06-30)
+d_submitted 3
+d_granted 7
+d_expired 2267
+d_construction 3
+
+## Teknoloji
+technology
+Solar Photovoltaics                 7460
+Wind Onshore                        2748
+Battery                             2678
+Anaerobic Digestion                  384
+Landfill Gas                         293
+Biomass (dedicated)                  286
+EfW Incineration                     213
+Small Hydro                          157
+Advanced Conversion Technologies     128
+Wind Offshore                        110
+Hydrogen                              70
+Large Hydro                           32
+Tidal Stream                          31
+Pumped Storage Hydroelectricity       19
+Sewage Sludge Digestion               12
+Shoreline Wave                         8
+Geothermal                             7
+Biomass (co-firing)                    4
+Liquid Air Energy Storage              4
+Fuel Cell (Hydrogen)                   3
+Unknown                                3
+Compressed Air Energy Storage          2
+Air Source Heat Pumps                  2
+Tidal Lagoon                           1
+Hot Dry Rocks (HDR)                    1
+Flywheels                              1
+
+## Durum
+status
+Planning Permission Granted       5709
+Operational                       3132
+Planning Application Submitted    1539
+Planning Permission Refused        920
+Revised                            826
+Planning Application Withdrawn     671
+Under Construction                 457
+Abandoned                          391
+Planning Permission Expired        334
+Appeal Refused                     316
+Appeal Granted                     220
+Appeal Withdrawn                    49
+Decommissioned                      32
+Secretary of State - Refusal        21
+No Application Required             15
+Planning permission Granted          8
+Appeal Lodged                        6
+Planning permission granted          6
+Secretary of State - Granted         5
+
+## Ulke
+country
+England             10564
+Scotland             2715
+Wales                 844
+Northern Ireland      533
+NaN                     1
+
+## Ozel izin yollari
+authority
+Scottish Government (S36)                              639
+The Planning Inspectorate - National Infrastructure    129
+Welsh Government (NSIP)                                 90
+Marine Scotland                                         44
+DECC (S36)                                              40
+Marine Management Organisation                           3
+
+## Tutarlilik
+izin ve red birlikte: 523 | d_granted == temyiz izni: 531
+redsiz temyiz (karar verilmeme temyizi?): 90
+karar < basvuru: 10 | geri cekilme < basvuru: 7 | geri cekilme ve karar birlikte: 9
+basvuru tarihi yok: 291
+
+## Kohortlar (basvuru yili x olay)
+event        acik  geri_cekilme  karar  sonuc_var_tarih_yok     n  acik_%
+d_submitted                                                              
+2010.0          2            19    219                    2   242     0.8
+2011.0          0            36    296                    5   337     0.0
+2012.0          5            59    411                    2   477     1.0
+2013.0          0            63    507                   10   580     0.0
+2014.0          1            74    673                   11   759     0.1
+2015.0          9            59    749                   12   829     1.1
+2016.0          3            17    110                   26   156     1.9
+2017.0         13            10    133                   43   199     6.5
+2018.0         16            15    153                   43   227     7.0
+2019.0         29            28    251                   20   328     8.8
+2020.0         49            10    325                   12   396    12.4
+2021.0         73            38    731                    7   849     8.6
+2022.0        116            64   1259                   15  1454     8.0
+2023.0        170            87   1598                    9  1864     9.1
+2024.0        274            76   1385                    3  1738    15.8
+2025.0        582            55   1222                    2  1861    31.3
+2026.0        329            10    245                    1   585    56.2
+
+## <1 MW payi (basvuru yilina gore)
+d_submitted
+2014.0    0.000
+2015.0    0.004
+2016.0    0.013
+2017.0    0.030
+2018.0    0.198
+2019.0    0.354
+2020.0    0.255
+2021.0    0.234
+2022.0    0.447
+2023.0    0.503
+2024.0    0.491
+2025.0    0.478
+2026.0    0.668
+kapasite bos: 1345
+
+## Ilk karara gun: medyan 123.0 | 8/13/16 hafta icinde: [np.float64(0.256), np.float64(0.407), np.float64(0.47)]
+
+## Bekleyen kuyruk
+tum UK: n=1539 medyan yas=1.21 yil  >2y=466  >5y=101
+England, ozel yol/offshore haric: n=936 medyan yas=1.07 yil  >2y=253  >5y=38
+technology
+Solar Photovoltaics      555
+Battery                  294
+Wind Onshore              42
+Anaerobic Digestion       25
+Hydrogen                   8
+EfW Incineration           5
+Landfill Gas               2
+Geothermal                 2
+Air Source Heat Pumps      2
+Small Hydro                1

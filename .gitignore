@@ -218,3 +218,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# CarbonQueue: ham ve islenmis veri repoya girmez (scripts/download_repd.py ile indirilir)
+data/
