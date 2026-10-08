@@ -3,6 +3,8 @@ yalnizca o tarihten ONCE olmus basvuru ve olaylar kullanilir.
 
 Calistirma (kontrol): PYTHONPATH=src python -m cq.features
 """
+import re
+
 import numpy as np
 import pandas as pd
 
@@ -17,6 +19,16 @@ NUMERIC = [
     "uk_pending", "uk_median_decision_days",
 ]
 FEATURES = CATEGORICAL + NUMERIC
+
+
+_OP_NOISE = r"\b(ltd|limited|plc|llp|llc|inc|co|company|uk|gb|the|group|holdings?|developments?|dev)\b"
+
+
+def operator_key(name: str) -> str:
+    """Ayni sirketin farkli yazilislarini birlestirir: "RES Ltd (formerly X)" ve "RES Limited" -> "res"."""
+    s = re.sub(r"\(.*?\)", "", name.lower()).replace("&", " and ")
+    s = re.sub(_OP_NOISE, " ", re.sub(r"[^a-z0-9 ]", " ", s))
+    return re.sub(r"\s+", " ", s).strip() or name.lower()
 
 
 def _history(apps: pd.DataFrame) -> pd.DataFrame:
@@ -67,8 +79,10 @@ def _asof(hist: pd.DataFrame, query: pd.DataFrame, key: str | None) -> pd.DataFr
     return pd.concat(parts).reindex(query.index) if parts else pd.DataFrame(index=query.index)
 
 
-def build_features(apps: pd.DataFrame) -> pd.DataFrame:
+def build_features(apps: pd.DataFrame, normalize_operators: bool = True) -> pd.DataFrame:
     """Her basvuru icin (basvuru tarihi itibariyla) ozellik satiri; index = app_id."""
+    if normalize_operators:
+        apps = apps.assign(operator=apps.operator.map(operator_key, na_action="ignore"))
     hist = _history(apps)
     q = apps[apps.d_submitted.notna()].copy()
     f = pd.DataFrame(index=q.index)

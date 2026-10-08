@@ -221,3 +221,4 @@ __marimo__/
 
 # CarbonQueue: ham ve islenmis veri repoya girmez (scripts/download_repd.py ile indirilir)
 data/
+catboost_info/

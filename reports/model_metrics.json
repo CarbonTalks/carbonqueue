@@ -1,0 +1,160 @@
+[
+ {
+  "set": "dogrulama_2023",
+  "cutoff": "2022-12-31",
+  "n": 1630,
+  "withdrawals": 52,
+  "base_rate": 0.0319,
+  "pr_auc": 0.0446,
+  "roc_auc": 0.5667,
+  "brier": 0.03117,
+  "brier_baseline": 0.03114,
+  "mean_pred": 0.04,
+  "decision_brier": 0.6435,
+  "decision_brier_baseline": 0.861,
+  "decision_bin_mae": 2.32,
+  "calibration_quintiles": [
+   [
+    0.0131,
+    0.0337
+   ],
+   [
+    0.0227,
+    0.0184
+   ],
+   [
+    0.0334,
+    0.0215
+   ],
+   [
+    0.0502,
+    0.0368
+   ],
+   [
+    0.0804,
+    0.0491
+   ]
+  ],
+  "feature_importance_top10": [
+   [
+    "bin",
+    25.289300967232546
+   ],
+   [
+    "uk_pending",
+    7.636417141410959
+   ],
+   [
+    "log_capacity_mw",
+    6.044451410790108
+   ],
+   [
+    "solar_mounting",
+    5.4609988782385015
+   ],
+   [
+    "log_generation_mw",
+    5.023853715927631
+   ],
+   [
+    "category",
+    4.8541440979051504
+   ],
+   [
+    "auth_withdraw_rate",
+    4.636495947866377
+   ],
+   [
+    "authority",
+    4.2851513393638045
+   ],
+   [
+    "auth_prior_apps",
+    4.246466020974032
+   ],
+   [
+    "region",
+    3.5339619510538043
+   ]
+  ]
+ },
+ {
+  "set": "test_2024",
+  "cutoff": "2023-12-31",
+  "n": 1511,
+  "withdrawals": 63,
+  "base_rate": 0.0417,
+  "pr_auc": 0.092,
+  "roc_auc": 0.6558,
+  "brier": 0.03938,
+  "brier_baseline": 0.03996,
+  "mean_pred": 0.0358,
+  "decision_brier": 0.639,
+  "decision_brier_baseline": 0.824,
+  "decision_bin_mae": 2.33,
+  "calibration_quintiles": [
+   [
+    0.0144,
+    0.0132
+   ],
+   [
+    0.0226,
+    0.043
+   ],
+   [
+    0.0306,
+    0.0199
+   ],
+   [
+    0.0433,
+    0.053
+   ],
+   [
+    0.0681,
+    0.0795
+   ]
+  ],
+  "feature_importance_top10": [
+   [
+    "bin",
+    26.29682049476156
+   ],
+   [
+    "log_capacity_mw",
+    6.871309008541295
+   ],
+   [
+    "uk_pending",
+    6.688056485841096
+   ],
+   [
+    "solar_mounting",
+    5.995572492912031
+   ],
+   [
+    "category",
+    5.328701413064488
+   ],
+   [
+    "log_generation_mw",
+    4.448862877760033
+   ],
+   [
+    "authority",
+    4.049216349064802
+   ],
+   [
+    "auth_withdraw_rate",
+    3.821609680825036
+   ],
+   [
+    "region",
+    3.8199238677371063
+   ],
+   [
+    "submit_year",
+    3.606371370426118
+   ]
+  ]
+ }
+]
