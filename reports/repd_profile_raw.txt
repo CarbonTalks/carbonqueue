@@ -16,11 +16,11 @@ d_expired             0.444
 d_construction        0.170
 d_operational         0.214
 
-## Snapshot sonrasi tarihler (> 2026-06-30)
-d_submitted 3
-d_granted 7
-d_expired 2267
-d_construction 3
+## Snapshot sonrasi tarihler (> 2026-07-24)
+d_submitted 1
+d_granted 1
+d_expired 2218
+d_construction 1
 
 ## Teknoloji
 technology
@@ -115,7 +115,7 @@ d_submitted
 2023.0        170            87   1598                    9  1864     9.1
 2024.0        274            76   1385                    3  1738    15.8
 2025.0        582            55   1222                    2  1861    31.3
-2026.0        329            10    245                    1   585    56.2
+2026.0        329            10    246                    0   585    56.2
 
 ## <1 MW payi (basvuru yilina gore)
 d_submitted
@@ -137,8 +137,8 @@ kapasite bos: 1345
 ## Ilk karara gun: medyan 123.0 | 8/13/16 hafta icinde: [np.float64(0.256), np.float64(0.407), np.float64(0.47)]
 
 ## Bekleyen kuyruk
-tum UK: n=1539 medyan yas=1.21 yil  >2y=466  >5y=101
-England, ozel yol/offshore haric: n=936 medyan yas=1.07 yil  >2y=253  >5y=38
+tum UK: n=1539 medyan yas=1.27 yil  >2y=486  >5y=106
+England, ozel yol/offshore haric: n=936 medyan yas=1.13 yil  >2y=266  >5y=42
 technology
 Solar Photovoltaics      555
 Battery                  294

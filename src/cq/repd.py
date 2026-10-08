@@ -5,7 +5,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "data" / "raw" / "REPD_Publication_Q2_2026.csv"
-SNAPSHOT = pd.Timestamp("2026-06-30")  # Temmuz 2026 surumunun veri kesim tarihi
+SNAPSHOT = pd.Timestamp("2026-07-24")  # Temmuz 2026 surumundeki en son kayit guncellemesi
 
 # Ham kolon adi -> kodda kullanilan kisa ad
 COLS = {

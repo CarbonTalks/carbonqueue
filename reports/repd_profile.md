@@ -2,7 +2,7 @@
 
 Kaynak: `REPD_Publication_Q2_2026.csv` (GOV.UK). Sayılar `scripts/profile_repd.py` ile yeniden üretilir; ham çıktı `reports/repd_profile_raw.txt`.
 
-**Genel:** 14.657 satır, 53 kolon. En son kayıt güncellemesi 24.07.2026; veri kesim tarihi olarak 30.06.2026 kullanılıyor.
+**Genel:** 14.657 satır, 53 kolon. En son kayıt güncellemesi 24.07.2026; veri kesim tarihi olarak bu tarih (24.07.2026) kullanılıyor.
 
 ## 1. Önceki yazışmalardaki sayıların kontrolü
 
@@ -34,7 +34,7 @@ Küçük sayılar, ama kurala bağlanmalı:
 - Karar başvurudan önce: 10
 - Geri çekilme başvurudan önce: 7
 - Hem geri çekilme hem karar: 9 (önce gelen olay alınır)
-- Kesim tarihinden sonraki tarihler: başvuru 3, izin 7 (biri 15.12.2026)
+- Kesim tarihinden (24.07.2026) sonraki tarihler: başvuru 1 (27.11.2026), izin 1 (15.12.2026)
 - Başvuru tarihi yok: 291 (çoğu Operational)
 - 1 kayıt ABD tarih biçiminde, okuyucuda düzeltildi
 
@@ -105,7 +105,7 @@ Simülasyon yalnızca İngiltere'yi kapsadığı için İskoçya ve Galler yolla
 |---|---|---|
 | 1 | İlk karar tanımı | `min(izin, red, SoS izin, SoS red)`. Redsiz temyizde temyiz tarihi karar sayılır. Geri çekilme karardan önceyse olay geri çekilmedir |
 | 2 | Filtreler | Eğitim: tarihi olmayan ya da sonucu tarihsiz 254 kayıt ve hatalı tarihli kayıtlar çıkar; özel yollar bayrakla kalır. Simülasyon: yalnızca İngiltere, National Infrastructure ve deniz üstü rüzgâr hariç; >5 yıl bekleyenler `stale_or_uncertain` (38 dosya) |
-| 3 | Gerçek sayılar | Yukarıdaki tablolar. Canlı kuyruk 936 |
+| 3 | Gerçek sayılar | Yukarıdaki tablolar. Canlı kuyruk 936; ortak veri setinde kapsam dışı teknolojiler (hidrojen vb.) de çıkınca **921** (36 tanesi `stale_or_uncertain`) |
 | 4 | Biyoenerji | Açık: Berke ile. Canlı kuyrukta yalnızca 25 AD + 7 diğer var; dışarıda bırakmak demoyu etkilemez |
 | 5 | Azami bekleme | Öneri: 365 gün (13 haftanın yaklaşık 4 katı; kararların %79'u bu sürede çıkıyor; 180 günde %61). Duyarlılık için 180 gün |
 | 6 | Yıl yıl eğitim | 2019 ve 2020 kuyrukları küçük. Öneri: ana sonuç 2021–2023; 2019–2020 ekte |
