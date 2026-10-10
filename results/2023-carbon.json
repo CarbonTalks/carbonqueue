@@ -1,0 +1,105 @@
+{
+ "year": 2023,
+ "policy": "carbon",
+ "capacity_hours_per_week": 215.3,
+ "lane_share": {
+  "unscored": 0.265,
+  "small_quota": 0.184
+ },
+ "assumptions": {
+  "carbon": {
+   "load_factor": {
+    "solar": 0.1,
+    "onshore_wind": 0.26
+   },
+   "emission_factor": {
+    "low": 0.15,
+    "central": 0.207,
+    "high": 0.37
+   },
+   "alpha": [
+    0.2,
+    0.5,
+    1.0
+   ]
+  },
+  "effort": {
+   "hours_per_point": 2,
+   "base": 4,
+   "storage_component": 2,
+   "mw_steps": [
+    [
+     1,
+     2
+    ],
+    [
+     20,
+     2
+    ]
+   ]
+  },
+  "queue": {
+   "max_wait_days": 365,
+   "small_project_mw": 1.0,
+   "small_quota_factor": 0.5
+  },
+  "simulation": {
+   "capacity_factor": 1.0,
+   "max_weeks": 520
+  }
+ },
+ "files": 1851,
+ "reviewed": 1808,
+ "left_before_review": 43,
+ "unresolved_files": 172,
+ "carbon_files": 1144,
+ "weeks_to_clear": 89,
+ "wait_days": {
+  "all": {
+   "n": 1808,
+   "median": 255.0,
+   "p90": 527.3,
+   "max": 4121.0
+  },
+  "small_scored": {
+   "n": 874,
+   "median": 333.0,
+   "p90": 558.4,
+   "max": 1096.0
+  },
+  "large_scored": {
+   "n": 465,
+   "median": 104.0,
+   "p90": 485.6,
+   "max": 4013.0
+  },
+  "unscored": {
+   "n": 469,
+   "median": 248.0,
+   "p90": 457.8,
+   "max": 4121.0
+  }
+ },
+ "over_max_wait_share": 0.2893,
+ "carbon_weighted_wait_days": 180.0,
+ "carbon_gain_days_median": -21.0,
+ "carbon_gain_tco2_vs_fifo": {
+  "alpha_0.2": {
+   "low": 73613.0,
+   "central": 101585.9,
+   "high": 181578.7
+  },
+  "alpha_0.5": {
+   "low": 184032.4,
+   "central": 253964.7,
+   "high": 453946.6
+  },
+  "alpha_1.0": {
+   "low": 368064.8,
+   "central": 507929.5,
+   "high": 907893.3
+  }
+ },
+ "wasted_hours_on_withdrawn": 500.0,
+ "hours_on_unresolved": 1900.0
+}

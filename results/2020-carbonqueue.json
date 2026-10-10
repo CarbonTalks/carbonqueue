@@ -1,0 +1,102 @@
+{
+ "year": 2020,
+ "policy": "carbonqueue",
+ "capacity_hours_per_week": 19.4,
+ "lane_share": {
+  "unscored": 0.416,
+  "small_quota": 0.0
+ },
+ "assumptions": {
+  "carbon": {
+   "load_factor": {
+    "solar": 0.1,
+    "onshore_wind": 0.26
+   },
+   "emission_factor": {
+    "low": 0.15,
+    "central": 0.207,
+    "high": 0.37
+   },
+   "alpha": [
+    0.2,
+    0.5,
+    1.0
+   ]
+  },
+  "effort": {
+   "hours_per_point": 2,
+   "base": 4,
+   "storage_component": 2,
+   "mw_steps": [
+    [
+     1,
+     2
+    ],
+    [
+     20,
+     2
+    ]
+   ]
+  },
+  "queue": {
+   "max_wait_days": 365,
+   "small_project_mw": 1.0,
+   "small_quota_factor": 0.5
+  },
+  "simulation": {
+   "capacity_factor": 1.0,
+   "max_weeks": 520
+  }
+ },
+ "files": 245,
+ "reviewed": 236,
+ "left_before_review": 9,
+ "unresolved_files": 18,
+ "carbon_files": 109,
+ "weeks_to_clear": 164,
+ "wait_days": {
+  "all": {
+   "n": 236,
+   "median": 523.5,
+   "p90": 791.0,
+   "max": 3025.0
+  },
+  "small_scored": {
+   "n": 0
+  },
+  "large_scored": {
+   "n": 127,
+   "median": 488.0,
+   "p90": 772.0,
+   "max": 2847.0
+  },
+  "unscored": {
+   "n": 109,
+   "median": 558.0,
+   "p90": 901.6,
+   "max": 3025.0
+  }
+ },
+ "over_max_wait_share": 0.9322,
+ "carbon_weighted_wait_days": 486.6,
+ "carbon_gain_days_median": -21.0,
+ "carbon_gain_tco2_vs_fifo": {
+  "alpha_0.2": {
+   "low": 7961.7,
+   "central": 10987.2,
+   "high": 19639.0
+  },
+  "alpha_0.5": {
+   "low": 19904.4,
+   "central": 27468.0,
+   "high": 49097.4
+  },
+  "alpha_1.0": {
+   "low": 39808.7,
+   "central": 54936.1,
+   "high": 98194.9
+  }
+ },
+ "wasted_hours_on_withdrawn": 64.0,
+ "hours_on_unresolved": 216.0
+}

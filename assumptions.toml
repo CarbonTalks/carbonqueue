@@ -1,0 +1,27 @@
+# CarbonQueue K2 varsayimlari. Koddaki butun sayilar buradan gelir.
+# "DOGRULANACAK" isaretli degerler yer tutucudur: sunuma girmeden once kaynagiyla teyit edilecek.
+
+[carbon]
+# Yuk faktoru (yillik ortalama uretim / kurulu guc). DOGRULANACAK: DUKES tablo 6.3
+load_factor = { solar = 0.10, onshore_wind = 0.26 }
+# Yer degistirme emisyon faktoru, tCO2e/MWh. DOGRULANACAK: DESNZ donusum faktorleri / gaz santrali
+# Faktor siralamayi degistirmez (her teknolojiye ayni carpan), yalnizca raporlanan tonu degistirir.
+emission_factor = { low = 0.15, central = 0.207, high = 0.37 }
+# Yansima orani: iznin erken cikmasinin ne kadari isletmeye erken girmeye yansir. Siralamayi degistirmez.
+alpha = [0.2, 0.5, 1.0]
+
+[effort]
+# Kural tabanli efor puani; REPD'den turetilebilen kurallar. 1 puan = hours_per_point saat.
+hours_per_point = 2
+base = 4
+storage_component = 2   # basvuruda depolama bileseni var
+mw_steps = [[1, 2], [20, 2]]  # [esik MW, ek puan]: >= 1 MW +2, >= 20 MW +2 daha
+
+[queue]
+max_wait_days = 365         # zorunlu kademe: bu sureyi asan dosya one alinir (ic politika, yasal sure degil)
+small_project_mw = 1.0      # kucuk proje esigi
+small_quota_factor = 0.5    # kucuk projeler, efor paylarinin en az bu kadarini garanti alir
+
+[simulation]
+capacity_factor = 1.0       # 1.0 = o yil gercekte verilen kararlarin toplam eforu / 52
+max_weeks = 520
