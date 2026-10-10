@@ -13,8 +13,8 @@ import pandas as pd
 
 from cqsim import live, sensitivity
 from cqsim.metrics import summarize
-from cqsim.prepare import DATA, ROOT, build_queue, lane_shares, load_config, weekly_capacity
-from cqsim.simulator import POLICIES, simulate
+from cqsim.prepare import DATA, ROOT, build_queue, lane_shares, load_config
+from cqsim.simulator import POLICIES, calibrate, simulate
 
 YEARS = range(2019, 2024)
 
@@ -22,14 +22,16 @@ YEARS = range(2019, 2024)
 def run_year(year: int, policies, cfg: dict, data: Path, out: Path) -> dict:
     q = build_queue(year, cfg, data)
     start = pd.Timestamp(year, 1, 1)
-    fifo = simulate(q, "fifo", cfg, start)
+    cal = calibrate(q, cfg, start)
+    capacity = cal["capacity_hours_per_week"]
+    fifo = simulate(q, "fifo", cfg, start, capacity)
     unscored, small = lane_shares(q, cfg)
     results = {}
     for policy in policies:
-        res = fifo if policy == "fifo" else simulate(q, policy, cfg, start)
+        res = fifo if policy == "fifo" else simulate(q, policy, cfg, start, capacity)
         results[policy] = {
             "year": year, "policy": policy,
-            "capacity_hours_per_week": round(weekly_capacity(q, cfg), 1),
+            "calibration": cal,
             "lane_share": {"unscored": round(unscored, 3), "small_quota": round(small, 3)},
             "assumptions": cfg,
             **summarize(q, res, fifo, cfg),
@@ -77,7 +79,7 @@ if __name__ == "__main__":
         r = live.rank(cfg, args.data, args.include_stale)
         args.out.mkdir(parents=True, exist_ok=True)
         (args.out / "live-queue.json").write_text(json.dumps(r, ensure_ascii=False, indent=1), encoding="utf-8")
-        print(f"as_of={r['as_of']}  kapasite={r['capacity_hours_per_week']} saat/hafta  dosya={len(r['files'])}"
+        print(f"as_of={r['as_of']}  kapasite={r['calibration']['capacity_hours_per_week']} saat/hafta  dosya={len(r['files'])}"
               f"  teyit bekleyen={len(r['needs_confirmation'])}  kademeler={r['lane_counts']}")
         for f in r["files"][:15]:
             print(f"{f['position']['carbonqueue']:>4}  {f['site_name'][:34]:<34}  {f['reason']}")

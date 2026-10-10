@@ -13,7 +13,7 @@ Kurallar:
 import numpy as np
 import pandas as pd
 
-from cqsim.prepare import lane_shares, score, weekly_capacity
+from cqsim.prepare import lane_shares, naive_capacity, score
 
 WEEK = np.timedelta64(7, "D")
 # politika -> (geri cekilme carpani, efora bolme, adalet kademeleri); fifo ayri ele alinir
@@ -26,15 +26,42 @@ POLICIES = {
 }
 
 
-def simulate(q: pd.DataFrame, policy: str, cfg: dict, start: pd.Timestamp, capacity: float | None = None) -> pd.DataFrame:
+def calibrate(q: pd.DataFrame, cfg: dict, start: pd.Timestamp) -> dict:
+    """Haftalik kapasiteyi, FIFO simulasyonundaki medyan bekleme gercek medyan karar suresine esit olacak sekilde bulur.
+
+    Karsilastirma ayni dosyalar uzerinde yapilir: kurumun gercekte karar verdigi dosyalar. Yalnizca medyan
+    eslestirilir; P90 kalibrasyona girmez ve simulasyonun gercegi ne kadar tuttugunu gosteren kontrol olarak raporlanir.
+    """
+    decided = q.real_days.notna().to_numpy()
+    real = q.real_days[decided]
+    base = naive_capacity(q)
+
+    def fifo_wait(factor):
+        res = simulate(q, "fifo", cfg, start, base * factor)
+        return (res.done - q.arrival).dt.days[decided]
+
+    lo, hi = 0.25, 16.0  # bekleme kapasiteyle azalir: ikiye bolerek ara
+    for _ in range(30):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if fifo_wait(mid).median() > real.median() else (lo, mid)
+    wait = fifo_wait(hi)
+    return {
+        "capacity_hours_per_week": round(base * hi * cfg["simulation"]["capacity_factor"], 1),
+        "naive_capacity_hours_per_week": round(base, 1),
+        "calibration_factor": round(hi, 3),
+        "real_wait_median": float(real.median()), "fifo_wait_median": float(wait.median()),
+        "real_wait_p90": round(float(real.quantile(0.9)), 1), "fifo_wait_p90": round(float(wait.quantile(0.9)), 1),
+    }
+
+
+def simulate(q: pd.DataFrame, policy: str, cfg: dict, start: pd.Timestamp, capacity: float) -> pd.DataFrame:
     """Kuyrugu bosalana kadar kosturur. q, build_queue ciktisidir (basvuru tarihine gore sirali).
 
     Donus: app_id, done (incelemenin bittigi tarih; incelenmeden ciktiysa bos), spent (harcanan saat),
     order (bitis sirasi, 1'den baslar), lane (dosyanin hangi kademeden bittigi).
     """
-    capacity = weekly_capacity(q, cfg) if capacity is None else capacity
     if capacity <= 0:
-        raise ValueError("kapasite sifir: o yil karar verilen dosya yok")
+        raise ValueError("kapasite sifir")
     n = len(q)
     arrival = q.arrival.to_numpy("datetime64[D]")
     exit_ = q.exit.to_numpy("datetime64[D]")

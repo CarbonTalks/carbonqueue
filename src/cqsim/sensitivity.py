@@ -9,7 +9,7 @@ import pandas as pd
 
 from cqsim.metrics import summarize
 from cqsim.prepare import DATA, build_queue
-from cqsim.simulator import simulate
+from cqsim.simulator import calibrate, simulate
 
 YEARS = (2021, 2022, 2023)  # ana sonuc yillari
 
@@ -27,8 +27,8 @@ def variants(cfg: dict) -> dict:
         "kapasite x0,8": (_set(cfg, "simulation", capacity_factor=0.8), False),
         "kapasite x1,2": (_set(cfg, "simulation", capacity_factor=1.2), False),
         "azami bekleme 180 gun": (_set(cfg, "queue", max_wait_days=180), False),
-        "zorunlu kademe en fazla %50 kapasite": (_set(cfg, "queue", max_wait_capacity_share=0.5), False),
-        "azami bekleme 180 gun + en fazla %50": (_set(cfg, "queue", max_wait_days=180, max_wait_capacity_share=0.5), False),
+        "zorunlu kademe sinirsiz": (_set(cfg, "queue", max_wait_capacity_share=1.0), False),
+        "azami bekleme 180 gun + sinirsiz": (_set(cfg, "queue", max_wait_days=180, max_wait_capacity_share=1.0), False),
         "sabit efor": (_set(cfg, "effort", storage_component=0, mw_steps=[]), False),
         "kucuk proje kotasi yok": (_set(cfg, "queue", small_quota_factor=0.0), False),
         "kucuk proje kotasi tam pay": (_set(cfg, "queue", small_quota_factor=1.0), False),
@@ -44,10 +44,11 @@ def run(cfg: dict, data: Path = DATA, policy: str = "carbonqueue") -> list[dict]
             q = build_queue(year, c, data)
             if drop_stale:
                 q = q[~q.stale].reset_index(drop=True)
-            fifo = simulate(q, "fifo", c, start)
-            m, f = summarize(q, simulate(q, policy, c, start), fifo, c), summarize(q, fifo, fifo, c)
+            capacity = calibrate(q, c, start)["capacity_hours_per_week"]  # capacity_factor dahil
+            fifo = simulate(q, "fifo", c, start, capacity)
+            m, f = summarize(q, simulate(q, policy, c, start, capacity), fifo, c), summarize(q, fifo, fifo, c)
             rows.append({
-                "year": year, "variant": name, "policy": policy, "files": m["files"],
+                "year": year, "variant": name, "policy": policy, "files": m["files"], "capacity_hours_per_week": capacity,
                 "gain_tco2_central_alpha_0.5": m["carbon_gain_tco2_vs_fifo"]["alpha_0.5"]["central"],
                 "carbon_weighted_wait_days": m["carbon_weighted_wait_days"],
                 "fifo_carbon_weighted_wait_days": f["carbon_weighted_wait_days"],

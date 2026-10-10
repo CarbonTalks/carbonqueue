@@ -7,7 +7,7 @@ import pytest
 from cqsim.metrics import summarize
 from cqsim import live
 from cqsim.prepare import DATA, daily_tco2, effort_hours, load_config
-from cqsim.simulator import POLICIES, simulate
+from cqsim.simulator import POLICIES, calibrate, simulate
 
 CFG = load_config()
 START = pd.Timestamp(2022, 1, 1)
@@ -88,12 +88,21 @@ def test_max_wait_tier_bounds_small_project_wait():
 def test_overloaded_max_wait_tier_collapses_to_fifo_unless_capped():
     q = queue([(-800 + d, mw, "solar", None) for d in range(0, 350, 7) for mw in (0.5, 10 + d)])  # hepsi suresini asmis; yeni dosyalar daha buyuk
     fifo = simulate(q, "fifo", CFG, START, capacity=10)
-    full = simulate(q, "carbonqueue", CFG, START, capacity=10)
+    unlimited = copy.deepcopy(CFG)
+    unlimited["queue"]["max_wait_capacity_share"] = 1.0
+    full = simulate(q, "carbonqueue", unlimited, START, capacity=10)
     assert (full.order == fifo.order).all()
-    capped = copy.deepcopy(CFG)
-    capped["queue"]["max_wait_capacity_share"] = 0.5
-    res = simulate(q, "carbonqueue", capped, START, capacity=10)
-    assert summarize(q, res, fifo, capped)["carbon_gain_tco2_vs_fifo"]["alpha_1.0"]["central"] > 0
+    res = simulate(q, "carbonqueue", CFG, START, capacity=10)  # varsayilan: en fazla %50
+    assert summarize(q, res, fifo, CFG)["carbon_gain_tco2_vs_fifo"]["alpha_1.0"]["central"] > 0
+
+
+def test_calibration_matches_real_median_wait():
+    q = queue([(d, 5, "solar", None) for d in range(0, 364, 2)])
+    q["decided_in_year"] = q.index < 60  # kalibrasyonsuz kapasite kuyrugun ucte birine yeter
+    q["real_days"] = 70.0
+    cal = calibrate(q, CFG, START)
+    assert abs(cal["fifo_wait_median"] - 70) <= 7  # haftalik adim
+    assert cal["calibration_factor"] > 1
 
 
 @pytest.mark.skipif(not (DATA / "predictions" / "predictions_live.parquet").exists(), reason="cq-model ciktilari yok")

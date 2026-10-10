@@ -1,7 +1,15 @@
 {
  "year": 2023,
  "policy": "carbon_withdrawal",
- "capacity_hours_per_week": 215.3,
+ "calibration": {
+  "capacity_hours_per_week": 382.7,
+  "naive_capacity_hours_per_week": 215.3,
+  "calibration_factor": 1.777,
+  "real_wait_median": 79.0,
+  "fifo_wait_median": 79.0,
+  "real_wait_p90": 549.0,
+  "fifo_wait_p90": 226.5
+ },
  "lane_share": {
   "unscored": 0.265,
   "small_quota": 0.184
@@ -40,7 +48,7 @@
   },
   "queue": {
    "max_wait_days": 365,
-   "max_wait_capacity_share": 1.0,
+   "max_wait_capacity_share": 0.5,
    "small_project_mw": 1.0,
    "small_quota_factor": 0.5
   },
@@ -50,57 +58,57 @@
   }
  },
  "files": 1851,
- "reviewed": 1809,
- "left_before_review": 42,
+ "reviewed": 1838,
+ "left_before_review": 13,
  "unresolved_files": 172,
  "carbon_files": 1144,
- "weeks_to_clear": 89,
+ "weeks_to_clear": 52,
  "wait_days": {
   "all": {
-   "n": 1809,
-   "median": 255.0,
-   "p90": 534.2,
+   "n": 1838,
+   "median": 67.0,
+   "p90": 341.3,
    "max": 4121.0
   },
   "small_scored": {
-   "n": 874,
-   "median": 332.0,
-   "p90": 562.0,
-   "max": 1110.0
+   "n": 891,
+   "median": 51.0,
+   "p90": 257.0,
+   "max": 835.0
   },
   "large_scored": {
-   "n": 466,
-   "median": 102.5,
-   "p90": 489.0,
-   "max": 4027.0
+   "n": 469,
+   "median": 34.0,
+   "p90": 447.8,
+   "max": 3985.0
   },
   "unscored": {
-   "n": 469,
-   "median": 248.0,
-   "p90": 457.8,
+   "n": 478,
+   "median": 93.0,
+   "p90": 429.9,
    "max": 4121.0
   }
  },
- "over_max_wait_share": 0.2891,
- "carbon_weighted_wait_days": 179.7,
- "carbon_gain_days_median": -21.0,
+ "over_max_wait_share": 0.0854,
+ "carbon_weighted_wait_days": 156.1,
+ "carbon_gain_days_median": 7.0,
  "carbon_gain_tco2_vs_fifo": {
   "alpha_0.2": {
-   "low": 73793.8,
-   "central": 101835.4,
-   "high": 182024.7
+   "low": 18484.7,
+   "central": 25508.9,
+   "high": 45595.6
   },
   "alpha_0.5": {
-   "low": 184484.5,
-   "central": 254588.6,
-   "high": 455061.7
+   "low": 46211.8,
+   "central": 63772.2,
+   "high": 113989.0
   },
   "alpha_1.0": {
-   "low": 368969.0,
-   "central": 509177.2,
-   "high": 910123.4
+   "low": 92423.5,
+   "central": 127544.5,
+   "high": 227978.1
   }
  },
- "wasted_hours_on_withdrawn": 516.0,
+ "wasted_hours_on_withdrawn": 796.0,
  "hours_on_unresolved": 1900.0
 }

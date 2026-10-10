@@ -57,6 +57,8 @@ def _annotate(apps: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     permitted = apps.d_permitted.notna() & ~apps.abandoned_or_expired
     out["counts"] = out.scored & permitted & ~leaves
     out["unresolved"] = apps.event == "open"
+    # Kurumun gercekte karar verdigi dosyalarda basvurudan karara gecen gun (kapasite kalibrasyonu icin)
+    out["real_days"] = (apps.d_event - apps.d_submitted).dt.days.where((apps.event == "decision") & ~leaves)
     return out
 
 
@@ -80,16 +82,20 @@ def build_queue(year: int | str, cfg: dict, data: Path = DATA) -> pd.DataFrame:
 
 
 def live_capacity(cfg: dict, as_of: pd.Timestamp, data: Path = DATA) -> float:
-    """Canli kuyruk icin haftalik kapasite: son 365 gunde karar verilen simulasyon dosyalarinin toplam eforu / 52."""
+    """Canli kuyruk icin kalibre edilmemis kapasite: son 365 gunde karar verilen simulasyon dosyalarinin eforu / 52."""
     apps = pd.read_parquet(data / "applications.parquet")
     a = _annotate(apps, cfg)[apps.sim_eligible.to_numpy()]
     recent = (a.event == "decision") & (a.d_event > as_of - pd.Timedelta(days=365)) & (a.d_event <= as_of)
-    return float(a.effort[recent].sum() / 52 * cfg["simulation"]["capacity_factor"])
+    return float(a.effort[recent].sum() / 52)
 
 
-def weekly_capacity(q: pd.DataFrame, cfg: dict) -> float:
-    """Haftalik uzman kapasitesi (saat): o yil gercekte karar verilen dosyalarin toplam eforu / 52."""
-    return float(q.effort[q.decided_in_year].sum() / 52 * cfg["simulation"]["capacity_factor"])
+def naive_capacity(q: pd.DataFrame) -> float:
+    """Kalibrasyonun baslangic noktasi (saat/hafta): o yil gercekte karar verilen dosyalarin toplam eforu / 52.
+
+    Tek basina kullanilmaz: yil sonuna dogru gelip ertesi yil karara baglanan dosyalari saymadigi icin
+    kapasiteyi dusuk gosterir ve kuyrukta yapay birikme yaratir.
+    """
+    return float(q.effort[q.decided_in_year].sum() / 52)
 
 
 def lane_shares(q: pd.DataFrame, cfg: dict) -> tuple[float, float]:

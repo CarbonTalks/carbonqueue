@@ -1,6 +1,7 @@
 """Canli kuyruk siralamasi (dashboard icin).
 
-Sira, canli kuyrugun bugunku kapasiteyle simule edilmesinden cikar: her dosyanin hangi hafta ve hangi
+Sira, canli kuyrugun bugunku kapasiteyle simule edilmesinden cikar (son 365 gunun kararlari x son
+simulasyon yilinin kalibrasyon katsayisi): her dosyanin hangi hafta ve hangi
 kademeden incelenecegi. Canli kuyrukta gercek sonuc bilinmedigi icin karbon kazanci raporlanmaz.
 """
 from pathlib import Path
@@ -8,8 +9,9 @@ from pathlib import Path
 import pandas as pd
 
 from cqsim.prepare import DATA, build_queue, live_capacity
-from cqsim.simulator import simulate
+from cqsim.simulator import calibrate, simulate
 
+CALIBRATION_YEAR = 2023  # canli kuyrukta gercek sonuc olmadigi icin katsayi en son simulasyon yilindan alinir
 TOGGLE = ("fifo", "carbon", "carbonqueue")  # dashboard'daki politika secici
 UNSCORED_WHY = {"storage": "depolama", "bioenergy_waste": "biyoenerji / atık", "other_renewable": "diğer yenilenebilir"}
 STALE_REASON = "5 yıldan uzun süredir bekliyor: durumu kurumla teyit edilmeli"
@@ -34,7 +36,10 @@ def _reason(r) -> str:
 def rank(cfg: dict, data: Path = DATA, include_stale: bool = False) -> dict:
     q = build_queue("live", cfg, data)
     as_of = pd.read_parquet(data / "predictions" / "predictions_live.parquet").as_of_date.max()
-    capacity = live_capacity(cfg, as_of, data)
+    year = CALIBRATION_YEAR
+    factor = calibrate(build_queue(year, cfg, data), cfg, pd.Timestamp(year, 1, 1))["calibration_factor"]
+    naive = live_capacity(cfg, as_of, data)
+    capacity = naive * factor * cfg["simulation"]["capacity_factor"]
     stale = q[q.stale]
     if not include_stale:
         q = q[~q.stale].reset_index(drop=True)
@@ -63,7 +68,8 @@ def rank(cfg: dict, data: Path = DATA, include_stale: bool = False) -> dict:
     files.sort(key=lambda f: f["position"]["carbonqueue"])
     return {
         "as_of": str(as_of.date()),
-        "capacity_hours_per_week": round(capacity, 1),
+        "calibration": {"capacity_hours_per_week": round(capacity, 1), "naive_capacity_hours_per_week": round(naive, 1),
+                        "calibration_factor": factor, "calibration_year": year},
         "files": files,
         "needs_confirmation": [] if include_stale else [
             {"app_id": int(r.app_id), "site_name": r.site_name, "authority": r.authority, "category": r.category,

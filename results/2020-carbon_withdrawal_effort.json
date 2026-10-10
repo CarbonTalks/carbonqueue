@@ -1,7 +1,15 @@
 {
  "year": 2020,
  "policy": "carbon_withdrawal_effort",
- "capacity_hours_per_week": 19.4,
+ "calibration": {
+  "capacity_hours_per_week": 34.1,
+  "naive_capacity_hours_per_week": 19.4,
+  "calibration_factor": 1.757,
+  "real_wait_median": 223.0,
+  "fifo_wait_median": 223.0,
+  "real_wait_p90": 1037.2,
+  "fifo_wait_p90": 499.2
+ },
  "lane_share": {
   "unscored": 0.416,
   "small_quota": 0.0
@@ -40,7 +48,7 @@
   },
   "queue": {
    "max_wait_days": 365,
-   "max_wait_capacity_share": 1.0,
+   "max_wait_capacity_share": 0.5,
    "small_project_mw": 1.0,
    "small_quota_factor": 0.5
   },
@@ -50,54 +58,54 @@
   }
  },
  "files": 245,
- "reviewed": 234,
- "left_before_review": 11,
+ "reviewed": 240,
+ "left_before_review": 5,
  "unresolved_files": 18,
  "carbon_files": 109,
- "weeks_to_clear": 162,
+ "weeks_to_clear": 95,
  "wait_days": {
   "all": {
-   "n": 234,
-   "median": 529.5,
-   "p90": 1027.2,
-   "max": 3309.0
+   "n": 240,
+   "median": 232.0,
+   "p90": 772.6,
+   "max": 3032.0
   },
   "small_scored": {
    "n": 0
   },
   "large_scored": {
-   "n": 126,
-   "median": 528.5,
-   "p90": 1144.5,
-   "max": 3309.0
+   "n": 127,
+   "median": 191.0,
+   "p90": 674.2,
+   "max": 2945.0
   },
   "unscored": {
-   "n": 108,
-   "median": 529.5,
-   "p90": 943.9,
+   "n": 113,
+   "median": 246.0,
+   "p90": 886.4,
    "max": 3032.0
   }
  },
- "over_max_wait_share": 0.7821,
- "carbon_weighted_wait_days": 251.0,
- "carbon_gain_days_median": 70.0,
+ "over_max_wait_share": 0.2583,
+ "carbon_weighted_wait_days": 111.6,
+ "carbon_gain_days_median": 77.0,
  "carbon_gain_tco2_vs_fifo": {
   "alpha_0.2": {
-   "low": 58412.0,
-   "central": 80608.6,
-   "high": 144083.0
+   "low": 28956.4,
+   "central": 39959.8,
+   "high": 71425.8
   },
   "alpha_0.5": {
-   "low": 146030.1,
-   "central": 201521.5,
-   "high": 360207.6
+   "low": 72391.0,
+   "central": 99899.6,
+   "high": 178564.5
   },
   "alpha_1.0": {
-   "low": 292060.2,
-   "central": 403043.1,
-   "high": 720415.1
+   "low": 144782.0,
+   "central": 199799.2,
+   "high": 357129.0
   }
  },
- "wasted_hours_on_withdrawn": 44.0,
+ "wasted_hours_on_withdrawn": 120.0,
  "hours_on_unresolved": 216.0
 }

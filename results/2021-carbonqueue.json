@@ -1,7 +1,15 @@
 {
  "year": 2021,
  "policy": "carbonqueue",
- "capacity_hours_per_week": 76.3,
+ "calibration": {
+  "capacity_hours_per_week": 101.9,
+  "naive_capacity_hours_per_week": 76.3,
+  "calibration_factor": 1.335,
+  "real_wait_median": 177.0,
+  "fifo_wait_median": 177.0,
+  "real_wait_p90": 714.0,
+  "fifo_wait_p90": 231.0
+ },
  "lane_share": {
   "unscored": 0.328,
   "small_quota": 0.078
@@ -40,7 +48,7 @@
   },
   "queue": {
    "max_wait_days": 365,
-   "max_wait_capacity_share": 1.0,
+   "max_wait_capacity_share": 0.5,
    "small_project_mw": 1.0,
    "small_quota_factor": 0.5
   },
@@ -50,57 +58,57 @@
   }
  },
  "files": 718,
- "reviewed": 697,
- "left_before_review": 21,
+ "reviewed": 703,
+ "left_before_review": 15,
  "unresolved_files": 47,
  "carbon_files": 396,
- "weeks_to_clear": 110,
+ "weeks_to_clear": 83,
  "wait_days": {
   "all": {
-   "n": 697,
-   "median": 375.0,
-   "p90": 414.0,
+   "n": 703,
+   "median": 228.0,
+   "p90": 374.0,
    "max": 3391.0
   },
   "small_scored": {
-   "n": 160,
-   "median": 392.0,
-   "p90": 415.1,
-   "max": 422.0
+   "n": 161,
+   "median": 213.0,
+   "p90": 296.0,
+   "max": 319.0
   },
   "large_scored": {
-   "n": 284,
-   "median": 373.0,
-   "p90": 406.7,
+   "n": 285,
+   "median": 140.0,
+   "p90": 378.0,
    "max": 3206.0
   },
   "unscored": {
-   "n": 253,
-   "median": 373.0,
-   "p90": 416.0,
+   "n": 257,
+   "median": 240.0,
+   "p90": 334.0,
    "max": 3391.0
   }
  },
- "over_max_wait_share": 0.5739,
- "carbon_weighted_wait_days": 191.4,
- "carbon_gain_days_median": -35.0,
+ "over_max_wait_share": 0.1323,
+ "carbon_weighted_wait_days": 117.2,
+ "carbon_gain_days_median": 7.0,
  "carbon_gain_tco2_vs_fifo": {
   "alpha_0.2": {
-   "low": 50328.9,
-   "central": 69453.8,
-   "high": 124144.5
+   "low": 42932.3,
+   "central": 59246.6,
+   "high": 105899.7
   },
   "alpha_0.5": {
-   "low": 125822.1,
-   "central": 173634.6,
-   "high": 310361.3
+   "low": 107330.8,
+   "central": 148116.5,
+   "high": 264749.4
   },
   "alpha_1.0": {
-   "low": 251644.3,
-   "central": 347269.1,
-   "high": 620722.5
+   "low": 214661.6,
+   "central": 296233.1,
+   "high": 529498.7
   }
  },
- "wasted_hours_on_withdrawn": 256.0,
+ "wasted_hours_on_withdrawn": 328.0,
  "hours_on_unresolved": 524.0
 }

@@ -19,10 +19,12 @@ mw_steps = [[1, 2], [20, 2]]  # [esik MW, ek puan]: >= 1 MW +2, >= 20 MW +2 daha
 
 [queue]
 max_wait_days = 365         # zorunlu kademe: bu sureyi asan dosya one alinir (ic politika, yasal sure degil)
-max_wait_capacity_share = 1.0  # zorunlu kademenin kullanabilecegi azami kapasite payi (1.0 = sinirsiz)
+max_wait_capacity_share = 0.5  # zorunlu kademenin kullanabilecegi azami kapasite payi (1.0 = sinirsiz)
 small_project_mw = 1.0      # kucuk proje esigi
 small_quota_factor = 0.5    # kucuk projeler, efor paylarinin en az bu kadarini garanti alir
 
 [simulation]
-capacity_factor = 1.0       # 1.0 = o yil gercekte verilen kararlarin toplam eforu / 52
+# Kapasite yil yil kalibre edilir: FIFO simulasyonundaki medyan bekleme, ayni dosyalarin gercek medyan
+# karar suresine esit olacak sekilde. capacity_factor bu kalibre kapasiteyi carpar (duyarlilik icin).
+capacity_factor = 1.0
 max_weeks = 520

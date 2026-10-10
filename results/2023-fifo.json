@@ -1,7 +1,15 @@
 {
  "year": 2023,
  "policy": "fifo",
- "capacity_hours_per_week": 215.3,
+ "calibration": {
+  "capacity_hours_per_week": 382.7,
+  "naive_capacity_hours_per_week": 215.3,
+  "calibration_factor": 1.777,
+  "real_wait_median": 79.0,
+  "fifo_wait_median": 79.0,
+  "real_wait_p90": 549.0,
+  "fifo_wait_p90": 226.5
+ },
  "lane_share": {
   "unscored": 0.265,
   "small_quota": 0.184
@@ -40,7 +48,7 @@
   },
   "queue": {
    "max_wait_days": 365,
-   "max_wait_capacity_share": 1.0,
+   "max_wait_capacity_share": 0.5,
    "small_project_mw": 1.0,
    "small_quota_factor": 0.5
   },
@@ -50,39 +58,39 @@
   }
  },
  "files": 1851,
- "reviewed": 1803,
- "left_before_review": 48,
+ "reviewed": 1832,
+ "left_before_review": 19,
  "unresolved_files": 172,
  "carbon_files": 1144,
- "weeks_to_clear": 88,
+ "weeks_to_clear": 52,
  "wait_days": {
   "all": {
-   "n": 1803,
-   "median": 236.0,
-   "p90": 334.0,
+   "n": 1832,
+   "median": 82.0,
+   "p90": 298.0,
    "max": 4121.0
   },
   "small_scored": {
-   "n": 874,
-   "median": 228.0,
-   "p90": 255.0,
+   "n": 887,
+   "median": 67.0,
+   "p90": 142.0,
    "max": 702.0
   },
   "large_scored": {
-   "n": 460,
-   "median": 247.0,
-   "p90": 436.3,
+   "n": 466,
+   "median": 110.0,
+   "p90": 423.5,
    "max": 3936.0
   },
   "unscored": {
-   "n": 469,
-   "median": 242.0,
-   "p90": 436.8,
+   "n": 479,
+   "median": 89.0,
+   "p90": 415.6,
    "max": 4121.0
   }
  },
- "over_max_wait_share": 0.0849,
- "carbon_weighted_wait_days": 296.3,
+ "over_max_wait_share": 0.0693,
+ "carbon_weighted_wait_days": 185.3,
  "carbon_gain_days_median": 0.0,
  "carbon_gain_tco2_vs_fifo": {
   "alpha_0.2": {
@@ -101,6 +109,6 @@
    "high": 0.0
   }
  },
- "wasted_hours_on_withdrawn": 420.0,
+ "wasted_hours_on_withdrawn": 736.0,
  "hours_on_unresolved": 1900.0
 }

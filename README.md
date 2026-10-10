@@ -35,7 +35,7 @@ kapasitenin efor payları kadarını alır ve kendi içinde başvuru tarihine g�
 ## Simülasyon kuralları
 
 - **Tek İngiltere havuzu.** Kurum başına yıllık dosya sayısı medyan 2–5; kurum içinde sıralamanın etkisi olmaz. Ortak bir uzman havuzu varsayılır.
-- **Kapasite:** o yıl gerçekte karar verilen dosyaların toplam eforu ÷ 52 (saat/hafta). Kuyruk boşalana kadar aynı kapasiteyle devam edilir.
+- **Kapasite yıl yıl kalibre edilir:** haftalık kapasite, FIFO simülasyonundaki medyan bekleme aynı dosyaların gerçek medyan karar süresine eşit olacak şekilde bulunur. Yalnızca medyan eşleştirilir; gerçek ve simüle P90 kontrol olarak raporlanır (`calibration`). Tek sıralı FIFO gerçekteki uzun kuyruğu üretmez: gerçek P90 simülasyondakinin 2–3 katıdır. Kuyruk boşalana kadar aynı kapasiteyle devam edilir.
 - **Karşılaştırma yalnızca simülasyonlar arasında.** Gerçek tarihler dosyanın kuyruğa giriş tarihini ve sonucunu belirler; karar tarihleri simülasyondan çıkar.
 - **Karbon kazancı gerçekleşen sonuçla:** yalnızca nihai izin almış ve terk edilmemiş dosyalar sayılır. Kazanç = Σ günlük tCO₂ × (FIFO'daki karar günü − politikadaki karar günü) × α.
 - **Geri çekilen ve redsiz temyize giden dosya:** gerçek çıkış tarihine kadar incelenmediyse o tarihte kuyruktan çıkar; daha önce sırası gelirse eforu harcar. Katkısı sıfır.
@@ -49,7 +49,8 @@ Bütün sayısal varsayımlar [assumptions.toml](assumptions.toml) içinde. `DOG
 
 | Alan | Açıklama |
 |---|---|
-| `capacity_hours_per_week`, `lane_share` | Kapasite ve yolların payı |
+| `calibration` | Kalibre kapasite (`capacity_hours_per_week`), kalibrasyonsuz kapasite, katsayı; gerçek ve FIFO medyan/P90 bekleme |
+| `lane_share` | Yolların kapasite payı |
 | `files`, `reviewed`, `left_before_review`, `unresolved_files`, `carbon_files` | Dosya sayıları |
 | `wait_days.{all,small_scored,large_scored,unscored}` | Bekleme (gün): `n`, `median`, `p90`, `max` |
 | `over_max_wait_share` | Azami beklemeyi aşan incelenmiş dosya payı |
@@ -60,12 +61,12 @@ Bütün sayısal varsayımlar [assumptions.toml](assumptions.toml) içinde. `DOG
 
 ## Canlı kuyruk (K2 → K4)
 
-`results/live-queue.json`: canlı kuyruğun bugünkü kapasiteyle (son 365 günde karar verilen dosyaların eforu ÷ 52) simüle edilmesinden çıkan sıra.
+`results/live-queue.json`: canlı kuyruğun bugünkü kapasiteyle simüle edilmesinden çıkan sıra. Kapasite = son 365 günde karar verilen dosyaların eforu ÷ 52 × 2023 kalibrasyon katsayısı (canlı kuyrukta gerçek sonuç olmadığı için ayrıca kalibre edilemez).
 Canlı kuyrukta gerçek sonuç bilinmediği için karbon kazancı raporlanmaz.
 
 | Alan | Açıklama |
 |---|---|
-| `as_of`, `capacity_hours_per_week`, `lane_counts` | Sıralamanın tarihi, kapasite, kademe başına dosya sayısı |
+| `as_of`, `calibration`, `lane_counts` | Sıralamanın tarihi, kapasite ve katsayısı, kademe başına dosya sayısı |
 | `files[]` | CarbonQueue sırasına göre dosyalar |
 | `files[].position.{fifo,carbon,carbonqueue}` | Üç politikadaki sıra (dashboard'daki politika seçici için) |
 | `files[].planned_week.{…}` | Dosyanın kaçıncı haftada incelenmesinin planlandığı (0 = bu hafta) |
@@ -78,8 +79,8 @@ Canlı kuyrukta gerçek sonuç bilinmediği için karbon kazancı raporlanmaz.
 ## Duyarlılık
 
 `results/sensitivity.md`: 2021–2023 için CarbonQueue'nun tek bir varsayım değiştiğinde verdiği sonuç
-(kapasite ×0,8 / ×1,2, azami bekleme 180 gün, zorunlu kademe kapasite sınırı, sabit efor, küçük proje kotası, 5 yıldan eski dosyalar hariç).
-Her varyantta FIFO da aynı varsayımla yeniden koşar.
+(kapasite ×0,8 / ×1,2, azami bekleme 180 gün, zorunlu kademe sınırsız, sabit efor, küçük proje kotası, 5 yıldan eski dosyalar hariç).
+Her varyantta kapasite yeniden kalibre edilir ve FIFO da aynı varsayımla yeniden koşar.
 
-`max_wait_capacity_share` (varsayılan 1,0): zorunlu kademenin haftalık kapasiteden alabileceği azami pay.
+`max_wait_capacity_share` (varsayılan 0,5): zorunlu kademenin haftalık kapasiteden alabileceği azami pay.
 1,0 iken kuyruğun çoğu azami beklemeyi aşmışsa CarbonQueue FIFO'ya dönüşür.

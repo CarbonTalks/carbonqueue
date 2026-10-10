@@ -1,7 +1,15 @@
 {
  "year": 2021,
  "policy": "fifo",
- "capacity_hours_per_week": 76.3,
+ "calibration": {
+  "capacity_hours_per_week": 101.9,
+  "naive_capacity_hours_per_week": 76.3,
+  "calibration_factor": 1.335,
+  "real_wait_median": 177.0,
+  "fifo_wait_median": 177.0,
+  "real_wait_p90": 714.0,
+  "fifo_wait_p90": 231.0
+ },
  "lane_share": {
   "unscored": 0.328,
   "small_quota": 0.078
@@ -40,7 +48,7 @@
   },
   "queue": {
    "max_wait_days": 365,
-   "max_wait_capacity_share": 1.0,
+   "max_wait_capacity_share": 0.5,
    "small_project_mw": 1.0,
    "small_quota_factor": 0.5
   },
@@ -50,39 +58,39 @@
   }
  },
  "files": 718,
- "reviewed": 697,
- "left_before_review": 21,
+ "reviewed": 702,
+ "left_before_review": 16,
  "unresolved_files": 47,
  "carbon_files": 396,
- "weeks_to_clear": 110,
+ "weeks_to_clear": 83,
  "wait_days": {
   "all": {
-   "n": 697,
-   "median": 282.0,
-   "p90": 401.4,
+   "n": 702,
+   "median": 177.0,
+   "p90": 234.7,
    "max": 3391.0
   },
   "small_scored": {
-   "n": 159,
-   "median": 322.0,
-   "p90": 396.6,
-   "max": 420.0
+   "n": 161,
+   "median": 182.0,
+   "p90": 217.0,
+   "max": 231.0
   },
   "large_scored": {
-   "n": 283,
-   "median": 276.0,
-   "p90": 405.8,
+   "n": 284,
+   "median": 176.0,
+   "p90": 301.2,
    "max": 3206.0
   },
   "unscored": {
-   "n": 255,
-   "median": 262.0,
-   "p90": 404.0,
+   "n": 257,
+   "median": 175.0,
+   "p90": 313.0,
    "max": 3391.0
   }
  },
- "over_max_wait_share": 0.2123,
- "carbon_weighted_wait_days": 294.6,
+ "over_max_wait_share": 0.0613,
+ "carbon_weighted_wait_days": 205.2,
  "carbon_gain_days_median": 0.0,
  "carbon_gain_tco2_vs_fifo": {
   "alpha_0.2": {
@@ -101,6 +109,6 @@
    "high": 0.0
   }
  },
- "wasted_hours_on_withdrawn": 256.0,
+ "wasted_hours_on_withdrawn": 308.0,
  "hours_on_unresolved": 524.0
 }
