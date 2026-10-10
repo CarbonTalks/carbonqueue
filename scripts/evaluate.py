@@ -89,7 +89,32 @@ def evaluate(apps, feats, cutoff, eval_end, name):
         "calibration_quintiles": [[round(a, 4), round(b, 4)] for a, b in calib.values],
         "feature_importance_top10": model.get_feature_importance(prettified=True).head(10).values.tolist(),
     }
+    info = ev.set_index("app_id").loc[lab.app_id]
+    size = pd.cut(info.app_generation_mw.fillna(info.capacity_mw), [0, 1, 5, 20, np.inf], right=False,
+                  labels=["<1 MW", "1-5 MW", "5-20 MW", ">=20 MW"]).astype(str).replace("nan", "MW yok")
+    res["breakdown"] = {"category": breakdown(info.category.values, y, p, dist, r_dist, bins),
+                        "size": breakdown(size.values, y, p, dist, r_dist, bins)}
     return res, model, ev, pred
+
+
+def breakdown(groups, y, p, dist, r_dist, bins, min_events=10):
+    """Grup bazinda metrikler. ROC-AUC yalnizca en az min_events geri cekilme olan grupta hesaplanir."""
+    out = {}
+    for g in pd.unique(groups):
+        m = groups == g
+        if not m.any():
+            continue
+        k = int(y[m].sum())
+        out[str(g)] = {
+            "n": int(m.sum()), "withdrawals": k,
+            "roc_auc": round(roc_auc_score(y[m], p[m]), 3) if min_events <= k < m.sum() else None,
+            "mean_pred": round(float(p[m].mean()), 4), "obs_rate": round(float(y[m].mean()), 4),
+            "decision_brier": round(multiclass_brier(dist[m], bins[m]), 3),
+            "decision_brier_recent_baseline": round(multiclass_brier(r_dist[m], bins[m]), 3),
+            "decision_bin_mae": round(bin_mae(dist[m], bins[m]), 2),
+            "decision_bin_mae_recent_baseline": round(bin_mae(r_dist[m], bins[m]), 2),
+        }
+    return out
 
 
 if __name__ == "__main__":
