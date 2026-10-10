@@ -39,33 +39,52 @@ def _has_storage(apps: pd.DataFrame) -> pd.Series:
     return apps.application_key.isin(keys)
 
 
+STALE = pd.Timedelta(days=5 * 365)  # cq-model ile ayni: 5 yildan uzun bekleyen dosya "stale_or_uncertain"
+
+
+def _annotate(apps: pd.DataFrame, cfg: dict) -> pd.DataFrame:
+    """Her basvuruya karbon, efor ve gercek sonuc kolonlarini ekler."""
+    out = apps[["app_id", "site_name", "authority", "category", "technology", "app_generation_mw", "event"]].copy()
+    out["has_storage"] = _has_storage(apps)
+    out["arrival"] = apps.d_submitted
+    leaves = (apps.event == "withdrawal") | apps.decision_via_nondetermination_appeal
+    out["exit"] = apps.d_event.where(leaves)
+    out["d_event"] = apps.d_event
+    out["daily_tco2"] = daily_tco2(apps.category, apps.app_generation_mw, cfg)
+    out["scored"] = out.daily_tco2.notna()
+    out["effort"] = effort_hours(apps.app_generation_mw.fillna(0), out.has_storage, cfg)
+    out["small"] = out.scored & (apps.app_generation_mw < cfg["queue"]["small_project_mw"])
+    permitted = apps.d_permitted.notna() & ~apps.abandoned_or_expired
+    out["counts"] = out.scored & permitted & ~leaves
+    out["unresolved"] = apps.event == "open"
+    return out
+
+
 def build_queue(year: int | str, cfg: dict, data: Path = DATA) -> pd.DataFrame:
     """Y yilinin (ya da "live") kuyrugu; her dosya tek satir.
 
     arrival : kuyruga giris (basvuru tarihi)
     exit    : dosya incelenmeden kuyruktan kendiliginden ciktigi tarih (geri cekilme ya da redsiz temyiz)
     counts  : incelenirse karbona katkisi var mi (nihai izin almis, terk edilmemis, skorlanabilir)
+    stale   : kuyruk basladiginda 5 yildan uzun suredir bekliyor
     """
     apps = pd.read_parquet(data / "applications.parquet")
     pred = pd.read_parquet(data / "predictions" / f"predictions_{year}.parquet")
-    q = apps.assign(has_storage=_has_storage(apps)).merge(pred[["app_id", "p_withdraw_12m"]], on="app_id")
+    q = _annotate(apps, cfg).merge(pred[["app_id", "p_withdraw_12m"]], on="app_id")
     if len(q) != len(pred):
         raise ValueError("tahmin dosyasindaki bazi app_id'ler applications.parquet'te yok")
+    start = pred.as_of_date.max() if year == "live" else pd.Timestamp(year, 1, 1)
+    q["stale"] = q.arrival < start - STALE
+    q["decided_in_year"] = (q.event == "decision") & (q.d_event.dt.year == year) if year != "live" else False
+    return q.sort_values(["arrival", "app_id"]).reset_index(drop=True)
 
-    out = q[["app_id", "site_name", "authority", "category", "technology", "app_generation_mw",
-             "has_storage", "p_withdraw_12m", "event"]].copy()
-    out["arrival"] = q.d_submitted
-    leaves = (q.event == "withdrawal") | q.decision_via_nondetermination_appeal
-    out["exit"] = q.d_event.where(leaves)
-    out["daily_tco2"] = daily_tco2(q.category, q.app_generation_mw, cfg)
-    out["scored"] = out.daily_tco2.notna()
-    out["effort"] = effort_hours(q.app_generation_mw.fillna(0), q.has_storage, cfg)
-    out["small"] = out.scored & (q.app_generation_mw < cfg["queue"]["small_project_mw"])
-    permitted = q.d_permitted.notna() & ~q.abandoned_or_expired
-    out["counts"] = out.scored & permitted & ~leaves
-    out["unresolved"] = q.event == "open"
-    out["decided_in_year"] = (q.event == "decision") & (q.d_event.dt.year == year) if year != "live" else False
-    return out.sort_values(["arrival", "app_id"]).reset_index(drop=True)
+
+def live_capacity(cfg: dict, as_of: pd.Timestamp, data: Path = DATA) -> float:
+    """Canli kuyruk icin haftalik kapasite: son 365 gunde karar verilen simulasyon dosyalarinin toplam eforu / 52."""
+    apps = pd.read_parquet(data / "applications.parquet")
+    a = _annotate(apps, cfg)[apps.sim_eligible.to_numpy()]
+    recent = (a.event == "decision") & (a.d_event > as_of - pd.Timedelta(days=365)) & (a.d_event <= as_of)
+    return float(a.effort[recent].sum() / 52 * cfg["simulation"]["capacity_factor"])
 
 
 def weekly_capacity(q: pd.DataFrame, cfg: dict) -> float:

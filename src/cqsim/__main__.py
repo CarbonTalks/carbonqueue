@@ -2,6 +2,8 @@
 
   python -m cqsim simulate --year 2022 --policy carbonqueue   -> results/2022-carbonqueue.json
   python -m cqsim all                                         -> butun yillar x politikalar + results/summary.md
+  python -m cqsim rank                                        -> results/live-queue.json (canli kuyruk)
+  python -m cqsim sensitivity                                 -> results/sensitivity.json + sensitivity.md
 """
 import argparse
 import json
@@ -9,6 +11,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from cqsim import live, sensitivity
 from cqsim.metrics import summarize
 from cqsim.prepare import DATA, ROOT, build_queue, lane_shares, load_config, weekly_capacity
 from cqsim.simulator import POLICIES, simulate
@@ -57,6 +60,9 @@ if __name__ == "__main__":
     one.add_argument("--year", type=int, required=True)
     one.add_argument("--policy", choices=list(POLICIES), required=True)
     sub.add_parser("all")
+    sub.add_parser("sensitivity")
+    sub.add_parser("rank").add_argument("--include-stale", action="store_true",
+                                        help="5 yildan eski dosyalari da siraya koy (varsayilan: ayri listede)")
     for s in sub.choices.values():
         s.add_argument("--data", type=Path, default=DATA)
         s.add_argument("--out", type=Path, default=ROOT / "results")
@@ -67,6 +73,20 @@ if __name__ == "__main__":
     if args.cmd == "simulate":
         r = run_year(args.year, [args.policy], cfg, args.data, args.out)[args.policy]
         print(json.dumps({k: v for k, v in r.items() if k != "assumptions"}, ensure_ascii=False, indent=1))
+    elif args.cmd == "rank":
+        r = live.rank(cfg, args.data, args.include_stale)
+        args.out.mkdir(parents=True, exist_ok=True)
+        (args.out / "live-queue.json").write_text(json.dumps(r, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(f"as_of={r['as_of']}  kapasite={r['capacity_hours_per_week']} saat/hafta  dosya={len(r['files'])}"
+              f"  teyit bekleyen={len(r['needs_confirmation'])}  kademeler={r['lane_counts']}")
+        for f in r["files"][:15]:
+            print(f"{f['position']['carbonqueue']:>4}  {f['site_name'][:34]:<34}  {f['reason']}")
+    elif args.cmd == "sensitivity":
+        rows = sensitivity.run(cfg, args.data)
+        args.out.mkdir(parents=True, exist_ok=True)
+        (args.out / "sensitivity.json").write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
+        (args.out / "sensitivity.md").write_text(sensitivity.table(rows), encoding="utf-8")
+        print(sensitivity.table(rows))
     else:
         res = {y: run_year(y, list(POLICIES), cfg, args.data, args.out) for y in YEARS}
         table = summary_table(res)

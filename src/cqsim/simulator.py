@@ -29,7 +29,8 @@ POLICIES = {
 def simulate(q: pd.DataFrame, policy: str, cfg: dict, start: pd.Timestamp, capacity: float | None = None) -> pd.DataFrame:
     """Kuyrugu bosalana kadar kosturur. q, build_queue ciktisidir (basvuru tarihine gore sirali).
 
-    Donus: app_id, done (incelemenin bittigi tarih; incelenmeden ciktiysa bos), spent (harcanan saat).
+    Donus: app_id, done (incelemenin bittigi tarih; incelenmeden ciktiysa bos), spent (harcanan saat),
+    order (bitis sirasi, 1'den baslar), lane (dosyanin hangi kademeden bittigi).
     """
     capacity = weekly_capacity(q, cfg) if capacity is None else capacity
     if capacity <= 0:
@@ -43,6 +44,8 @@ def simulate(q: pd.DataFrame, policy: str, cfg: dict, start: pd.Timestamp, capac
     remaining, spent = effort.copy(), np.zeros(n)
     done = np.full(n, np.datetime64("NaT"), "datetime64[D]")
     gone = np.zeros(n, bool)  # incelendi ya da kendiliginden cikti
+    order, lane = np.zeros(n, int), np.full(n, None, object)
+    finished = 0
 
     fair = False
     if policy != "fifo":
@@ -54,8 +57,9 @@ def simulate(q: pd.DataFrame, policy: str, cfg: dict, start: pd.Timestamp, capac
     max_wait = np.timedelta64(cfg["queue"]["max_wait_days"], "D")
     now = np.datetime64(start, "D")
 
-    def work(idx, budget):
+    def work(idx, budget, name):
         """Verilen siradaki dosyalara butceyi harcar; artan butceyi dondurur. Yarim kalan dosya ilerlemesini korur."""
+        nonlocal finished
         for i in idx:
             if budget <= 1e-9:
                 break
@@ -66,12 +70,13 @@ def simulate(q: pd.DataFrame, policy: str, cfg: dict, start: pd.Timestamp, capac
             spent[i] += step
             budget -= step
             if remaining[i] <= 1e-9:
-                gone[i], done[i] = True, now + WEEK
+                finished += 1
+                gone[i], done[i], order[i], lane[i] = True, now + WEEK, finished, name
         return budget
 
     def by_score(idx):
-        # baslanmis dosya once biter, sonra skor (yuksekten dusuge), esitlikte basvuru tarihi (FIFO)
-        return idx[np.lexsort((idx, -s[idx], remaining[idx] == effort[idx]))]
+        # skor (yuksekten dusuge), esitlikte basvuru tarihi (FIFO)
+        return idx[np.lexsort((idx, -s[idx]))]
 
     for _ in range(cfg["simulation"]["max_weeks"]):
         gone |= ~gone & (exit_ <= now)  # NaT karsilastirmasi False doner
@@ -80,19 +85,21 @@ def simulate(q: pd.DataFrame, policy: str, cfg: dict, start: pd.Timestamp, capac
             if not (~gone).any():
                 break
         elif policy == "fifo":
-            work(waiting, capacity)
+            work(waiting, capacity, "fifo")
         else:
             budget = capacity
             if fair:  # 1. zorunlu kademe: azami beklemeyi asanlar, basvuru tarihine gore
-                budget = work(waiting[now - arrival[waiting] > max_wait], budget)
+                cap = capacity * cfg["queue"]["max_wait_capacity_share"]
+                budget = capacity - cap + work(waiting[now - arrival[waiting] > max_wait], cap, "max_wait")
             w_scored, w_unscored = waiting[scored[waiting]], waiting[~scored[waiting]]
-            left = work(w_unscored, budget * share_unscored)  # skorsuz yol
-            left += work(w_scored[small[w_scored]], budget * share_small)  # 2. adalet: kucuk proje kotasi
-            left += work(by_score(w_scored), budget * (1 - share_unscored - share_small))  # 3. karbon skoru
-            left = work(by_score(w_scored), left)  # bos kalan kapasite diger yola gecer
-            work(w_unscored, left)
+            left = work(w_unscored, budget * share_unscored, "unscored")  # skorsuz yol
+            left += work(w_scored[small[w_scored]], budget * share_small, "small_quota")  # 2. adalet: kucuk proje kotasi
+            left += work(by_score(w_scored), budget * (1 - share_unscored - share_small), "carbon")  # 3. karbon skoru
+            left = work(by_score(w_scored), left, "carbon")  # bos kalan kapasite diger yola gecer
+            work(w_unscored, left, "unscored")
         now = now + WEEK
     else:
         raise RuntimeError("kuyruk max_weeks icinde bosalmadi")
 
-    return pd.DataFrame({"app_id": q.app_id.values, "done": pd.to_datetime(done), "spent": spent})
+    return pd.DataFrame({"app_id": q.app_id.values, "done": pd.to_datetime(done), "spent": spent,
+                         "order": order, "lane": lane})

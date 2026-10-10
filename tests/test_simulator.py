@@ -1,9 +1,12 @@
+import copy
+
 import numpy as np
 import pandas as pd
 import pytest
 
 from cqsim.metrics import summarize
-from cqsim.prepare import daily_tco2, effort_hours, load_config
+from cqsim import live
+from cqsim.prepare import DATA, daily_tco2, effort_hours, load_config
 from cqsim.simulator import POLICIES, simulate
 
 CFG = load_config()
@@ -80,3 +83,23 @@ def test_max_wait_tier_bounds_small_project_wait():
     plain = simulate(q, "carbon_withdrawal_effort", CFG, START, capacity=20)
     fair = simulate(q, "carbonqueue", CFG, START, capacity=20)
     assert fair.done[0] < plain.done[0]
+
+
+def test_overloaded_max_wait_tier_collapses_to_fifo_unless_capped():
+    q = queue([(-800 + d, mw, "solar", None) for d in range(0, 350, 7) for mw in (0.5, 10 + d)])  # hepsi suresini asmis; yeni dosyalar daha buyuk
+    fifo = simulate(q, "fifo", CFG, START, capacity=10)
+    full = simulate(q, "carbonqueue", CFG, START, capacity=10)
+    assert (full.order == fifo.order).all()
+    capped = copy.deepcopy(CFG)
+    capped["queue"]["max_wait_capacity_share"] = 0.5
+    res = simulate(q, "carbonqueue", capped, START, capacity=10)
+    assert summarize(q, res, fifo, capped)["carbon_gain_tco2_vs_fifo"]["alpha_1.0"]["central"] > 0
+
+
+@pytest.mark.skipif(not (DATA / "predictions" / "predictions_live.parquet").exists(), reason="cq-model ciktilari yok")
+def test_live_rank_is_a_complete_ordering():
+    r = live.rank(CFG)
+    for policy in live.TOGGLE:
+        assert sorted(f["position"][policy] for f in r["files"]) == list(range(1, len(r["files"]) + 1))
+    assert all(f["reason"] for f in r["files"]) and not any(f["stale"] for f in r["files"])
+    assert all((f["daily_tco2"] is None) == (f["lane"] == "unscored") for f in r["files"] if f["lane"] != "max_wait")

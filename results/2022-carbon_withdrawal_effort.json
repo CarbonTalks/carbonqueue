@@ -40,6 +40,7 @@
   },
   "queue": {
    "max_wait_days": 365,
+   "max_wait_capacity_share": 1.0,
    "small_project_mw": 1.0,
    "small_quota_factor": 0.5
   },
@@ -85,19 +86,19 @@
  "carbon_gain_days_median": -28.0,
  "carbon_gain_tco2_vs_fifo": {
   "alpha_0.2": {
-   "low": 70683.6,
-   "central": 97543.3,
-   "high": 174352.8
+   "low": 70690.6,
+   "central": 97553.1,
+   "high": 174370.2
   },
   "alpha_0.5": {
-   "low": 176709.0,
-   "central": 243858.4,
-   "high": 435882.1
+   "low": 176726.6,
+   "central": 243882.7,
+   "high": 435925.6
   },
   "alpha_1.0": {
-   "low": 353417.9,
-   "central": 487716.7,
-   "high": 871764.2
+   "low": 353453.2,
+   "central": 487765.4,
+   "high": 871851.2
   }
  },
  "wasted_hours_on_withdrawn": 412.0,

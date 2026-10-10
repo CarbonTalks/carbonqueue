@@ -12,6 +12,8 @@ Varsayılan yol yan klasördeki `../cq-model/data/processed`; başka bir yer iç
 pip install pandas pyarrow pytest
 PYTHONPATH=src python -m cqsim all                                        # bütün yıllar x politikalar + results/summary.md
 PYTHONPATH=src python -m cqsim simulate --year 2022 --policy carbonqueue  # results/2022-carbonqueue.json
+PYTHONPATH=src python -m cqsim rank                                       # results/live-queue.json (canlı kuyruk sıralaması)
+PYTHONPATH=src python -m cqsim sensitivity                                # results/sensitivity.json + sensitivity.md
 PYTHONPATH=src python -m pytest -q
 ```
 
@@ -55,3 +57,29 @@ Bütün sayısal varsayımlar [assumptions.toml](assumptions.toml) içinde. `DOG
 | `carbon_gain_tco2_vs_fifo.alpha_{α}.{low,central,high}` | FIFO'ya göre kazanç; α ve emisyon faktörü ayrı eksenlerdir |
 | `wasted_hours_on_withdrawn`, `hours_on_unresolved` | Geri çekilen ve sonucu belirsiz dosyalara harcanan saat |
 | `assumptions` | Koşuda kullanılan `assumptions.toml` |
+
+## Canlı kuyruk (K2 → K4)
+
+`results/live-queue.json`: canlı kuyruğun bugünkü kapasiteyle (son 365 günde karar verilen dosyaların eforu ÷ 52) simüle edilmesinden çıkan sıra.
+Canlı kuyrukta gerçek sonuç bilinmediği için karbon kazancı raporlanmaz.
+
+| Alan | Açıklama |
+|---|---|
+| `as_of`, `capacity_hours_per_week`, `lane_counts` | Sıralamanın tarihi, kapasite, kademe başına dosya sayısı |
+| `files[]` | CarbonQueue sırasına göre dosyalar |
+| `files[].position.{fifo,carbon,carbonqueue}` | Üç politikadaki sıra (dashboard'daki politika seçici için) |
+| `files[].planned_week.{…}` | Dosyanın kaçıncı haftada incelenmesinin planlandığı (0 = bu hafta) |
+| `files[].lane` | `max_wait`, `small_quota`, `carbon`, `unscored` |
+| `files[].reason` | Sıranın gerekçesi (Türkçe, ekranda doğrudan gösterilebilir) |
+| `files[].daily_tco2.{low,central,high}` | Günlük yer değiştirilen emisyon bandı; skorsuz dosyada `null` |
+| `files[].effort_hours`, `p_withdraw_12m`, `wait_days`, `generation_mw`, `has_storage` | Dosya bilgileri |
+| `needs_confirmation[]` | 5 yıldan uzun süredir bekleyen dosyalar: sıraya konmaz, kurumla teyit edilmek üzere ayrı listelenir (`--include-stale` ile sıraya girer) |
+
+## Duyarlılık
+
+`results/sensitivity.md`: 2021–2023 için CarbonQueue'nun tek bir varsayım değiştiğinde verdiği sonuç
+(kapasite ×0,8 / ×1,2, azami bekleme 180 gün, zorunlu kademe kapasite sınırı, sabit efor, küçük proje kotası, 5 yıldan eski dosyalar hariç).
+Her varyantta FIFO da aynı varsayımla yeniden koşar.
+
+`max_wait_capacity_share` (varsayılan 1,0): zorunlu kademenin haftalık kapasiteden alabileceği azami pay.
+1,0 iken kuyruğun çoğu azami beklemeyi aşmışsa CarbonQueue FIFO'ya dönüşür.

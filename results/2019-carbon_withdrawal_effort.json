@@ -40,6 +40,7 @@
   },
   "queue": {
    "max_wait_days": 365,
+   "max_wait_capacity_share": 1.0,
    "small_project_mw": 1.0,
    "small_quota_factor": 0.5
   },
@@ -66,7 +67,7 @@
   },
   "large_scored": {
    "n": 62,
-   "median": 271.5,
+   "median": 261.0,
    "p90": 1352.0,
    "max": 2496.0
   },
@@ -78,23 +79,23 @@
   }
  },
  "over_max_wait_share": 0.6957,
- "carbon_weighted_wait_days": 114.9,
- "carbon_gain_days_median": 161.0,
+ "carbon_weighted_wait_days": 115.1,
+ "carbon_gain_days_median": 147.0,
  "carbon_gain_tco2_vs_fifo": {
   "alpha_0.2": {
-   "low": 18056.3,
-   "central": 24917.8,
-   "high": 44539.0
+   "low": 18042.7,
+   "central": 24898.9,
+   "high": 44505.2
   },
   "alpha_0.5": {
-   "low": 45140.9,
-   "central": 62294.4,
-   "high": 111347.5
+   "low": 45106.7,
+   "central": 62247.2,
+   "high": 111263.1
   },
   "alpha_1.0": {
-   "low": 90281.7,
-   "central": 124588.8,
-   "high": 222694.9
+   "low": 90213.3,
+   "central": 124494.4,
+   "high": 222526.1
   }
  },
  "wasted_hours_on_withdrawn": 67.6,
