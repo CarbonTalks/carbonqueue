@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from cqsim.prepare import DATA, build_queue, live_capacity
+from cqsim.prepare import DATA, build_queue, emission_factors, live_capacity
 from cqsim.simulator import calibrate, simulate
 
 CALIBRATION_YEAR = 2023  # canli kuyrukta gercek sonuc olmadigi icin katsayi en son simulasyon yilindan alinir
@@ -48,7 +48,7 @@ def rank(cfg: dict, data: Path = DATA, include_stale: bool = False) -> dict:
     main = runs["carbonqueue"]
     q["lane"] = main.lane.values
     q["wait_days"] = (as_of - q.arrival).dt.days
-    ef = cfg["carbon"]["emission_factor"]
+    ef = emission_factors(cfg, as_of.year)
 
     def row(r, i):
         band = None if pd.isna(r.daily_tco2) else {k: round(r.daily_tco2 * v / ef["central"], 2) for k, v in ef.items()}
@@ -68,6 +68,7 @@ def rank(cfg: dict, data: Path = DATA, include_stale: bool = False) -> dict:
     files.sort(key=lambda f: f["position"]["carbonqueue"])
     return {
         "as_of": str(as_of.date()),
+        "emission_factor_tco2_per_mwh": ef,
         "calibration": {"capacity_hours_per_week": round(capacity, 1), "naive_capacity_hours_per_week": round(naive, 1),
                         "calibration_factor": factor, "calibration_year": year},
         "files": files,

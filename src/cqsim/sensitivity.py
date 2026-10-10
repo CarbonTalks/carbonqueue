@@ -46,7 +46,7 @@ def run(cfg: dict, data: Path = DATA, policy: str = "carbonqueue") -> list[dict]
                 q = q[~q.stale].reset_index(drop=True)
             capacity = calibrate(q, c, start)["capacity_hours_per_week"]  # capacity_factor dahil
             fifo = simulate(q, "fifo", c, start, capacity)
-            m, f = summarize(q, simulate(q, policy, c, start, capacity), fifo, c), summarize(q, fifo, fifo, c)
+            m, f = summarize(q, simulate(q, policy, c, start, capacity), fifo, c, year), summarize(q, fifo, fifo, c, year)
             rows.append({
                 "year": year, "variant": name, "policy": policy, "files": m["files"], "capacity_hours_per_week": capacity,
                 "gain_tco2_central_alpha_0.5": m["carbon_gain_tco2_vs_fifo"]["alpha_0.5"]["central"],

@@ -34,7 +34,7 @@ def run_year(year: int, policies, cfg: dict, data: Path, out: Path) -> dict:
             "calibration": cal,
             "lane_share": {"unscored": round(unscored, 3), "small_quota": round(small, 3)},
             "assumptions": cfg,
-            **summarize(q, res, fifo, cfg),
+            **summarize(q, res, fifo, cfg, year),
         }
         out.mkdir(parents=True, exist_ok=True)
         (out / f"{year}-{policy}.json").write_text(json.dumps(results[policy], ensure_ascii=False, indent=1), encoding="utf-8")

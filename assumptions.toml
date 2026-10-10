@@ -1,12 +1,45 @@
 # CarbonQueue K2 varsayimlari. Koddaki butun sayilar buradan gelir.
-# "DOGRULANACAK" isaretli degerler yer tutucudur: sunuma girmeden once kaynagiyla teyit edilecek.
+# Karbon degerlerinin kaynaklari ve secim gerekceleri: docs/carbon_sources.md
 
 [carbon]
-# Yuk faktoru (yillik ortalama uretim / kurulu guc). DOGRULANACAK: DUKES tablo 6.3
-load_factor = { solar = 0.10, onshore_wind = 0.26 }
-# Yer degistirme emisyon faktoru, tCO2e/MWh. DOGRULANACAK: DESNZ donusum faktorleri / gaz santrali
-# Faktor siralamayi degistirmez (her teknolojiye ayni carpan), yalnizca raporlanan tonu degistirir.
-emission_factor = { low = 0.15, central = 0.207, high = 0.37 }
+# Yuk faktoru (yillik uretim / kurulu gucun azami uretimi). DUKES 2026 tablo 6.3, "unchanged configuration"
+# tabani, 2021-2025 ortalamasi (gunes %10,54; kara ruzgari %24,80). UK geneli.
+load_factor = { solar = 0.105, onshore_wind = 0.248 }
+# Iznin erken cikmasiyla kazanilan uretim, izinden bu kadar yil sonraki sebekeyi etkiler; emisyon faktoru
+# kuyruk yili + operation_lag_years icin okunur. REPD'de izinden isletmeye medyan ~1 yil (tamamlananlar);
+# faktorler yillar icinde dustugu icin 2 yil temkinli taraftir.
+operation_lag_years = 2
+# Yer degistirme emisyon faktoru, tCO2e/MWh, yila gore. Faktor siralamayi degistirmez (ayni yil icinde her
+# teknolojiye ayni carpan), yalnizca raporlanan tonu degistirir. Tabloda olmayan yil icin en yakin onceki yil.
+
+[carbon.emission_factor.low]      # sebeke ortalamasi, uretim bazli (Green Book veri tablolari, Tablo 1)
+2021 = 0.19794
+2022 = 0.14390
+2023 = 0.13308
+2024 = 0.13833
+2025 = 0.12003
+2026 = 0.08965
+2027 = 0.06681
+2028 = 0.05790
+
+[carbon.emission_factor.central]  # uzun donem marjinal, uretim bazli (Green Book veri tablolari, Tablo 1)
+2021 = 0.25495
+2022 = 0.24102
+2023 = 0.22605
+2024 = 0.20997
+2025 = 0.19269
+2026 = 0.17413
+2027 = 0.15419
+2028 = 0.13276
+
+[carbon.emission_factor.high]     # gaz santrali uretiminin yogunlugu (DUKES 2026 tablo 5.14, tCO2/MWh)
+2021 = 0.37706
+2022 = 0.38089
+2023 = 0.37832
+2024 = 0.37660
+2025 = 0.36537
+
+[carbon.scenarios]
 # Yansima orani: iznin erken cikmasinin ne kadari isletmeye erken girmeye yansir. Siralamayi degistirmez.
 alpha = [0.2, 0.5, 1.0]
 

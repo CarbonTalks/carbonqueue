@@ -2,6 +2,8 @@
 import numpy as np
 import pandas as pd
 
+from cqsim.prepare import emission_factors
+
 
 def _waits(days: pd.Series) -> dict:
     if days.empty:
@@ -10,8 +12,8 @@ def _waits(days: pd.Series) -> dict:
             "max": float(days.max())}
 
 
-def summarize(q: pd.DataFrame, res: pd.DataFrame, fifo: pd.DataFrame, cfg: dict) -> dict:
-    """q ve iki simulasyon sonucu ayni sirada olmalidir (build_queue sirasi)."""
+def summarize(q: pd.DataFrame, res: pd.DataFrame, fifo: pd.DataFrame, cfg: dict, year: int) -> dict:
+    """q ve iki simulasyon sonucu ayni sirada olmalidir (build_queue sirasi). year: kuyruk yili (emisyon faktoru icin)."""
     wait = (res.done - q.arrival).dt.days
     reviewed = res.done.notna()
     max_wait = cfg["queue"]["max_wait_days"]
@@ -20,14 +22,15 @@ def summarize(q: pd.DataFrame, res: pd.DataFrame, fifo: pd.DataFrame, cfg: dict)
     c = q.counts.to_numpy()
     gain_days = (fifo.done - res.done).dt.days[c]
     daily = q.daily_tco2[c]
-    central = cfg["carbon"]["emission_factor"]["central"]
+    factors = emission_factors(cfg, year)
     base_t = float((daily * gain_days).sum())  # merkezi faktor, alpha = 1
     carbon = {
-        f"alpha_{a}": {name: round(base_t * a * ef / central, 1) for name, ef in cfg["carbon"]["emission_factor"].items()}
-        for a in cfg["carbon"]["alpha"]
+        f"alpha_{a}": {name: round(base_t * a * ef / factors["central"], 1) for name, ef in factors.items()}
+        for a in cfg["carbon"]["scenarios"]["alpha"]
     }
     left = q.exit.notna().to_numpy()
     return {
+        "emission_factor_tco2_per_mwh": factors,
         "files": int(len(q)),
         "reviewed": int(reviewed.sum()),
         "left_before_review": int((~reviewed).sum()),

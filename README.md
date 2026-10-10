@@ -41,7 +41,7 @@ kapasitenin efor payları kadarını alır ve kendi içinde başvuru tarihine g�
 - **Geri çekilen ve redsiz temyize giden dosya:** gerçek çıkış tarihine kadar incelenmediyse o tarihte kuyruktan çıkar; daha önce sırası gelirse eforu harcar. Katkısı sıfır.
 - **Sonucu belli olmayan dosya:** eforu harcar, katkısı sıfır, sayısı `unresolved_files` alanında.
 
-Bütün sayısal varsayımlar [assumptions.toml](assumptions.toml) içinde. `DOGRULANACAK` işaretli değerler (yük faktörü, emisyon faktörü) yer tutucudur.
+Bütün sayısal varsayımlar [assumptions.toml](assumptions.toml) içinde. Yük ve emisyon faktörlerinin kaynakları ve seçim gerekçeleri: [docs/carbon_sources.md](docs/carbon_sources.md). Emisyon faktörü yıla göre değişir (kuyruk yılı + 2 yıl); her sonuç dosyasında `emission_factor_tco2_per_mwh` alanında yazar.
 
 ## Sonuç dosyası (K2 → K4)
 

@@ -17,19 +17,46 @@
  "assumptions": {
   "carbon": {
    "load_factor": {
-    "solar": 0.1,
-    "onshore_wind": 0.26
+    "solar": 0.105,
+    "onshore_wind": 0.248
    },
+   "operation_lag_years": 2,
    "emission_factor": {
-    "low": 0.15,
-    "central": 0.207,
-    "high": 0.37
+    "low": {
+     "2021": 0.19794,
+     "2022": 0.1439,
+     "2023": 0.13308,
+     "2024": 0.13833,
+     "2025": 0.12003,
+     "2026": 0.08965,
+     "2027": 0.06681,
+     "2028": 0.0579
+    },
+    "central": {
+     "2021": 0.25495,
+     "2022": 0.24102,
+     "2023": 0.22605,
+     "2024": 0.20997,
+     "2025": 0.19269,
+     "2026": 0.17413,
+     "2027": 0.15419,
+     "2028": 0.13276
+    },
+    "high": {
+     "2021": 0.37706,
+     "2022": 0.38089,
+     "2023": 0.37832,
+     "2024": 0.3766,
+     "2025": 0.36537
+    }
    },
-   "alpha": [
-    0.2,
-    0.5,
-    1.0
-   ]
+   "scenarios": {
+    "alpha": [
+     0.2,
+     0.5,
+     1.0
+    ]
+   }
   },
   "effort": {
    "hours_per_point": 2,
@@ -56,6 +83,11 @@
    "capacity_factor": 1.0,
    "max_weeks": 520
   }
+ },
+ "emission_factor_tco2_per_mwh": {
+  "low": 0.19794,
+  "central": 0.25495,
+  "high": 0.37706
  },
  "files": 155,
  "reviewed": 146,
@@ -87,7 +119,7 @@
   }
  },
  "over_max_wait_share": 0.274,
- "carbon_weighted_wait_days": 250.7,
+ "carbon_weighted_wait_days": 250.6,
  "carbon_gain_days_median": 0.0,
  "carbon_gain_tco2_vs_fifo": {
   "alpha_0.2": {

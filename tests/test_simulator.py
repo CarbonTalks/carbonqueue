@@ -6,7 +6,7 @@ import pytest
 
 from cqsim.metrics import summarize
 from cqsim import live
-from cqsim.prepare import DATA, daily_tco2, effort_hours, load_config
+from cqsim.prepare import DATA, daily_tco2, effort_hours, emission_factors, load_config
 from cqsim.simulator import POLICIES, calibrate, simulate
 
 CFG = load_config()
@@ -19,7 +19,7 @@ def queue(rows):
     q["app_id"] = np.arange(len(q))
     q["arrival"] = START + pd.to_timedelta(q.day, "D")
     q["exit"] = START + pd.to_timedelta(q.exit_day, "D")
-    q["daily_tco2"] = daily_tco2(q.category, q.app_generation_mw, CFG)
+    q["daily_tco2"] = daily_tco2(q.category, q.app_generation_mw, CFG, START.year)
     q["scored"] = q.daily_tco2.notna()
     q["effort"] = 10.0
     q["small"] = q.scored & (q.app_generation_mw < 1)
@@ -35,8 +35,10 @@ MIXED = queue([(0, 0.5, "solar", None), (0, 40, "solar", None), (0, None, "stora
 
 def test_carbon_and_effort_rules():
     cat, mw = pd.Series(["solar", "onshore_wind", "storage"]), pd.Series([10.0, 10.0, 10.0])
-    d = daily_tco2(cat, mw, CFG)
-    assert d[0] == pytest.approx(10 * 24 * 0.10 * 0.207) and d[1] > d[0] and np.isnan(d[2])
+    d = daily_tco2(cat, mw, CFG, 2022)
+    assert emission_factors(CFG, 2022) == {"low": 0.13833, "central": 0.20997, "high": 0.3766}  # 2022 + 2 yil = 2024
+    assert emission_factors(CFG, 2026)["high"] == 0.36537  # tabloda 2028 yok: en yakin onceki yil
+    assert d[0] == pytest.approx(10 * 24 * 0.105 * 0.20997) and d[1] > d[0] and np.isnan(d[2])
     e = effort_hours(pd.Series([0.5, 5.0, 30.0]), pd.Series([False, False, True]), CFG)
     assert list(e) == [8, 12, 20]
 
@@ -58,8 +60,8 @@ def test_carbon_puts_large_project_first_and_fifo_gain_is_zero():
     fifo = simulate(MIXED, "fifo", CFG, START, capacity=10)
     res = simulate(MIXED, "carbon", CFG, START, capacity=10)
     assert res.done[1] < res.done[0]  # 40 MW, 0,5 MW'in onune gecer
-    assert summarize(MIXED, fifo, fifo, CFG)["carbon_gain_tco2_vs_fifo"]["alpha_1.0"]["central"] == 0
-    assert summarize(MIXED, res, fifo, CFG)["carbon_gain_tco2_vs_fifo"]["alpha_1.0"]["central"] > 0
+    assert summarize(MIXED, fifo, fifo, CFG, START.year)["carbon_gain_tco2_vs_fifo"]["alpha_1.0"]["central"] == 0
+    assert summarize(MIXED, res, fifo, CFG, START.year)["carbon_gain_tco2_vs_fifo"]["alpha_1.0"]["central"] > 0
 
 
 def test_unscored_lane_is_not_starved():
@@ -75,7 +77,7 @@ def test_withdrawn_file_leaves_unreviewed_or_wastes_effort():
     assert pd.isna(late.done[2]) and late.spent[2] == 0
     early = simulate(q, "fifo", CFG, START, capacity=100)  # sirasi once gelir: efor bosa gider, katki sifir
     assert early.spent[2] == 10
-    assert summarize(q, early, early, CFG)["wasted_hours_on_withdrawn"] == 10
+    assert summarize(q, early, early, CFG, START.year)["wasted_hours_on_withdrawn"] == 10
 
 
 def test_max_wait_tier_bounds_small_project_wait():
@@ -93,7 +95,7 @@ def test_overloaded_max_wait_tier_collapses_to_fifo_unless_capped():
     full = simulate(q, "carbonqueue", unlimited, START, capacity=10)
     assert (full.order == fifo.order).all()
     res = simulate(q, "carbonqueue", CFG, START, capacity=10)  # varsayilan: en fazla %50
-    assert summarize(q, res, fifo, CFG)["carbon_gain_tco2_vs_fifo"]["alpha_1.0"]["central"] > 0
+    assert summarize(q, res, fifo, CFG, START.year)["carbon_gain_tco2_vs_fifo"]["alpha_1.0"]["central"] > 0
 
 
 def test_calibration_matches_real_median_wait():

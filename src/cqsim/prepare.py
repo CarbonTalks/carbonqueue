@@ -17,10 +17,22 @@ def load_config(path: Path | None = None) -> dict:
     return tomllib.loads((path or ROOT / "assumptions.toml").read_text(encoding="utf-8"))
 
 
-def daily_tco2(category: pd.Series, generation_mw: pd.Series, cfg: dict, scenario: str = "central") -> pd.Series:
-    """Gunluk yer degistirilen emisyon: MW x 24 x yuk faktoru x emisyon faktoru. Skorlanamayan dosyada bos."""
+def emission_factors(cfg: dict, year: int) -> dict:
+    """Kuyruk yili icin {low, central, high} emisyon faktoru (tCO2e/MWh): year + operation_lag_years'in degeri,
+    tabloda yoksa en yakin onceki yilin degeri."""
+    target = year + cfg["carbon"]["operation_lag_years"]
+    out = {}
+    for name, by_year in cfg["carbon"]["emission_factor"].items():
+        years = sorted(int(y) for y in by_year)
+        out[name] = by_year[str(max([y for y in years if y <= target] or years[:1]))]
+    return out
+
+
+def daily_tco2(category: pd.Series, generation_mw: pd.Series, cfg: dict, year: int) -> pd.Series:
+    """Gunluk yer degistirilen emisyon (merkezi faktor): MW x 24 x yuk faktoru x emisyon faktoru.
+    Skorlanamayan dosyada bos."""
     lf = category.map(cfg["carbon"]["load_factor"])
-    out = generation_mw * 24 * lf * cfg["carbon"]["emission_factor"][scenario]
+    out = generation_mw * 24 * lf * emission_factors(cfg, year)["central"]
     return out.where(generation_mw > 0)
 
 
@@ -42,7 +54,7 @@ def _has_storage(apps: pd.DataFrame) -> pd.Series:
 STALE = pd.Timedelta(days=5 * 365)  # cq-model ile ayni: 5 yildan uzun bekleyen dosya "stale_or_uncertain"
 
 
-def _annotate(apps: pd.DataFrame, cfg: dict) -> pd.DataFrame:
+def _annotate(apps: pd.DataFrame, cfg: dict, year: int) -> pd.DataFrame:
     """Her basvuruya karbon, efor ve gercek sonuc kolonlarini ekler."""
     out = apps[["app_id", "site_name", "authority", "category", "technology", "app_generation_mw", "event"]].copy()
     out["has_storage"] = _has_storage(apps)
@@ -50,7 +62,7 @@ def _annotate(apps: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     leaves = (apps.event == "withdrawal") | apps.decision_via_nondetermination_appeal
     out["exit"] = apps.d_event.where(leaves)
     out["d_event"] = apps.d_event
-    out["daily_tco2"] = daily_tco2(apps.category, apps.app_generation_mw, cfg)
+    out["daily_tco2"] = daily_tco2(apps.category, apps.app_generation_mw, cfg, year)
     out["scored"] = out.daily_tco2.notna()
     out["effort"] = effort_hours(apps.app_generation_mw.fillna(0), out.has_storage, cfg)
     out["small"] = out.scored & (apps.app_generation_mw < cfg["queue"]["small_project_mw"])
@@ -72,10 +84,10 @@ def build_queue(year: int | str, cfg: dict, data: Path = DATA) -> pd.DataFrame:
     """
     apps = pd.read_parquet(data / "applications.parquet")
     pred = pd.read_parquet(data / "predictions" / f"predictions_{year}.parquet")
-    q = _annotate(apps, cfg).merge(pred[["app_id", "p_withdraw_12m"]], on="app_id")
+    start = pred.as_of_date.max() if year == "live" else pd.Timestamp(year, 1, 1)
+    q = _annotate(apps, cfg, start.year).merge(pred[["app_id", "p_withdraw_12m"]], on="app_id")
     if len(q) != len(pred):
         raise ValueError("tahmin dosyasindaki bazi app_id'ler applications.parquet'te yok")
-    start = pred.as_of_date.max() if year == "live" else pd.Timestamp(year, 1, 1)
     q["stale"] = q.arrival < start - STALE
     q["decided_in_year"] = (q.event == "decision") & (q.d_event.dt.year == year) if year != "live" else False
     return q.sort_values(["arrival", "app_id"]).reset_index(drop=True)
@@ -84,7 +96,7 @@ def build_queue(year: int | str, cfg: dict, data: Path = DATA) -> pd.DataFrame:
 def live_capacity(cfg: dict, as_of: pd.Timestamp, data: Path = DATA) -> float:
     """Canli kuyruk icin kalibre edilmemis kapasite: son 365 gunde karar verilen simulasyon dosyalarinin eforu / 52."""
     apps = pd.read_parquet(data / "applications.parquet")
-    a = _annotate(apps, cfg)[apps.sim_eligible.to_numpy()]
+    a = _annotate(apps, cfg, as_of.year)[apps.sim_eligible.to_numpy()]
     recent = (a.event == "decision") & (a.d_event > as_of - pd.Timedelta(days=365)) & (a.d_event <= as_of)
     return float(a.effort[recent].sum() / 52)
 

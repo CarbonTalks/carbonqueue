@@ -1,5 +1,10 @@
 {
  "as_of": "2026-07-24",
+ "emission_factor_tco2_per_mwh": {
+  "low": 0.0579,
+  "central": 0.13276,
+  "high": 0.36537
+ },
  "calibration": {
   "capacity_hours_per_week": 332.7,
   "naive_capacity_hours_per_week": 187.2,
@@ -84,9 +89,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1757 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.13,
-    "high": 0.23
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.24
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.018,
@@ -277,9 +282,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1708 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.2,
-    "central": 9.94,
-    "high": 17.76
+    "low": 2.92,
+    "central": 6.69,
+    "high": 18.41
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0266,
@@ -362,9 +367,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1655 gündür bekliyor",
    "daily_tco2": {
-    "low": 3.2,
-    "central": 4.42,
-    "high": 7.89
+    "low": 1.3,
+    "central": 2.97,
+    "high": 8.19
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0338,
@@ -393,9 +398,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1645 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0283,
@@ -559,8 +564,8 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,22 MW",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.2
    },
    "effort_hours": 8.0,
@@ -590,9 +595,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,18 MW",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0247,
@@ -619,11 +624,11 @@
     "carbonqueue": 1
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 129,0 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 78,9 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 93.51,
-    "central": 129.04,
-    "high": 230.65
+    "low": 34.43,
+    "central": 78.94,
+    "high": 217.25
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0177,
@@ -650,11 +655,11 @@
     "carbonqueue": 1
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 48,7 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 32,8 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 35.28,
-    "central": 48.69,
-    "high": 87.02
+    "low": 14.3,
+    "central": 32.79,
+    "high": 90.23
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0069,
@@ -681,76 +686,76 @@
     "carbonqueue": 1
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 40,7 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 24,9 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 29.48,
-    "central": 40.69,
-    "high": 72.73
+    "low": 10.86,
+    "central": 24.89,
+    "high": 68.5
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0386,
    "stale": false
   },
   {
-   "app_id": 15407,
-   "site_name": "Bears Down Wind Farm",
-   "authority": "Cornwall",
-   "category": "onshore_wind",
-   "technology": "Wind Onshore",
-   "generation_mw": 22.5,
+   "app_id": 20021,
+   "site_name": "Brailsford Solar Park, Main Road - Solar Panels",
+   "authority": "Derbyshire Dales",
+   "category": "solar",
+   "technology": "Solar Photovoltaics",
+   "generation_mw": 55.0,
    "has_storage": false,
-   "submitted": "2024-02-01",
-   "wait_days": 904,
+   "submitted": "2026-05-06",
+   "wait_days": 79,
    "position": {
-    "fifo": 140,
+    "fifo": 673,
     "carbon": 15,
     "carbonqueue": 25
    },
    "planned_week": {
-    "fifo": 5,
+    "fifo": 25,
     "carbon": 1,
     "carbonqueue": 1
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 29,1 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 18,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 21.06,
-    "central": 29.06,
-    "high": 51.95
+    "low": 8.02,
+    "central": 18.4,
+    "high": 50.64
    },
    "effort_hours": 16.0,
-   "p_withdraw_12m": 0.0463,
+   "p_withdraw_12m": 0.0104,
    "stale": false
   },
   {
-   "app_id": 9017,
-   "site_name": "Cold Northcott Windfarm Repowering",
-   "authority": "Cornwall",
-   "category": "onshore_wind",
-   "technology": "Wind Onshore",
-   "generation_mw": 22.0,
+   "app_id": 19475,
+   "site_name": "Castle Hills Solar Farm - Solar Panels",
+   "authority": "Solihull",
+   "category": "solar",
+   "technology": "Solar Photovoltaics",
+   "generation_mw": 54.9,
    "has_storage": false,
-   "submitted": "2023-11-27",
-   "wait_days": 970,
+   "submitted": "2025-07-29",
+   "wait_days": 360,
    "position": {
-    "fifo": 136,
+    "fifo": 458,
     "carbon": 16,
     "carbonqueue": 26
    },
    "planned_week": {
-    "fifo": 5,
+    "fifo": 18,
     "carbon": 1,
     "carbonqueue": 1
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 28,4 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 18,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 20.59,
-    "central": 28.42,
-    "high": 50.79
+    "low": 8.01,
+    "central": 18.37,
+    "high": 50.55
    },
    "effort_hours": 16.0,
-   "p_withdraw_12m": 0.0385,
+   "p_withdraw_12m": 0.01,
    "stale": false
   },
   {
@@ -765,7 +770,7 @@
    "wait_days": 1624,
    "position": {
     "fifo": 16,
-    "carbon": 420,
+    "carbon": 419,
     "carbonqueue": 27
    },
    "planned_week": {
@@ -776,9 +781,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1624 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.77,
-    "central": 1.06,
-    "high": 1.9
+    "low": 0.31,
+    "central": 0.72,
+    "high": 1.97
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0286,
@@ -807,9 +812,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1614 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.4,
-    "central": 7.45,
-    "high": 13.32
+    "low": 2.19,
+    "central": 5.02,
+    "high": 13.81
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0259,
@@ -838,9 +843,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1597 gündür bekliyor",
    "daily_tco2": {
-    "low": 2.52,
-    "central": 3.48,
-    "high": 6.22
+    "low": 1.02,
+    "central": 2.34,
+    "high": 6.45
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0324,
@@ -869,9 +874,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1596 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0345,
@@ -900,9 +905,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1591 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0271,
@@ -931,9 +936,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1586 gündür bekliyor",
    "daily_tco2": {
-    "low": 14.94,
-    "central": 20.62,
-    "high": 36.85
+    "low": 6.06,
+    "central": 13.88,
+    "high": 38.21
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.023,
@@ -962,9 +967,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1571 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.12,
-    "central": 0.16,
-    "high": 0.29
+    "low": 0.05,
+    "central": 0.11,
+    "high": 0.3
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0205,
@@ -993,9 +998,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1565 gündür bekliyor",
    "daily_tco2": {
-    "low": 9.0,
-    "central": 12.42,
-    "high": 22.2
+    "low": 3.65,
+    "central": 8.36,
+    "high": 23.02
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0354,
@@ -1024,9 +1029,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1556 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0258,
@@ -1044,7 +1049,7 @@
    "wait_days": 1550,
    "position": {
     "fifo": 28,
-    "carbon": 497,
+    "carbon": 496,
     "carbonqueue": 36
    },
    "planned_week": {
@@ -1055,9 +1060,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1550 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.22,
-    "central": 0.3,
-    "high": 0.54
+    "low": 0.09,
+    "central": 0.2,
+    "high": 0.56
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0218,
@@ -1086,9 +1091,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1539 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.32,
-    "central": 0.44,
-    "high": 0.78
+    "low": 0.13,
+    "central": 0.29,
+    "high": 0.81
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0227,
@@ -1117,9 +1122,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1509 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.12,
-    "central": 0.17,
-    "high": 0.3
+    "low": 0.05,
+    "central": 0.11,
+    "high": 0.31
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0177,
@@ -1148,8 +1153,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1491 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.2
    },
    "effort_hours": 8.0,
@@ -1341,8 +1346,8 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,21 MW",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.19
    },
    "effort_hours": 8.0,
@@ -1372,74 +1377,74 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,68 MW",
    "daily_tco2": {
-    "low": 0.24,
-    "central": 0.34,
-    "high": 0.6
+    "low": 0.1,
+    "central": 0.23,
+    "high": 0.63
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0211,
    "stale": false
   },
   {
-   "app_id": 20021,
-   "site_name": "Brailsford Solar Park, Main Road - Solar Panels",
-   "authority": "Derbyshire Dales",
-   "category": "solar",
-   "technology": "Solar Photovoltaics",
-   "generation_mw": 55.0,
+   "app_id": 15407,
+   "site_name": "Bears Down Wind Farm",
+   "authority": "Cornwall",
+   "category": "onshore_wind",
+   "technology": "Wind Onshore",
+   "generation_mw": 22.5,
    "has_storage": false,
-   "submitted": "2026-05-06",
-   "wait_days": 79,
+   "submitted": "2024-02-01",
+   "wait_days": 904,
    "position": {
-    "fifo": 673,
+    "fifo": 140,
     "carbon": 17,
     "carbonqueue": 48
    },
    "planned_week": {
-    "fifo": 25,
+    "fifo": 5,
     "carbon": 1,
     "carbonqueue": 2
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 27,3 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 17,8 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 19.8,
-    "central": 27.32,
-    "high": 48.84
+    "low": 7.75,
+    "central": 17.78,
+    "high": 48.93
    },
    "effort_hours": 16.0,
-   "p_withdraw_12m": 0.0104,
+   "p_withdraw_12m": 0.0463,
    "stale": false
   },
   {
-   "app_id": 19475,
-   "site_name": "Castle Hills Solar Farm - Solar Panels",
-   "authority": "Solihull",
-   "category": "solar",
-   "technology": "Solar Photovoltaics",
-   "generation_mw": 54.9,
+   "app_id": 9017,
+   "site_name": "Cold Northcott Windfarm Repowering",
+   "authority": "Cornwall",
+   "category": "onshore_wind",
+   "technology": "Wind Onshore",
+   "generation_mw": 22.0,
    "has_storage": false,
-   "submitted": "2025-07-29",
-   "wait_days": 360,
+   "submitted": "2023-11-27",
+   "wait_days": 970,
    "position": {
-    "fifo": 458,
+    "fifo": 136,
     "carbon": 18,
     "carbonqueue": 49
    },
    "planned_week": {
-    "fifo": 18,
+    "fifo": 5,
     "carbon": 1,
     "carbonqueue": 2
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 27,3 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 17,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 19.76,
-    "central": 27.27,
-    "high": 48.75
+    "low": 7.58,
+    "central": 17.38,
+    "high": 47.84
    },
    "effort_hours": 16.0,
-   "p_withdraw_12m": 0.01,
+   "p_withdraw_12m": 0.0385,
    "stale": false
   },
   {
@@ -1463,11 +1468,11 @@
     "carbonqueue": 2
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0081,
@@ -1494,11 +1499,11 @@
     "carbonqueue": 2
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 18.0,
-    "central": 24.84,
-    "high": 44.39
+    "low": 7.29,
+    "central": 16.72,
+    "high": 46.03
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0102,
@@ -1525,11 +1530,11 @@
     "carbonqueue": 2
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0085,
@@ -1556,11 +1561,11 @@
     "carbonqueue": 2
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.009,
@@ -1589,9 +1594,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1488 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0353,
@@ -1620,9 +1625,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1466 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.36,
-    "central": 0.5,
-    "high": 0.89
+    "low": 0.15,
+    "central": 0.33,
+    "high": 0.92
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0247,
@@ -1651,9 +1656,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1446 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.13,
-    "high": 0.24
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.25
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0132,
@@ -1682,8 +1687,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1446 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.18
    },
    "effort_hours": 8.0,
@@ -1713,9 +1718,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1435 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.14,
-    "central": 0.19,
-    "high": 0.35
+    "low": 0.06,
+    "central": 0.13,
+    "high": 0.36
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0169,
@@ -1744,9 +1749,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1424 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.48,
-    "central": 0.66,
-    "high": 1.18
+    "low": 0.19,
+    "central": 0.44,
+    "high": 1.22
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0293,
@@ -1775,9 +1780,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1411 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0112,
@@ -1795,7 +1800,7 @@
    "wait_days": 1410,
    "position": {
     "fifo": 49,
-    "carbon": 531,
+    "carbon": 530,
     "carbonqueue": 61
    },
    "planned_week": {
@@ -1806,9 +1811,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1410 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.18,
-    "central": 0.25,
-    "high": 0.44
+    "low": 0.07,
+    "central": 0.17,
+    "high": 0.46
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0225,
@@ -1864,9 +1869,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1396 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.15
+    "low": 0.02,
+    "central": 0.06,
+    "high": 0.16
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.014,
@@ -1922,9 +1927,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1383 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.21
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.22
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0162,
@@ -1953,8 +1958,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1383 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.2
    },
    "effort_hours": 8.0,
@@ -2065,9 +2070,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1379 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.15,
-    "central": 0.2,
-    "high": 0.36
+    "low": 0.06,
+    "central": 0.14,
+    "high": 0.38
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0135,
@@ -2096,9 +2101,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1366 gündür bekliyor",
    "daily_tco2": {
-    "low": 1.08,
-    "central": 1.49,
-    "high": 2.66
+    "low": 0.44,
+    "central": 1.0,
+    "high": 2.76
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0229,
@@ -2235,9 +2240,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,41 MW",
    "daily_tco2": {
-    "low": 0.15,
-    "central": 0.2,
-    "high": 0.36
+    "low": 0.06,
+    "central": 0.14,
+    "high": 0.38
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0113,
@@ -2266,9 +2271,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,46 MW",
    "daily_tco2": {
-    "low": 0.17,
-    "central": 0.23,
-    "high": 0.41
+    "low": 0.07,
+    "central": 0.15,
+    "high": 0.42
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0145,
@@ -2295,11 +2300,11 @@
     "carbonqueue": 3
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0092,
@@ -2326,11 +2331,11 @@
     "carbonqueue": 3
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0096,
@@ -2357,11 +2362,11 @@
     "carbonqueue": 3
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0108,
@@ -2388,11 +2393,11 @@
     "carbonqueue": 3
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0112,
@@ -2419,11 +2424,11 @@
     "carbonqueue": 3
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0112,
@@ -2450,11 +2455,11 @@
     "carbonqueue": 3
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0116,
@@ -2483,9 +2488,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1361 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.83,
-    "central": 8.05,
-    "high": 14.39
+    "low": 2.36,
+    "central": 5.42,
+    "high": 14.92
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0204,
@@ -2514,9 +2519,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1355 gündür bekliyor",
    "daily_tco2": {
-    "low": 2.88,
-    "central": 3.97,
-    "high": 7.1
+    "low": 1.17,
+    "central": 2.68,
+    "high": 7.37
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0222,
@@ -2545,8 +2550,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1319 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.09,
+    "low": 0.03,
+    "central": 0.06,
     "high": 0.17
    },
    "effort_hours": 8.0,
@@ -2576,9 +2581,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1316 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0137,
@@ -2607,9 +2612,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1313 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.018,
@@ -2692,9 +2697,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1262 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.33,
-    "central": 0.45,
-    "high": 0.81
+    "low": 0.13,
+    "central": 0.3,
+    "high": 0.84
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0256,
@@ -2777,9 +2782,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1257 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.021,
@@ -2808,8 +2813,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1248 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.19
    },
    "effort_hours": 8.0,
@@ -2839,9 +2844,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1242 gündür bekliyor",
    "daily_tco2": {
-    "low": 9.72,
-    "central": 13.41,
-    "high": 23.98
+    "low": 3.94,
+    "central": 9.03,
+    "high": 24.86
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0277,
@@ -2870,9 +2875,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1239 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.89,
-    "central": 15.03,
-    "high": 26.86
+    "low": 4.41,
+    "central": 10.12,
+    "high": 27.85
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0269,
@@ -3063,9 +3068,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,16 MW",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0168,
@@ -3092,11 +3097,11 @@
     "carbonqueue": 4
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0116,
@@ -3123,11 +3128,11 @@
     "carbonqueue": 4
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0117,
@@ -3154,11 +3159,11 @@
     "carbonqueue": 4
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0118,
@@ -3185,11 +3190,11 @@
     "carbonqueue": 4
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.012,
@@ -3216,11 +3221,11 @@
     "carbonqueue": 4
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.012,
@@ -3247,11 +3252,11 @@
     "carbonqueue": 4
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0128,
@@ -3280,9 +3285,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1220 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0167,
@@ -3311,9 +3316,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1179 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.28,
-    "central": 0.39,
-    "high": 0.69
+    "low": 0.11,
+    "central": 0.26,
+    "high": 0.72
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0238,
@@ -3342,9 +3347,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1169 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.21
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.22
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0157,
@@ -3373,9 +3378,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1162 gündür bekliyor",
    "daily_tco2": {
-    "low": 1.44,
-    "central": 1.99,
-    "high": 3.55
+    "low": 0.58,
+    "central": 1.34,
+    "high": 3.68
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0356,
@@ -3404,9 +3409,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1157 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.25,
-    "central": 0.35,
-    "high": 0.62
+    "low": 0.1,
+    "central": 0.23,
+    "high": 0.64
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0202,
@@ -3435,8 +3440,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1157 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.18
    },
    "effort_hours": 8.0,
@@ -3466,9 +3471,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1145 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.3,
-    "central": 0.42,
-    "high": 0.75
+    "low": 0.12,
+    "central": 0.28,
+    "high": 0.77
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0189,
@@ -3497,9 +3502,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1135 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
-    "high": 0.2
+    "low": 0.03,
+    "central": 0.08,
+    "high": 0.21
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0176,
@@ -3528,9 +3533,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1128 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.36,
-    "central": 0.5,
-    "high": 0.89
+    "low": 0.15,
+    "central": 0.33,
+    "high": 0.92
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0202,
@@ -3586,9 +3591,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1122 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.36,
-    "central": 0.5,
-    "high": 0.89
+    "low": 0.15,
+    "central": 0.33,
+    "high": 0.92
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0171,
@@ -3617,9 +3622,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1117 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.13,
-    "high": 0.24
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.25
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0224,
@@ -3648,9 +3653,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1116 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.14,
-    "central": 0.19,
-    "high": 0.34
+    "low": 0.06,
+    "central": 0.13,
+    "high": 0.35
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0169,
@@ -3706,9 +3711,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1116 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.4,
-    "central": 0.55,
-    "high": 0.99
+    "low": 0.16,
+    "central": 0.37,
+    "high": 1.02
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0258,
@@ -3737,9 +3742,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1114 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.11,
-    "central": 0.15,
-    "high": 0.28
+    "low": 0.05,
+    "central": 0.1,
+    "high": 0.29
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0231,
@@ -3768,8 +3773,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1108 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.09,
+    "low": 0.03,
+    "central": 0.06,
     "high": 0.17
    },
    "effort_hours": 8.0,
@@ -3961,9 +3966,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,16 MW",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0302,
@@ -3992,9 +3997,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,18 MW",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0157,
@@ -4021,11 +4026,11 @@
     "carbonqueue": 5
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 18.0,
-    "central": 24.84,
-    "high": 44.4
+    "low": 7.3,
+    "central": 16.73,
+    "high": 46.04
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.015,
@@ -4052,11 +4057,11 @@
     "carbonqueue": 5
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0138,
@@ -4083,11 +4088,11 @@
     "carbonqueue": 5
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0145,
@@ -4114,11 +4119,11 @@
     "carbonqueue": 5
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0148,
@@ -4145,11 +4150,11 @@
     "carbonqueue": 5
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0149,
@@ -4176,11 +4181,11 @@
     "carbonqueue": 5
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0161,
@@ -4209,9 +4214,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1106 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.17,
-    "high": 0.31
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.32
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0164,
@@ -4240,9 +4245,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1106 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.13,
-    "high": 0.23
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.24
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0165,
@@ -4271,9 +4276,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1106 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.17,
-    "central": 0.23,
-    "high": 0.42
+    "low": 0.07,
+    "central": 0.16,
+    "high": 0.43
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0169,
@@ -4302,9 +4307,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1100 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0153,
@@ -4333,9 +4338,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1094 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.12,
-    "central": 0.16,
-    "high": 0.29
+    "low": 0.05,
+    "central": 0.11,
+    "high": 0.3
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0153,
@@ -4364,9 +4369,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1087 gündür bekliyor",
    "daily_tco2": {
-    "low": 12.6,
-    "central": 17.39,
-    "high": 31.08
+    "low": 5.11,
+    "central": 11.71,
+    "high": 32.23
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0293,
@@ -4384,7 +4389,7 @@
    "wait_days": 1079,
    "position": {
     "fifo": 116,
-    "carbon": 498,
+    "carbon": 497,
     "carbonqueue": 148
    },
    "planned_week": {
@@ -4395,9 +4400,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1079 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.22,
-    "central": 0.3,
-    "high": 0.53
+    "low": 0.09,
+    "central": 0.2,
+    "high": 0.55
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0126,
@@ -4426,9 +4431,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1074 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0132,
@@ -4457,9 +4462,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1072 gündür bekliyor",
    "daily_tco2": {
-    "low": 4.31,
-    "central": 5.94,
-    "high": 10.62
+    "low": 1.59,
+    "central": 3.63,
+    "high": 10.0
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0859,
@@ -4488,9 +4493,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1067 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0136,
@@ -4519,9 +4524,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1066 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.98,
-    "central": 24.82,
-    "high": 44.36
+    "low": 7.29,
+    "central": 16.71,
+    "high": 45.99
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.028,
@@ -4550,9 +4555,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1057 gündür bekliyor",
    "daily_tco2": {
-    "low": 2.63,
-    "central": 3.63,
-    "high": 6.48
+    "low": 1.07,
+    "central": 2.44,
+    "high": 6.72
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0275,
@@ -4581,9 +4586,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1046 gündür bekliyor",
    "daily_tco2": {
-    "low": 18.0,
-    "central": 24.84,
-    "high": 44.39
+    "low": 7.29,
+    "central": 16.72,
+    "high": 46.03
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0184,
@@ -4801,9 +4806,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,37 MW",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.18,
-    "high": 0.33
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.34
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0148,
@@ -4821,7 +4826,7 @@
    "wait_days": 897,
    "position": {
     "fifo": 142,
-    "carbon": 415,
+    "carbon": 416,
     "carbonqueue": 163
    },
    "planned_week": {
@@ -4832,9 +4837,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,95 MW",
    "daily_tco2": {
-    "low": 0.89,
-    "central": 1.23,
-    "high": 2.19
+    "low": 0.33,
+    "central": 0.75,
+    "high": 2.07
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0533,
@@ -4861,11 +4866,11 @@
     "carbonqueue": 6
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.017,
@@ -4892,11 +4897,11 @@
     "carbonqueue": 6
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0186,
@@ -4923,11 +4928,11 @@
     "carbonqueue": 6
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 18.0,
-    "central": 24.84,
-    "high": 44.39
+    "low": 7.29,
+    "central": 16.72,
+    "high": 46.03
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0203,
@@ -4954,11 +4959,11 @@
     "carbonqueue": 6
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.02,
@@ -4985,11 +4990,11 @@
     "carbonqueue": 6
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 23,8 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,1 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 17.28,
-    "central": 23.85,
-    "high": 42.62
+    "low": 7.0,
+    "central": 16.06,
+    "high": 44.2
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0114,
@@ -5016,11 +5021,11 @@
     "carbonqueue": 6
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 23,1 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 15,5 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 16.71,
-    "central": 23.06,
-    "high": 41.21
+    "low": 6.77,
+    "central": 15.53,
+    "high": 42.73
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0183,
@@ -5049,9 +5054,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1030 gündür bekliyor",
    "daily_tco2": {
-    "low": 6.48,
-    "central": 8.94,
-    "high": 15.98
+    "low": 2.63,
+    "central": 6.02,
+    "high": 16.57
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0258,
@@ -5080,9 +5085,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 1012 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.01,
-    "central": 13.81,
-    "high": 24.69
+    "low": 4.06,
+    "central": 9.3,
+    "high": 25.6
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0229,
@@ -5111,9 +5116,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 995 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.2,
-    "central": 9.94,
-    "high": 17.76
+    "low": 2.92,
+    "central": 6.69,
+    "high": 18.41
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0237,
@@ -5142,9 +5147,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 975 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0237,
@@ -5173,9 +5178,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 974 gündür bekliyor",
    "daily_tco2": {
-    "low": 6.75,
-    "central": 9.31,
-    "high": 16.64
+    "low": 2.73,
+    "central": 6.27,
+    "high": 17.25
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0214,
@@ -5204,9 +5209,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 948 gündür bekliyor",
    "daily_tco2": {
-    "low": 6.84,
-    "central": 9.44,
-    "high": 16.87
+    "low": 2.77,
+    "central": 6.36,
+    "high": 17.49
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.03,
@@ -5224,7 +5229,7 @@
    "wait_days": 885,
    "position": {
     "fifo": 145,
-    "carbon": 343,
+    "carbon": 341,
     "carbonqueue": 176
    },
    "planned_week": {
@@ -5235,9 +5240,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 885 gündür bekliyor",
    "daily_tco2": {
-    "low": 3.78,
-    "central": 5.22,
-    "high": 9.32
+    "low": 1.53,
+    "central": 3.51,
+    "high": 9.67
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.02,
@@ -5266,9 +5271,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 877 gündür bekliyor",
    "daily_tco2": {
-    "low": 2.16,
-    "central": 2.98,
-    "high": 5.33
+    "low": 0.88,
+    "central": 2.01,
+    "high": 5.52
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0326,
@@ -5297,9 +5302,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 876 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0218,
@@ -5328,9 +5333,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 856 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.17,
-    "high": 0.31
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.32
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.018,
@@ -5359,9 +5364,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 851 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.11,
-    "central": 0.15,
-    "high": 0.28
+    "low": 0.05,
+    "central": 0.1,
+    "high": 0.29
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0241,
@@ -5390,9 +5395,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 851 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.15
+    "low": 0.02,
+    "central": 0.06,
+    "high": 0.16
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0255,
@@ -5583,8 +5588,8 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,20 MW",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.18
    },
    "effort_hours": 8.0,
@@ -5614,9 +5619,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,25 MW",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.22
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.23
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0263,
@@ -5643,11 +5648,11 @@
     "carbonqueue": 7
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 22,4 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 15,1 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 16.2,
-    "central": 22.36,
-    "high": 39.96
+    "low": 6.57,
+    "central": 15.05,
+    "high": 41.43
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0132,
@@ -5674,11 +5679,11 @@
     "carbonqueue": 7
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 21,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 14,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 15.84,
-    "central": 21.86,
-    "high": 39.07
+    "low": 6.42,
+    "central": 14.72,
+    "high": 40.51
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0156,
@@ -5705,11 +5710,11 @@
     "carbonqueue": 7
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 20,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 14,1 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 15.12,
-    "central": 20.87,
-    "high": 37.3
+    "low": 6.13,
+    "central": 14.05,
+    "high": 38.67
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0099,
@@ -5736,11 +5741,11 @@
     "carbonqueue": 7
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 20,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 14,1 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 15.12,
-    "central": 20.87,
-    "high": 37.3
+    "low": 6.13,
+    "central": 14.05,
+    "high": 38.67
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0115,
@@ -5767,11 +5772,11 @@
     "carbonqueue": 7
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 20,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 14,1 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 15.12,
-    "central": 20.87,
-    "high": 37.3
+    "low": 6.13,
+    "central": 14.05,
+    "high": 38.67
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0128,
@@ -5798,11 +5803,11 @@
     "carbonqueue": 7
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 20,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 14,1 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 15.12,
-    "central": 20.87,
-    "high": 37.3
+    "low": 6.13,
+    "central": 14.05,
+    "high": 38.67
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0143,
@@ -5820,7 +5825,7 @@
    "wait_days": 843,
    "position": {
     "fifo": 153,
-    "carbon": 450,
+    "carbon": 449,
     "carbonqueue": 196
    },
    "planned_week": {
@@ -5831,9 +5836,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 843 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.44,
-    "central": 0.61,
-    "high": 1.09
+    "low": 0.18,
+    "central": 0.41,
+    "high": 1.13
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0238,
@@ -5862,9 +5867,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 842 gündür bekliyor",
    "daily_tco2": {
-    "low": 4.5,
-    "central": 6.21,
-    "high": 11.1
+    "low": 1.82,
+    "central": 4.18,
+    "high": 11.51
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0298,
@@ -5893,9 +5898,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 835 gündür bekliyor",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0173,
@@ -5924,9 +5929,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 833 gündür bekliyor",
    "daily_tco2": {
-    "low": 8.28,
-    "central": 11.43,
-    "high": 20.42
+    "low": 3.36,
+    "central": 7.69,
+    "high": 21.18
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0196,
@@ -5944,7 +5949,7 @@
    "wait_days": 830,
    "position": {
     "fifo": 157,
-    "carbon": 447,
+    "carbon": 446,
     "carbonqueue": 200
    },
    "planned_week": {
@@ -5955,9 +5960,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 830 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.46,
-    "central": 0.64,
-    "high": 1.14
+    "low": 0.19,
+    "central": 0.43,
+    "high": 1.18
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.026,
@@ -5986,9 +5991,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 823 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.15,
-    "central": 0.21,
-    "high": 0.38
+    "low": 0.06,
+    "central": 0.14,
+    "high": 0.4
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0216,
@@ -6017,9 +6022,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 822 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0138,
@@ -6048,9 +6053,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 805 gündür bekliyor",
    "daily_tco2": {
-    "low": 2.16,
-    "central": 2.98,
-    "high": 5.33
+    "low": 0.88,
+    "central": 2.01,
+    "high": 5.52
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0505,
@@ -6068,7 +6073,7 @@
    "wait_days": 799,
    "position": {
     "fifo": 168,
-    "carbon": 529,
+    "carbon": 528,
     "carbonqueue": 204
    },
    "planned_week": {
@@ -6079,9 +6084,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 799 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.18,
-    "central": 0.25,
-    "high": 0.45
+    "low": 0.07,
+    "central": 0.17,
+    "high": 0.47
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0294,
@@ -6099,7 +6104,7 @@
    "wait_days": 795,
    "position": {
     "fifo": 169,
-    "carbon": 499,
+    "carbon": 498,
     "carbonqueue": 205
    },
    "planned_week": {
@@ -6110,9 +6115,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 795 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.22,
-    "central": 0.3,
-    "high": 0.53
+    "low": 0.09,
+    "central": 0.2,
+    "high": 0.55
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.015,
@@ -6141,9 +6146,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 791 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0128,
@@ -6172,9 +6177,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 791 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.12,
-    "central": 0.17,
-    "high": 0.3
+    "low": 0.05,
+    "central": 0.11,
+    "high": 0.31
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.025,
@@ -6392,9 +6397,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,24 MW",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.21
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.22
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0176,
@@ -6423,9 +6428,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,35 MW",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.17,
-    "high": 0.31
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.32
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0303,
@@ -6452,11 +6457,11 @@
     "carbonqueue": 8
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0074,
@@ -6483,11 +6488,11 @@
     "carbonqueue": 8
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0077,
@@ -6514,11 +6519,11 @@
     "carbonqueue": 8
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0079,
@@ -6545,11 +6550,11 @@
     "carbonqueue": 8
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0099,
@@ -6576,11 +6581,11 @@
     "carbonqueue": 8
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0084,
@@ -6598,7 +6603,7 @@
    "wait_days": 778,
    "position": {
     "fifo": 176,
-    "carbon": 403,
+    "carbon": 404,
     "carbonqueue": 222
    },
    "planned_week": {
@@ -6609,9 +6614,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 778 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.94,
-    "central": 1.29,
-    "high": 2.31
+    "low": 0.34,
+    "central": 0.79,
+    "high": 2.17
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0449,
@@ -6640,9 +6645,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 777 gündür bekliyor",
    "daily_tco2": {
-    "low": 12.6,
-    "central": 17.39,
-    "high": 31.08
+    "low": 5.11,
+    "central": 11.71,
+    "high": 32.23
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0207,
@@ -6660,7 +6665,7 @@
    "wait_days": 767,
    "position": {
     "fifo": 180,
-    "carbon": 423,
+    "carbon": 422,
     "carbonqueue": 224
    },
    "planned_week": {
@@ -6671,9 +6676,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 767 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.72,
-    "central": 0.99,
-    "high": 1.78
+    "low": 0.29,
+    "central": 0.67,
+    "high": 1.84
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0249,
@@ -6702,9 +6707,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 765 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0215,
@@ -6733,8 +6738,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 763 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.09,
+    "low": 0.03,
+    "central": 0.06,
     "high": 0.17
    },
    "effort_hours": 8.0,
@@ -6764,9 +6769,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 752 gündür bekliyor",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0212,
@@ -6795,9 +6800,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 750 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.11,
-    "central": 0.15,
-    "high": 0.28
+    "low": 0.05,
+    "central": 0.1,
+    "high": 0.29
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0224,
@@ -6880,9 +6885,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 743 gündür bekliyor",
    "daily_tco2": {
-    "low": 6.48,
-    "central": 8.94,
-    "high": 15.98
+    "low": 2.63,
+    "central": 6.02,
+    "high": 16.57
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0225,
@@ -6911,9 +6916,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 743 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.15
+    "low": 0.02,
+    "central": 0.06,
+    "high": 0.16
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0195,
@@ -6931,7 +6936,7 @@
    "wait_days": 738,
    "position": {
     "fifo": 192,
-    "carbon": 495,
+    "carbon": 494,
     "carbonqueue": 233
    },
    "planned_week": {
@@ -6942,9 +6947,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 738 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.23,
-    "central": 0.31,
-    "high": 0.56
+    "low": 0.09,
+    "central": 0.21,
+    "high": 0.58
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0258,
@@ -7151,7 +7156,7 @@
    "wait_days": 728,
    "position": {
     "fifo": 196,
-    "carbon": 496,
+    "carbon": 495,
     "carbonqueue": 241
    },
    "planned_week": {
@@ -7162,9 +7167,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,63 MW",
    "daily_tco2": {
-    "low": 0.23,
-    "central": 0.31,
-    "high": 0.56
+    "low": 0.09,
+    "central": 0.21,
+    "high": 0.58
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0174,
@@ -7182,7 +7187,7 @@
    "wait_days": 724,
    "position": {
     "fifo": 197,
-    "carbon": 500,
+    "carbon": 499,
     "carbonqueue": 242
    },
    "planned_week": {
@@ -7193,9 +7198,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,60 MW",
    "daily_tco2": {
-    "low": 0.22,
-    "central": 0.3,
-    "high": 0.53
+    "low": 0.09,
+    "central": 0.2,
+    "high": 0.55
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.023,
@@ -7222,11 +7227,11 @@
     "carbonqueue": 9
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0085,
@@ -7253,11 +7258,11 @@
     "carbonqueue": 9
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0086,
@@ -7284,11 +7289,11 @@
     "carbonqueue": 9
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0106,
@@ -7315,11 +7320,11 @@
     "carbonqueue": 9
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0088,
@@ -7346,11 +7351,11 @@
     "carbonqueue": 9
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.009,
@@ -7379,9 +7384,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 721 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0194,
@@ -7410,9 +7415,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 721 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.17,
-    "high": 0.31
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.32
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0142,
@@ -7441,9 +7446,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 721 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.21
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.22
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0211,
@@ -7472,9 +7477,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 718 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.18,
-    "high": 0.32
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.33
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.016,
@@ -7503,9 +7508,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 718 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0186,
@@ -7523,7 +7528,7 @@
    "wait_days": 716,
    "position": {
     "fifo": 207,
-    "carbon": 532,
+    "carbon": 531,
     "carbonqueue": 253
    },
    "planned_week": {
@@ -7534,9 +7539,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 716 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.18,
-    "central": 0.25,
-    "high": 0.44
+    "low": 0.07,
+    "central": 0.17,
+    "high": 0.46
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0334,
@@ -7581,7 +7586,7 @@
    "wait_days": 711,
    "position": {
     "fifo": 210,
-    "carbon": 533,
+    "carbon": 532,
     "carbonqueue": 255
    },
    "planned_week": {
@@ -7592,9 +7597,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 711 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.18,
-    "central": 0.25,
-    "high": 0.44
+    "low": 0.07,
+    "central": 0.17,
+    "high": 0.46
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0212,
@@ -7623,8 +7628,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 710 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.09,
+    "low": 0.03,
+    "central": 0.06,
     "high": 0.17
    },
    "effort_hours": 8.0,
@@ -7654,9 +7659,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 710 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.11,
-    "central": 0.15,
-    "high": 0.28
+    "low": 0.05,
+    "central": 0.1,
+    "high": 0.29
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0198,
@@ -7685,9 +7690,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 709 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.4,
-    "central": 7.45,
-    "high": 13.32
+    "low": 2.19,
+    "central": 5.02,
+    "high": 13.81
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0174,
@@ -7732,7 +7737,7 @@
    "wait_days": 709,
    "position": {
     "fifo": 216,
-    "carbon": 521,
+    "carbon": 515,
     "carbonqueue": 260
    },
    "planned_week": {
@@ -7743,9 +7748,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 709 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.2,
-    "central": 0.28,
-    "high": 0.5
+    "low": 0.08,
+    "central": 0.19,
+    "high": 0.52
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0197,
@@ -7801,9 +7806,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 704 gündür bekliyor",
    "daily_tco2": {
-    "low": 1.3,
-    "central": 1.79,
-    "high": 3.2
+    "low": 0.53,
+    "central": 1.2,
+    "high": 3.31
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0324,
@@ -7859,9 +7864,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 703 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.22
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.23
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.024,
@@ -7890,8 +7895,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 701 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.18
    },
    "effort_hours": 8.0,
@@ -8045,7 +8050,7 @@
    "wait_days": 696,
    "position": {
     "fifo": 222,
-    "carbon": 527,
+    "carbon": 521,
     "carbonqueue": 271
    },
    "planned_week": {
@@ -8056,9 +8061,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,52 MW",
    "daily_tco2": {
-    "low": 0.19,
-    "central": 0.26,
-    "high": 0.46
+    "low": 0.08,
+    "central": 0.17,
+    "high": 0.48
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0235,
@@ -8087,8 +8092,8 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,19 MW",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.09,
+    "low": 0.03,
+    "central": 0.06,
     "high": 0.17
    },
    "effort_hours": 8.0,
@@ -8116,11 +8121,11 @@
     "carbonqueue": 10
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0111,
@@ -8147,11 +8152,11 @@
     "carbonqueue": 10
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0095,
@@ -8178,11 +8183,11 @@
     "carbonqueue": 10
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0117,
@@ -8209,11 +8214,11 @@
     "carbonqueue": 10
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 18.0,
-    "central": 24.84,
-    "high": 44.39
+    "low": 7.29,
+    "central": 16.72,
+    "high": 46.03
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0117,
@@ -8240,11 +8245,11 @@
     "carbonqueue": 10
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0102,
@@ -8273,9 +8278,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 695 gündür bekliyor",
    "daily_tco2": {
-    "low": 1.94,
-    "central": 2.67,
-    "high": 4.78
+    "low": 0.78,
+    "central": 1.8,
+    "high": 4.95
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0246,
@@ -8304,9 +8309,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 687 gündür bekliyor",
    "daily_tco2": {
-    "low": 3.6,
-    "central": 4.97,
-    "high": 8.88
+    "low": 1.46,
+    "central": 3.35,
+    "high": 9.21
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0204,
@@ -8324,7 +8329,7 @@
    "wait_days": 687,
    "position": {
     "fifo": 226,
-    "carbon": 344,
+    "carbon": 342,
     "carbonqueue": 280
    },
    "planned_week": {
@@ -8335,9 +8340,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 687 gündür bekliyor",
    "daily_tco2": {
-    "low": 3.78,
-    "central": 5.22,
-    "high": 9.32
+    "low": 1.53,
+    "central": 3.51,
+    "high": 9.67
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0333,
@@ -8355,7 +8360,7 @@
    "wait_days": 680,
    "position": {
     "fifo": 231,
-    "carbon": 417,
+    "carbon": 420,
     "carbonqueue": 281
    },
    "planned_week": {
@@ -8366,9 +8371,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 680 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.84,
-    "central": 1.16,
-    "high": 2.08
+    "low": 0.31,
+    "central": 0.71,
+    "high": 1.96
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0505,
@@ -8397,8 +8402,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 675 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.05,
-    "central": 0.06,
+    "low": 0.02,
+    "central": 0.04,
     "high": 0.12
    },
    "effort_hours": 8.0,
@@ -8428,8 +8433,8 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 674 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.2
    },
    "effort_hours": 8.0,
@@ -8448,7 +8453,7 @@
    "wait_days": 669,
    "position": {
     "fifo": 234,
-    "carbon": 426,
+    "carbon": 425,
     "carbonqueue": 284
    },
    "planned_week": {
@@ -8459,9 +8464,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 669 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.69,
-    "central": 0.96,
-    "high": 1.71
+    "low": 0.28,
+    "central": 0.65,
+    "high": 1.78
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0312,
@@ -8490,9 +8495,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 669 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
-    "high": 0.2
+    "low": 0.03,
+    "central": 0.08,
+    "high": 0.21
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0175,
@@ -8510,7 +8515,7 @@
    "wait_days": 668,
    "position": {
     "fifo": 236,
-    "carbon": 522,
+    "carbon": 516,
     "carbonqueue": 286
    },
    "planned_week": {
@@ -8521,9 +8526,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 668 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.2,
-    "central": 0.28,
-    "high": 0.5
+    "low": 0.08,
+    "central": 0.19,
+    "high": 0.52
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0155,
@@ -8552,9 +8557,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 668 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.17,
-    "high": 0.31
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.32
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.019,
@@ -8583,9 +8588,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 665 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.13,
-    "high": 0.24
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.25
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0147,
@@ -8641,9 +8646,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 660 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.18,
-    "high": 0.33
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.34
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0175,
@@ -8672,9 +8677,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 655 gündür bekliyor",
    "daily_tco2": {
-    "low": 3.6,
-    "central": 4.97,
-    "high": 8.88
+    "low": 1.46,
+    "central": 3.35,
+    "high": 9.21
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0197,
@@ -8730,9 +8735,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 646 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.13,
-    "high": 0.23
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.24
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0153,
@@ -8761,9 +8766,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 646 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.014,
@@ -8900,8 +8905,8 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,21 MW",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.19
    },
    "effort_hours": 8.0,
@@ -8931,9 +8936,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,73 MW",
    "daily_tco2": {
-    "low": 0.26,
-    "central": 0.36,
-    "high": 0.65
+    "low": 0.11,
+    "central": 0.24,
+    "high": 0.67
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0132,
@@ -8960,11 +8965,11 @@
     "carbonqueue": 11
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0104,
@@ -8991,11 +8996,11 @@
     "carbonqueue": 11
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0125,
@@ -9022,11 +9027,11 @@
     "carbonqueue": 11
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0136,
@@ -9053,11 +9058,11 @@
     "carbonqueue": 11
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0117,
@@ -9084,11 +9089,11 @@
     "carbonqueue": 11
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0119,
@@ -9117,9 +9122,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 641 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.2,
-    "central": 9.94,
-    "high": 17.76
+    "low": 2.92,
+    "central": 6.69,
+    "high": 18.41
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0168,
@@ -9137,7 +9142,7 @@
    "wait_days": 634,
    "position": {
     "fifo": 250,
-    "carbon": 404,
+    "carbon": 405,
     "carbonqueue": 307
    },
    "planned_week": {
@@ -9148,9 +9153,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 634 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.94,
-    "central": 1.29,
-    "high": 2.31
+    "low": 0.34,
+    "central": 0.79,
+    "high": 2.17
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0379,
@@ -9179,9 +9184,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 631 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.21,
-    "central": 0.29,
-    "high": 0.52
+    "low": 0.08,
+    "central": 0.19,
+    "high": 0.53
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0257,
@@ -9199,20 +9204,20 @@
    "wait_days": 627,
    "position": {
     "fifo": 253,
-    "carbon": 376,
+    "carbon": 390,
     "carbonqueue": 309
    },
    "planned_week": {
     "fifo": 9,
-    "carbon": 16,
+    "carbon": 17,
     "carbonqueue": 12
    },
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 627 gündür bekliyor",
    "daily_tco2": {
-    "low": 1.87,
-    "central": 2.58,
-    "high": 4.62
+    "low": 0.69,
+    "central": 1.58,
+    "high": 4.35
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.047,
@@ -9241,9 +9246,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 626 gündür bekliyor",
    "daily_tco2": {
-    "low": 14.04,
-    "central": 19.38,
-    "high": 34.63
+    "low": 5.69,
+    "central": 13.05,
+    "high": 35.91
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0097,
@@ -9272,9 +9277,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 626 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.14,
-    "high": 0.26
+    "low": 0.04,
+    "central": 0.1,
+    "high": 0.27
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0155,
@@ -9303,9 +9308,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 617 gündür bekliyor",
    "daily_tco2": {
-    "low": 12.6,
-    "central": 17.39,
-    "high": 31.08
+    "low": 5.11,
+    "central": 11.71,
+    "high": 32.23
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0147,
@@ -9323,7 +9328,7 @@
    "wait_days": 613,
    "position": {
     "fifo": 257,
-    "carbon": 449,
+    "carbon": 448,
     "carbonqueue": 313
    },
    "planned_week": {
@@ -9334,9 +9339,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 613 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.45,
-    "central": 0.62,
-    "high": 1.11
+    "low": 0.18,
+    "central": 0.42,
+    "high": 1.15
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0275,
@@ -9365,9 +9370,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 610 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.16,
-    "central": 0.22,
-    "high": 0.4
+    "low": 0.07,
+    "central": 0.15,
+    "high": 0.41
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0173,
@@ -9396,9 +9401,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 603 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.2,
-    "central": 9.94,
-    "high": 17.76
+    "low": 2.92,
+    "central": 6.69,
+    "high": 18.41
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0192,
@@ -9454,9 +9459,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 584 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.22
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.23
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0205,
@@ -9485,9 +9490,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 583 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0191,
@@ -9624,9 +9629,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,15 MW",
    "daily_tco2": {
-    "low": 0.05,
-    "central": 0.07,
-    "high": 0.13
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.14
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0305,
@@ -9655,9 +9660,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,15 MW",
    "daily_tco2": {
-    "low": 0.05,
-    "central": 0.07,
-    "high": 0.13
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.14
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0214,
@@ -9684,11 +9689,11 @@
     "carbonqueue": 12
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0121,
@@ -9715,11 +9720,11 @@
     "carbonqueue": 12
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0144,
@@ -9746,11 +9751,11 @@
     "carbonqueue": 12
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,7 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.93,
-    "central": 24.74,
-    "high": 44.22
+    "low": 7.27,
+    "central": 16.66,
+    "high": 45.85
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0108,
@@ -9777,11 +9782,11 @@
     "carbonqueue": 12
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0153,
@@ -9808,11 +9813,11 @@
     "carbonqueue": 12
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,7 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.93,
-    "central": 24.74,
-    "high": 44.22
+    "low": 7.27,
+    "central": 16.66,
+    "high": 45.85
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0121,
@@ -9841,9 +9846,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 583 gündür bekliyor",
    "daily_tco2": {
-    "low": 6.84,
-    "central": 9.44,
-    "high": 16.87
+    "low": 2.77,
+    "central": 6.36,
+    "high": 17.49
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0165,
@@ -9872,9 +9877,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 581 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0147,
@@ -9903,9 +9908,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 581 gündür bekliyor",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0146,
@@ -9934,9 +9939,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 581 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.57,
-    "central": 0.79,
-    "high": 1.41
+    "low": 0.23,
+    "central": 0.53,
+    "high": 1.46
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0261,
@@ -9965,9 +9970,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 581 gündür bekliyor",
    "daily_tco2": {
-    "low": 9.23,
-    "central": 12.74,
-    "high": 22.78
+    "low": 3.74,
+    "central": 8.58,
+    "high": 23.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0188,
@@ -9996,9 +10001,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 581 gündür bekliyor",
    "daily_tco2": {
-    "low": 4.32,
-    "central": 5.96,
-    "high": 10.66
+    "low": 1.75,
+    "central": 4.01,
+    "high": 11.05
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0224,
@@ -10027,9 +10032,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 577 gündür bekliyor",
    "daily_tco2": {
-    "low": 11.23,
-    "central": 15.5,
-    "high": 27.71
+    "low": 4.55,
+    "central": 10.44,
+    "high": 28.73
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0103,
@@ -10058,9 +10063,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 571 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.92,
-    "central": 10.93,
-    "high": 19.54
+    "low": 3.21,
+    "central": 7.36,
+    "high": 20.26
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0107,
@@ -10078,20 +10083,20 @@
    "wait_days": 563,
    "position": {
     "fifo": 278,
-    "carbon": 389,
+    "carbon": 377,
     "carbonqueue": 338
    },
    "planned_week": {
     "fifo": 10,
-    "carbon": 17,
+    "carbon": 16,
     "carbonqueue": 13
    },
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 563 gündür bekliyor",
    "daily_tco2": {
-    "low": 1.8,
-    "central": 2.48,
-    "high": 4.44
+    "low": 0.73,
+    "central": 1.67,
+    "high": 4.6
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0308,
@@ -10109,7 +10114,7 @@
    "wait_days": 557,
    "position": {
     "fifo": 280,
-    "carbon": 395,
+    "carbon": 394,
     "carbonqueue": 339
    },
    "planned_week": {
@@ -10120,9 +10125,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 557 gündür bekliyor",
    "daily_tco2": {
-    "low": 1.55,
-    "central": 2.14,
-    "high": 3.82
+    "low": 0.63,
+    "central": 1.44,
+    "high": 3.96
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0309,
@@ -10340,9 +10345,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,35 MW",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.17,
-    "high": 0.31
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.32
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.027,
@@ -10371,8 +10376,8 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,22 MW",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.2
    },
    "effort_hours": 8.0,
@@ -10400,11 +10405,11 @@
     "carbonqueue": 13
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.96,
-    "central": 24.79,
-    "high": 44.31
+    "low": 7.28,
+    "central": 16.69,
+    "high": 45.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0186,
@@ -10431,11 +10436,11 @@
     "carbonqueue": 13
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,6 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,6 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.82,
-    "central": 24.59,
-    "high": 43.96
+    "low": 7.22,
+    "central": 16.56,
+    "high": 45.58
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0134,
@@ -10462,11 +10467,11 @@
     "carbonqueue": 13
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,5 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,2 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 14.16,
-    "central": 19.54,
-    "high": 34.93
+    "low": 5.74,
+    "central": 13.16,
+    "high": 36.21
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0091,
@@ -10493,11 +10498,11 @@
     "carbonqueue": 13
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 24,3 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,4 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.64,
-    "central": 24.34,
-    "high": 43.51
+    "low": 7.15,
+    "central": 16.39,
+    "high": 45.12
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0148,
@@ -10526,9 +10531,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 540 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0178,
@@ -10546,7 +10551,7 @@
    "wait_days": 534,
    "position": {
     "fifo": 295,
-    "carbon": 451,
+    "carbon": 450,
     "carbonqueue": 354
    },
    "planned_week": {
@@ -10557,9 +10562,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 534 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.43,
-    "central": 0.6,
-    "high": 1.07
+    "low": 0.18,
+    "central": 0.4,
+    "high": 1.1
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0255,
@@ -10588,9 +10593,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 533 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.11,
-    "central": 0.15,
-    "high": 0.27
+    "low": 0.04,
+    "central": 0.1,
+    "high": 0.28
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0324,
@@ -10619,9 +10624,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 526 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.36,
-    "central": 0.5,
-    "high": 0.89
+    "low": 0.15,
+    "central": 0.33,
+    "high": 0.92
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0287,
@@ -10650,9 +10655,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 519 gündür bekliyor",
    "daily_tco2": {
-    "low": 3.6,
-    "central": 4.97,
-    "high": 8.88
+    "low": 1.46,
+    "central": 3.35,
+    "high": 9.21
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0192,
@@ -10681,9 +10686,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 515 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.2,
-    "central": 9.94,
-    "high": 17.76
+    "low": 2.92,
+    "central": 6.69,
+    "high": 18.41
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0123,
@@ -10712,9 +10717,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 513 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.81,
-    "central": 8.02,
-    "high": 14.33
+    "low": 2.35,
+    "central": 5.4,
+    "high": 14.86
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.023,
@@ -10743,9 +10748,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 511 gündür bekliyor",
    "daily_tco2": {
-    "low": 4.68,
-    "central": 6.46,
-    "high": 11.54
+    "low": 1.9,
+    "central": 4.35,
+    "high": 11.97
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0182,
@@ -10774,9 +10779,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 506 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.022,
@@ -10859,9 +10864,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 492 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.36,
-    "central": 0.5,
-    "high": 0.89
+    "low": 0.15,
+    "central": 0.33,
+    "high": 0.92
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0231,
@@ -10998,9 +11003,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,27 MW",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.13,
-    "high": 0.24
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.25
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0267,
@@ -11018,20 +11023,20 @@
    "wait_days": 387,
    "position": {
     "fifo": 394,
-    "carbon": 511,
+    "carbon": 500,
     "carbonqueue": 370
    },
    "planned_week": {
     "fifo": 15,
-    "carbon": 21,
+    "carbon": 20,
     "carbonqueue": 14
    },
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,60 MW",
    "daily_tco2": {
-    "low": 0.22,
-    "central": 0.3,
-    "high": 0.53
+    "low": 0.09,
+    "central": 0.2,
+    "high": 0.55
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0247,
@@ -11058,11 +11063,11 @@
     "carbonqueue": 14
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 23,8 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 16,1 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 17.28,
-    "central": 23.85,
-    "high": 42.62
+    "low": 7.0,
+    "central": 16.06,
+    "high": 44.2
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0109,
@@ -11089,11 +11094,11 @@
     "carbonqueue": 14
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 17,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 12,0 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 12.96,
-    "central": 17.88,
-    "high": 31.97
+    "low": 5.25,
+    "central": 12.04,
+    "high": 33.15
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0103,
@@ -11120,11 +11125,11 @@
     "carbonqueue": 14
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 17,5 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 11,8 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 12.67,
-    "central": 17.49,
-    "high": 31.26
+    "low": 5.14,
+    "central": 11.78,
+    "high": 32.41
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0129,
@@ -11151,11 +11156,11 @@
     "carbonqueue": 14
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 21,9 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 14,7 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 15.84,
-    "central": 21.86,
-    "high": 39.07
+    "low": 6.42,
+    "central": 14.72,
+    "high": 40.51
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0148,
@@ -11182,11 +11187,11 @@
     "carbonqueue": 14
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 17,4 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 11,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 12.6,
-    "central": 17.39,
-    "high": 31.08
+    "low": 5.11,
+    "central": 11.71,
+    "high": 32.23
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0111,
@@ -11213,11 +11218,11 @@
     "carbonqueue": 14
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 17,4 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 11,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 12.6,
-    "central": 17.39,
-    "high": 31.08
+    "low": 5.11,
+    "central": 11.71,
+    "high": 32.23
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0119,
@@ -11246,9 +11251,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 491 gündür bekliyor",
    "daily_tco2": {
-    "low": 13.68,
-    "central": 18.88,
-    "high": 33.74
+    "low": 5.54,
+    "central": 12.71,
+    "high": 34.99
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0117,
@@ -11266,20 +11271,20 @@
    "wait_days": 491,
    "position": {
     "fifo": 312,
-    "carbon": 377,
+    "carbon": 391,
     "carbonqueue": 378
    },
    "planned_week": {
     "fifo": 11,
-    "carbon": 16,
+    "carbon": 17,
     "carbonqueue": 15
    },
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 491 gündür bekliyor",
    "daily_tco2": {
-    "low": 1.87,
-    "central": 2.58,
-    "high": 4.62
+    "low": 0.69,
+    "central": 1.58,
+    "high": 4.35
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0405,
@@ -11308,9 +11313,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 484 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.2,
-    "central": 9.94,
-    "high": 17.76
+    "low": 2.92,
+    "central": 6.69,
+    "high": 18.41
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0114,
@@ -11355,7 +11360,7 @@
    "wait_days": 470,
    "position": {
     "fifo": 321,
-    "carbon": 370,
+    "carbon": 373,
     "carbonqueue": 381
    },
    "planned_week": {
@@ -11366,9 +11371,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 470 gündür bekliyor",
    "daily_tco2": {
-    "low": 2.15,
-    "central": 2.97,
-    "high": 5.31
+    "low": 0.79,
+    "central": 1.82,
+    "high": 5.0
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0389,
@@ -11586,9 +11591,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 448 gündür bekliyor",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0123,
@@ -11725,8 +11730,8 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,21 MW",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.19
    },
    "effort_hours": 8.0,
@@ -11756,9 +11761,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,27 MW",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.13,
-    "high": 0.24
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.25
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0274,
@@ -11785,11 +11790,11 @@
     "carbonqueue": 15
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 17,4 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 11,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 12.6,
-    "central": 17.39,
-    "high": 31.08
+    "low": 5.11,
+    "central": 11.71,
+    "high": 32.23
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0121,
@@ -11816,11 +11821,11 @@
     "carbonqueue": 15
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 17,4 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 11,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 12.6,
-    "central": 17.39,
-    "high": 31.08
+    "low": 5.11,
+    "central": 11.71,
+    "high": 32.23
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.013,
@@ -11847,11 +11852,11 @@
     "carbonqueue": 15
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 21,4 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 14,4 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 15.48,
-    "central": 21.36,
-    "high": 38.18
+    "low": 6.27,
+    "central": 14.39,
+    "high": 39.59
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0107,
@@ -11878,11 +11883,11 @@
     "carbonqueue": 15
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 16,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 11,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 12.24,
-    "central": 16.89,
-    "high": 30.19
+    "low": 4.96,
+    "central": 11.37,
+    "high": 31.3
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.012,
@@ -11909,11 +11914,11 @@
     "carbonqueue": 15
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 16,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 11,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 12.24,
-    "central": 16.89,
-    "high": 30.19
+    "low": 4.96,
+    "central": 11.37,
+    "high": 31.3
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.013,
@@ -11940,11 +11945,11 @@
     "carbonqueue": 15
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 20,9 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 14,1 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 15.12,
-    "central": 20.87,
-    "high": 37.3
+    "low": 6.13,
+    "central": 14.05,
+    "high": 38.67
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.013,
@@ -11973,9 +11978,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 444 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.92,
-    "central": 10.93,
-    "high": 19.54
+    "low": 3.21,
+    "central": 7.36,
+    "high": 20.26
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0163,
@@ -12004,9 +12009,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 443 gündür bekliyor",
    "daily_tco2": {
-    "low": 8.64,
-    "central": 11.92,
-    "high": 21.31
+    "low": 3.5,
+    "central": 8.03,
+    "high": 22.1
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0143,
@@ -12035,9 +12040,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 441 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.014,
@@ -12066,9 +12071,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 436 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0113,
@@ -12097,9 +12102,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 436 gündür bekliyor",
    "daily_tco2": {
-    "low": 11.52,
-    "central": 15.9,
-    "high": 28.42
+    "low": 4.67,
+    "central": 10.71,
+    "high": 29.46
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0112,
@@ -12128,9 +12133,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 428 gündür bekliyor",
    "daily_tco2": {
-    "low": 3.6,
-    "central": 4.97,
-    "high": 8.88
+    "low": 1.46,
+    "central": 3.35,
+    "high": 9.21
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0191,
@@ -12186,9 +12191,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 427 gündür bekliyor",
    "daily_tco2": {
-    "low": 6.84,
-    "central": 9.44,
-    "high": 16.87
+    "low": 2.77,
+    "central": 6.36,
+    "high": 17.49
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0119,
@@ -12217,9 +12222,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 427 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0109,
@@ -12302,9 +12307,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 422 gündür bekliyor",
    "daily_tco2": {
-    "low": 4.32,
-    "central": 5.96,
-    "high": 10.66
+    "low": 1.75,
+    "central": 4.01,
+    "high": 11.05
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0201,
@@ -12468,9 +12473,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,28 MW",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.14,
-    "high": 0.25
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.26
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0279,
@@ -12499,9 +12504,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,15 MW",
    "daily_tco2": {
-    "low": 0.05,
-    "central": 0.07,
-    "high": 0.13
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.14
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0232,
@@ -12528,11 +12533,11 @@
     "carbonqueue": 16
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0088,
@@ -12559,11 +12564,11 @@
     "carbonqueue": 16
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0098,
@@ -12590,11 +12595,11 @@
     "carbonqueue": 16
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0111,
@@ -12621,11 +12626,11 @@
     "carbonqueue": 16
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,9 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 14.4,
-    "central": 19.87,
-    "high": 35.52
+    "low": 5.84,
+    "central": 13.38,
+    "high": 36.83
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0122,
@@ -12654,9 +12659,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 421 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.4,
-    "central": 7.45,
-    "high": 13.32
+    "low": 2.19,
+    "central": 5.02,
+    "high": 13.81
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0179,
@@ -12685,9 +12690,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 415 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.27,
-    "central": 10.04,
-    "high": 17.94
+    "low": 2.95,
+    "central": 6.76,
+    "high": 18.6
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0138,
@@ -12743,9 +12748,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 409 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.08,
-    "central": 13.91,
-    "high": 24.86
+    "low": 4.09,
+    "central": 9.37,
+    "high": 25.78
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0097,
@@ -12801,9 +12806,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 407 gündür bekliyor",
    "daily_tco2": {
-    "low": 9.0,
-    "central": 12.42,
-    "high": 22.2
+    "low": 3.65,
+    "central": 8.36,
+    "high": 23.02
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0146,
@@ -12859,9 +12864,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 401 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0175,
@@ -13133,9 +13138,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,26 MW",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.13,
-    "high": 0.23
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.24
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0225,
@@ -13164,8 +13169,8 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,19 MW",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.09,
+    "low": 0.03,
+    "central": 0.06,
     "high": 0.17
    },
    "effort_hours": 8.0,
@@ -13193,11 +13198,11 @@
     "carbonqueue": 17
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 19,7 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 13,2 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 14.26,
-    "central": 19.67,
-    "high": 35.16
+    "low": 5.78,
+    "central": 13.25,
+    "high": 36.46
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0143,
@@ -13224,11 +13229,11 @@
     "carbonqueue": 17
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 15,3 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 10,3 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 11.09,
-    "central": 15.31,
-    "high": 27.36
+    "low": 4.5,
+    "central": 10.31,
+    "high": 28.37
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0099,
@@ -13255,11 +13260,11 @@
     "carbonqueue": 17
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 14,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 10,0 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0097,
@@ -13286,11 +13291,11 @@
     "carbonqueue": 17
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 14,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 10,0 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0109,
@@ -13317,11 +13322,11 @@
     "carbonqueue": 17
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 14,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 10,0 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0118,
@@ -13348,11 +13353,11 @@
     "carbonqueue": 17
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 14,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 10,0 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0167,
@@ -13381,9 +13386,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 395 gündür bekliyor",
    "daily_tco2": {
-    "low": 8.46,
-    "central": 11.67,
-    "high": 20.87
+    "low": 3.43,
+    "central": 7.86,
+    "high": 21.64
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0119,
@@ -13412,9 +13417,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 392 gündür bekliyor",
    "daily_tco2": {
-    "low": 9.36,
-    "central": 12.92,
-    "high": 23.09
+    "low": 3.79,
+    "central": 8.7,
+    "high": 23.94
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0124,
@@ -13443,9 +13448,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 387 gündür bekliyor",
    "daily_tco2": {
-    "low": 4.46,
-    "central": 6.16,
-    "high": 11.01
+    "low": 1.81,
+    "central": 4.15,
+    "high": 11.42
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0164,
@@ -13474,9 +13479,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 387 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.4,
-    "central": 7.45,
-    "high": 13.32
+    "low": 2.19,
+    "central": 5.02,
+    "high": 13.81
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0119,
@@ -13505,9 +13510,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 387 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.4,
-    "central": 7.45,
-    "high": 13.32
+    "low": 2.19,
+    "central": 5.02,
+    "high": 13.81
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0187,
@@ -13698,9 +13703,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 379 gündür bekliyor",
    "daily_tco2": {
-    "low": 10.08,
-    "central": 13.91,
-    "high": 24.86
+    "low": 4.09,
+    "central": 9.37,
+    "high": 25.78
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0138,
@@ -13729,9 +13734,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 379 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.94,
-    "central": 8.2,
-    "high": 14.65
+    "low": 2.41,
+    "central": 5.52,
+    "high": 15.19
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.016,
@@ -13895,9 +13900,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,23 MW",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
-    "high": 0.2
+    "low": 0.03,
+    "central": 0.08,
+    "high": 0.21
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0311,
@@ -13926,9 +13931,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,97 MW",
    "daily_tco2": {
-    "low": 0.35,
-    "central": 0.48,
-    "high": 0.86
+    "low": 0.14,
+    "central": 0.32,
+    "high": 0.89
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0249,
@@ -13955,11 +13960,11 @@
     "carbonqueue": 18
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 14,4 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 9,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 10.44,
-    "central": 14.41,
-    "high": 25.75
+    "low": 4.23,
+    "central": 9.7,
+    "high": 26.7
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0142,
@@ -13986,11 +13991,11 @@
     "carbonqueue": 18
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 16,9 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 11,4 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 12.24,
-    "central": 16.89,
-    "high": 30.19
+    "low": 4.96,
+    "central": 11.37,
+    "high": 31.3
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0131,
@@ -14017,11 +14022,11 @@
     "carbonqueue": 18
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 13,4 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 9,0 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 9.72,
-    "central": 13.41,
-    "high": 23.98
+    "low": 3.94,
+    "central": 9.03,
+    "high": 24.86
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0106,
@@ -14048,11 +14053,11 @@
     "carbonqueue": 18
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 13,1 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 8,8 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 9.5,
-    "central": 13.12,
-    "high": 23.44
+    "low": 3.85,
+    "central": 8.83,
+    "high": 24.31
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0087,
@@ -14079,11 +14084,11 @@
     "carbonqueue": 18
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 12,6 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 8,5 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 9.11,
-    "central": 12.57,
-    "high": 22.47
+    "low": 3.69,
+    "central": 8.46,
+    "high": 23.29
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.011,
@@ -14110,11 +14115,11 @@
     "carbonqueue": 18
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 12,4 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 8,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 9.0,
-    "central": 12.42,
-    "high": 22.2
+    "low": 3.65,
+    "central": 8.36,
+    "high": 23.02
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0092,
@@ -14143,9 +14148,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 378 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.76,
-    "central": 7.95,
-    "high": 14.21
+    "low": 2.33,
+    "central": 5.35,
+    "high": 14.73
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0143,
@@ -14174,9 +14179,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 375 gündür bekliyor",
    "daily_tco2": {
-    "low": 4.5,
-    "central": 6.21,
-    "high": 11.1
+    "low": 1.82,
+    "central": 4.18,
+    "high": 11.51
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0121,
@@ -14232,9 +14237,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 367 gündür bekliyor",
    "daily_tco2": {
-    "low": 6.77,
-    "central": 9.34,
-    "high": 16.69
+    "low": 2.74,
+    "central": 6.29,
+    "high": 17.31
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0128,
@@ -14290,9 +14295,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 367 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.76,
-    "central": 7.95,
-    "high": 14.21
+    "low": 2.33,
+    "central": 5.35,
+    "high": 14.73
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0164,
@@ -14321,9 +14326,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 366 gündür bekliyor",
    "daily_tco2": {
-    "low": 9.0,
-    "central": 12.42,
-    "high": 22.2
+    "low": 3.65,
+    "central": 8.36,
+    "high": 23.02
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0131,
@@ -14368,7 +14373,7 @@
    "wait_days": 365,
    "position": {
     "fifo": 440,
-    "carbon": 373,
+    "carbon": 372,
     "carbonqueue": 484
    },
    "planned_week": {
@@ -14379,9 +14384,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 365 gündür bekliyor",
    "daily_tco2": {
-    "low": 1.98,
-    "central": 2.73,
-    "high": 4.88
+    "low": 0.8,
+    "central": 1.84,
+    "high": 5.06
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0252,
@@ -14437,9 +14442,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 365 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.74,
-    "central": 10.68,
-    "high": 19.09
+    "low": 3.14,
+    "central": 7.19,
+    "high": 19.8
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0158,
@@ -14630,9 +14635,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,30 MW",
    "daily_tco2": {
-    "low": 0.11,
-    "central": 0.15,
-    "high": 0.27
+    "low": 0.04,
+    "central": 0.1,
+    "high": 0.28
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0255,
@@ -14661,9 +14666,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,76 MW",
    "daily_tco2": {
-    "low": 0.27,
-    "central": 0.38,
-    "high": 0.67
+    "low": 0.11,
+    "central": 0.25,
+    "high": 0.7
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0226,
@@ -14690,11 +14695,11 @@
     "carbonqueue": 19
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 14,9 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 10,0 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0099,
@@ -14721,11 +14726,11 @@
     "carbonqueue": 19
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 14,9 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 10,0 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 10.8,
-    "central": 14.9,
-    "high": 26.64
+    "low": 4.38,
+    "central": 10.04,
+    "high": 27.62
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.011,
@@ -14752,11 +14757,11 @@
     "carbonqueue": 19
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 14,0 tCO₂/gün ÷ 20 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 9,4 tCO₂/gün ÷ 20 saat",
    "daily_tco2": {
-    "low": 10.15,
-    "central": 14.01,
-    "high": 25.04
+    "low": 4.11,
+    "central": 9.43,
+    "high": 25.96
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0143,
@@ -14783,11 +14788,11 @@
     "carbonqueue": 19
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 7,9 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 5,4 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 5.76,
-    "central": 7.95,
-    "high": 14.21
+    "low": 2.33,
+    "central": 5.35,
+    "high": 14.73
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0211,
@@ -14814,11 +14819,11 @@
     "carbonqueue": 19
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 9,9 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 6,7 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 7.2,
-    "central": 9.94,
-    "high": 17.76
+    "low": 2.92,
+    "central": 6.69,
+    "high": 18.41
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.013,
@@ -14847,9 +14852,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 360 gündür bekliyor",
    "daily_tco2": {
-    "low": 4.32,
-    "central": 5.96,
-    "high": 10.66
+    "low": 1.75,
+    "central": 4.01,
+    "high": 11.05
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0167,
@@ -14959,9 +14964,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 358 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.4,
-    "central": 7.45,
-    "high": 13.32
+    "low": 2.19,
+    "central": 5.02,
+    "high": 13.81
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0168,
@@ -14990,9 +14995,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 358 gündür bekliyor",
    "daily_tco2": {
-    "low": 5.54,
-    "central": 7.65,
-    "high": 13.68
+    "low": 2.25,
+    "central": 5.15,
+    "high": 14.18
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0135,
@@ -15021,9 +15026,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 358 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.2,
-    "central": 9.94,
-    "high": 17.76
+    "low": 2.92,
+    "central": 6.69,
+    "high": 18.41
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0147,
@@ -15068,7 +15073,7 @@
    "wait_days": 358,
    "position": {
     "fifo": 467,
-    "carbon": 342,
+    "carbon": 344,
     "carbonqueue": 508
    },
    "planned_week": {
@@ -15079,9 +15084,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 358 gündür bekliyor",
    "daily_tco2": {
-    "low": 3.99,
-    "central": 5.5,
-    "high": 9.84
+    "low": 1.47,
+    "central": 3.37,
+    "high": 9.26
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0561,
@@ -15164,9 +15169,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 357 gündür bekliyor",
    "daily_tco2": {
-    "low": 7.2,
-    "central": 9.94,
-    "high": 17.76
+    "low": 2.92,
+    "central": 6.69,
+    "high": 18.41
    },
    "effort_hours": 20.0,
    "p_withdraw_12m": 0.0093,
@@ -15384,9 +15389,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,33 MW",
    "daily_tco2": {
-    "low": 0.12,
-    "central": 0.16,
-    "high": 0.29
+    "low": 0.05,
+    "central": 0.11,
+    "high": 0.3
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0283,
@@ -15404,7 +15409,7 @@
    "wait_days": 233,
    "position": {
     "fifo": 539,
-    "carbon": 524,
+    "carbon": 518,
     "carbonqueue": 520
    },
    "planned_week": {
@@ -15415,9 +15420,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,55 MW",
    "daily_tco2": {
-    "low": 0.2,
-    "central": 0.27,
-    "high": 0.49
+    "low": 0.08,
+    "central": 0.18,
+    "high": 0.51
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0218,
@@ -15444,11 +15449,11 @@
     "carbonqueue": 20
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 6,7 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 4,5 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 4.86,
-    "central": 6.71,
-    "high": 11.99
+    "low": 1.97,
+    "central": 4.52,
+    "high": 12.43
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.011,
@@ -15475,11 +15480,11 @@
     "carbonqueue": 20
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 6,5 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 4,3 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 4.68,
-    "central": 6.46,
-    "high": 11.54
+    "low": 1.9,
+    "central": 4.35,
+    "high": 11.97
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0132,
@@ -15506,11 +15511,11 @@
     "carbonqueue": 20
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 8,0 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 5,4 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 5.83,
-    "central": 8.05,
-    "high": 14.39
+    "low": 2.36,
+    "central": 5.42,
+    "high": 14.92
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0132,
@@ -15528,7 +15533,7 @@
    "wait_days": 184,
    "position": {
     "fifo": 569,
-    "carbon": 341,
+    "carbon": 343,
     "carbonqueue": 524
    },
    "planned_week": {
@@ -15537,11 +15542,11 @@
     "carbonqueue": 20
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 5,6 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 3,4 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 4.02,
-    "central": 5.55,
-    "high": 9.93
+    "low": 1.48,
+    "central": 3.4,
+    "high": 9.35
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0331,
@@ -15568,11 +15573,11 @@
     "carbonqueue": 20
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 4,0 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 2,7 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 2.88,
-    "central": 3.97,
-    "high": 7.1
+    "low": 1.17,
+    "central": 2.68,
+    "high": 7.37
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0139,
@@ -15599,11 +15604,11 @@
     "carbonqueue": 20
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 4,5 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 3,0 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 3.24,
-    "central": 4.47,
-    "high": 7.99
+    "low": 1.31,
+    "central": 3.01,
+    "high": 8.29
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.014,
@@ -15630,11 +15635,11 @@
     "carbonqueue": 20
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 3,0 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 2,0 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 2.16,
-    "central": 2.98,
-    "high": 5.33
+    "low": 0.88,
+    "central": 2.01,
+    "high": 5.52
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0125,
@@ -15760,20 +15765,20 @@
    "wait_days": 337,
    "position": {
     "fifo": 489,
-    "carbon": 388,
+    "carbon": 376,
     "carbonqueue": 532
    },
    "planned_week": {
     "fifo": 19,
-    "carbon": 17,
+    "carbon": 16,
     "carbonqueue": 21
    },
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 337 gündür bekliyor",
    "daily_tco2": {
-    "low": 1.84,
-    "central": 2.53,
-    "high": 4.53
+    "low": 0.74,
+    "central": 1.71,
+    "high": 4.7
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0214,
@@ -15980,7 +15985,7 @@
    "wait_days": 319,
    "position": {
     "fifo": 504,
-    "carbon": 424,
+    "carbon": 423,
     "carbonqueue": 540
    },
    "planned_week": {
@@ -15991,9 +15996,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 319 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.72,
-    "central": 0.99,
-    "high": 1.78
+    "low": 0.29,
+    "central": 0.67,
+    "high": 1.84
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0241,
@@ -16238,9 +16243,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,18 MW",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.03,
@@ -16269,9 +16274,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,27 MW",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.13,
-    "high": 0.24
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.25
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0316,
@@ -16298,11 +16303,11 @@
     "carbonqueue": 21
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 2,7 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 1,8 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 1.94,
-    "central": 2.68,
-    "high": 4.8
+    "low": 0.79,
+    "central": 1.81,
+    "high": 4.97
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0184,
@@ -16329,11 +16334,11 @@
     "carbonqueue": 21
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 3,5 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 2,3 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 2.52,
-    "central": 3.48,
-    "high": 6.22
+    "low": 1.02,
+    "central": 2.34,
+    "high": 6.45
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0124,
@@ -16351,7 +16356,7 @@
    "wait_days": 116,
    "position": {
     "fifo": 620,
-    "carbon": 390,
+    "carbon": 388,
     "carbonqueue": 553
    },
    "planned_week": {
@@ -16360,11 +16365,11 @@
     "carbonqueue": 21
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 2,4 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 1,6 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 1.76,
-    "central": 2.43,
-    "high": 4.35
+    "low": 0.71,
+    "central": 1.64,
+    "high": 4.51
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0171,
@@ -16382,7 +16387,7 @@
    "wait_days": 107,
    "position": {
     "fifo": 630,
-    "carbon": 391,
+    "carbon": 389,
     "carbonqueue": 554
    },
    "planned_week": {
@@ -16391,11 +16396,11 @@
     "carbonqueue": 21
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 2,4 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 1,6 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 1.76,
-    "central": 2.43,
-    "high": 4.35
+    "low": 0.71,
+    "central": 1.64,
+    "high": 4.51
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0187,
@@ -16422,11 +16427,11 @@
     "carbonqueue": 21
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 2,3 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 1,5 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 1.63,
-    "central": 2.25,
-    "high": 4.02
+    "low": 0.66,
+    "central": 1.52,
+    "high": 4.17
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0187,
@@ -16453,11 +16458,11 @@
     "carbonqueue": 21
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 3,0 tCO₂/gün ÷ 16 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 2,0 tCO₂/gün ÷ 16 saat",
    "daily_tco2": {
-    "low": 2.16,
-    "central": 2.98,
-    "high": 5.33
+    "low": 0.88,
+    "central": 2.01,
+    "high": 5.52
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0125,
@@ -16484,11 +16489,11 @@
     "carbonqueue": 21
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 2,2 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 1,5 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 1.62,
-    "central": 2.24,
-    "high": 4.0
+    "low": 0.66,
+    "central": 1.51,
+    "high": 4.14
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.025,
@@ -16506,7 +16511,7 @@
    "wait_days": 295,
    "position": {
     "fifo": 516,
-    "carbon": 372,
+    "carbon": 371,
     "carbonqueue": 558
    },
    "planned_week": {
@@ -16517,9 +16522,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 295 gündür bekliyor",
    "daily_tco2": {
-    "low": 2.02,
-    "central": 2.78,
-    "high": 4.97
+    "low": 0.82,
+    "central": 1.87,
+    "high": 5.16
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0162,
@@ -16699,20 +16704,20 @@
    "wait_days": 255,
    "position": {
     "fifo": 528,
-    "carbon": 405,
+    "carbon": 415,
     "carbonqueue": 565
    },
    "planned_week": {
     "fifo": 20,
-    "carbon": 17,
+    "carbon": 18,
     "carbonqueue": 22
    },
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 255 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.94,
-    "central": 1.29,
-    "high": 2.31
+    "low": 0.34,
+    "central": 0.79,
+    "high": 2.17
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0374,
@@ -16892,7 +16897,7 @@
    "wait_days": 228,
    "position": {
     "fifo": 542,
-    "carbon": 371,
+    "carbon": 370,
     "carbonqueue": 572
    },
    "planned_week": {
@@ -16903,9 +16908,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 228 gündür bekliyor",
    "daily_tco2": {
-    "low": 2.09,
-    "central": 2.88,
-    "high": 5.15
+    "low": 0.85,
+    "central": 1.94,
+    "high": 5.34
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0152,
@@ -17069,9 +17074,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,46 MW",
    "daily_tco2": {
-    "low": 0.17,
-    "central": 0.23,
-    "high": 0.41
+    "low": 0.07,
+    "central": 0.15,
+    "high": 0.42
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0202,
@@ -17100,9 +17105,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,95 MW",
    "daily_tco2": {
-    "low": 0.34,
-    "central": 0.47,
-    "high": 0.84
+    "low": 0.14,
+    "central": 0.32,
+    "high": 0.87
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0175,
@@ -17120,7 +17125,7 @@
    "wait_days": 114,
    "position": {
     "fifo": 627,
-    "carbon": 394,
+    "carbon": 395,
     "carbonqueue": 580
    },
    "planned_week": {
@@ -17129,11 +17134,11 @@
     "carbonqueue": 22
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 2,2 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 1,3 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 1.59,
-    "central": 2.2,
-    "high": 3.92
+    "low": 0.59,
+    "central": 1.34,
+    "high": 3.7
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0392,
@@ -17160,11 +17165,11 @@
     "carbonqueue": 22
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 1,7 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 1,2 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 1.26,
-    "central": 1.74,
-    "high": 3.12
+    "low": 0.51,
+    "central": 1.17,
+    "high": 3.23
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0158,
@@ -17191,45 +17196,14 @@
     "carbonqueue": 22
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 1,6 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 1,1 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 1.15,
-    "central": 1.59,
-    "high": 2.84
+    "low": 0.47,
+    "central": 1.07,
+    "high": 2.95
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0239,
-   "stale": false
-  },
-  {
-   "app_id": 17944,
-   "site_name": "Viking Energy Network, Blackett Street - Turbine Repowering",
-   "authority": "South Tyneside",
-   "category": "onshore_wind",
-   "technology": "Wind Onshore",
-   "generation_mw": 0.8,
-   "has_storage": false,
-   "submitted": "2026-04-15",
-   "wait_days": 100,
-   "position": {
-    "fifo": 638,
-    "carbon": 421,
-    "carbonqueue": 583
-   },
-   "planned_week": {
-    "fifo": 24,
-    "carbon": 18,
-    "carbonqueue": 22
-   },
-   "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 1,0 tCO₂/gün ÷ 8 saat",
-   "daily_tco2": {
-    "low": 0.75,
-    "central": 1.03,
-    "high": 1.85
-   },
-   "effort_hours": 8.0,
-   "p_withdraw_12m": 0.032,
    "stale": false
   },
   {
@@ -17245,7 +17219,7 @@
    "position": {
     "fifo": 586,
     "carbon": 401,
-    "carbonqueue": 584
+    "carbonqueue": 583
    },
    "planned_week": {
     "fifo": 22,
@@ -17253,11 +17227,11 @@
     "carbonqueue": 22
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 1,5 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 1,0 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 1.08,
-    "central": 1.49,
-    "high": 2.66
+    "low": 0.44,
+    "central": 1.0,
+    "high": 2.76
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0191,
@@ -17276,7 +17250,7 @@
    "position": {
     "fifo": 640,
     "carbon": 402,
-    "carbonqueue": 585
+    "carbonqueue": 584
    },
    "planned_week": {
     "fifo": 24,
@@ -17284,14 +17258,45 @@
     "carbonqueue": 22
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 1,5 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 1,0 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 1.07,
-    "central": 1.48,
-    "high": 2.64
+    "low": 0.43,
+    "central": 0.99,
+    "high": 2.73
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0197,
+   "stale": false
+  },
+  {
+   "app_id": 17944,
+   "site_name": "Viking Energy Network, Blackett Street - Turbine Repowering",
+   "authority": "South Tyneside",
+   "category": "onshore_wind",
+   "technology": "Wind Onshore",
+   "generation_mw": 0.8,
+   "has_storage": false,
+   "submitted": "2026-04-15",
+   "wait_days": 100,
+   "position": {
+    "fifo": 638,
+    "carbon": 426,
+    "carbonqueue": 585
+   },
+   "planned_week": {
+    "fifo": 24,
+    "carbon": 18,
+    "carbonqueue": 22
+   },
+   "lane": "carbon",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,6 tCO₂/gün ÷ 8 saat",
+   "daily_tco2": {
+    "low": 0.28,
+    "central": 0.63,
+    "high": 1.74
+   },
+   "effort_hours": 8.0,
+   "p_withdraw_12m": 0.032,
    "stale": false
   },
   {
@@ -17306,20 +17311,20 @@
    "wait_days": 192,
    "position": {
     "fifo": 557,
-    "carbon": 416,
+    "carbon": 403,
     "carbonqueue": 586
    },
    "planned_week": {
     "fifo": 21,
-    "carbon": 18,
+    "carbon": 17,
     "carbonqueue": 22
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 1,2 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,8 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.86,
-    "central": 1.19,
-    "high": 2.13
+    "low": 0.35,
+    "central": 0.8,
+    "high": 2.21
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.019,
@@ -17337,7 +17342,7 @@
    "wait_days": 95,
    "position": {
     "fifo": 646,
-    "carbon": 418,
+    "carbon": 417,
     "carbonqueue": 587
    },
    "planned_week": {
@@ -17346,11 +17351,11 @@
     "carbonqueue": 22
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 1,1 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,7 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.79,
-    "central": 1.09,
-    "high": 1.95
+    "low": 0.32,
+    "central": 0.74,
+    "high": 2.03
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0224,
@@ -17368,7 +17373,7 @@
    "wait_days": 226,
    "position": {
     "fifo": 545,
-    "carbon": 452,
+    "carbon": 451,
     "carbonqueue": 588
    },
    "planned_week": {
@@ -17379,9 +17384,9 @@
    "lane": "max_wait",
    "reason": "Azami bekleme koruması: 226 gündür bekliyor",
    "daily_tco2": {
-    "low": 0.43,
-    "central": 0.6,
-    "high": 1.07
+    "low": 0.18,
+    "central": 0.4,
+    "high": 1.1
    },
    "effort_hours": 16.0,
    "p_withdraw_12m": 0.0167,
@@ -17680,9 +17685,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,70 MW",
    "daily_tco2": {
-    "low": 0.25,
-    "central": 0.35,
-    "high": 0.62
+    "low": 0.1,
+    "central": 0.23,
+    "high": 0.64
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0239,
@@ -17700,7 +17705,7 @@
    "wait_days": 200,
    "position": {
     "fifo": 554,
-    "carbon": 515,
+    "carbon": 522,
     "carbonqueue": 600
    },
    "planned_week": {
@@ -17711,9 +17716,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,22 MW",
    "daily_tco2": {
-    "low": 0.21,
-    "central": 0.28,
-    "high": 0.51
+    "low": 0.08,
+    "central": 0.17,
+    "high": 0.48
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0535,
@@ -17742,9 +17747,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,33 MW",
    "daily_tco2": {
-    "low": 0.12,
-    "central": 0.16,
-    "high": 0.29
+    "low": 0.05,
+    "central": 0.11,
+    "high": 0.3
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0305,
@@ -17773,9 +17778,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,32 MW",
    "daily_tco2": {
-    "low": 0.12,
-    "central": 0.16,
-    "high": 0.28
+    "low": 0.05,
+    "central": 0.11,
+    "high": 0.29
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0235,
@@ -17793,7 +17798,7 @@
    "wait_days": 73,
    "position": {
     "fifo": 687,
-    "carbon": 419,
+    "carbon": 418,
     "carbonqueue": 603
    },
    "planned_week": {
@@ -17802,11 +17807,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 1,1 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,7 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.78,
-    "central": 1.08,
-    "high": 1.93
+    "low": 0.32,
+    "central": 0.73,
+    "high": 2.0
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0197,
@@ -17824,7 +17829,7 @@
    "wait_days": 57,
    "position": {
     "fifo": 723,
-    "carbon": 422,
+    "carbon": 421,
     "carbonqueue": 604
    },
    "planned_week": {
@@ -17833,11 +17838,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 1,0 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,7 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.73,
-    "central": 1.0,
-    "high": 1.79
+    "low": 0.29,
+    "central": 0.68,
+    "high": 1.86
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0225,
@@ -17855,7 +17860,7 @@
    "wait_days": 183,
    "position": {
     "fifo": 570,
-    "carbon": 425,
+    "carbon": 424,
     "carbonqueue": 605
    },
    "planned_week": {
@@ -17864,45 +17869,14 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 1,0 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,7 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.72,
-    "central": 0.99,
-    "high": 1.78
+    "low": 0.29,
+    "central": 0.67,
+    "high": 1.84
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0214,
-   "stale": false
-  },
-  {
-   "app_id": 20805,
-   "site_name": "Ulceby Grange Farm, Church Lane -  Wind Turbine",
-   "authority": "East Lindsey",
-   "category": "onshore_wind",
-   "technology": "Wind Onshore",
-   "generation_mw": 0.5,
-   "has_storage": false,
-   "submitted": "2026-04-15",
-   "wait_days": 100,
-   "position": {
-    "fifo": 641,
-    "carbon": 446,
-    "carbonqueue": 606
-   },
-   "planned_week": {
-    "fifo": 24,
-    "carbon": 19,
-    "carbonqueue": 23
-   },
-   "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,6 tCO₂/gün ÷ 8 saat",
-   "daily_tco2": {
-    "low": 0.47,
-    "central": 0.65,
-    "high": 1.15
-   },
-   "effort_hours": 8.0,
-   "p_withdraw_12m": 0.0354,
    "stale": false
   },
   {
@@ -17918,7 +17892,7 @@
    "position": {
     "fifo": 575,
     "carbon": 427,
-    "carbonqueue": 607
+    "carbonqueue": 606
    },
    "planned_week": {
     "fifo": 22,
@@ -17926,14 +17900,45 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,9 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,6 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.65,
-    "central": 0.89,
-    "high": 1.6
+    "low": 0.26,
+    "central": 0.6,
+    "high": 1.66
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0247,
+   "stale": false
+  },
+  {
+   "app_id": 20805,
+   "site_name": "Ulceby Grange Farm, Church Lane -  Wind Turbine",
+   "authority": "East Lindsey",
+   "category": "onshore_wind",
+   "technology": "Wind Onshore",
+   "generation_mw": 0.5,
+   "has_storage": false,
+   "submitted": "2026-04-15",
+   "wait_days": 100,
+   "position": {
+    "fifo": 641,
+    "carbon": 454,
+    "carbonqueue": 607
+   },
+   "planned_week": {
+    "fifo": 24,
+    "carbon": 19,
+    "carbonqueue": 23
+   },
+   "lane": "carbon",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 8 saat",
+   "daily_tco2": {
+    "low": 0.17,
+    "central": 0.4,
+    "high": 1.09
+   },
+   "effort_hours": 8.0,
+   "p_withdraw_12m": 0.0354,
    "stale": false
   },
   {
@@ -17957,11 +17962,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,8 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,5 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.55,
-    "central": 0.77,
-    "high": 1.37
+    "low": 0.22,
+    "central": 0.52,
+    "high": 1.42
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0194,
@@ -17988,11 +17993,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,7 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,5 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.5,
-    "central": 0.7,
-    "high": 1.24
+    "low": 0.2,
+    "central": 0.47,
+    "high": 1.29
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0227,
@@ -18019,11 +18024,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,7 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,5 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.49,
-    "central": 0.68,
-    "high": 1.21
+    "low": 0.2,
+    "central": 0.45,
+    "high": 1.25
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0213,
@@ -18050,11 +18055,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,7 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,5 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.49,
-    "central": 0.67,
-    "high": 1.2
+    "low": 0.2,
+    "central": 0.45,
+    "high": 1.24
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0162,
@@ -18081,11 +18086,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.32,
-    "central": 0.45,
-    "high": 0.8
+    "low": 0.13,
+    "central": 0.3,
+    "high": 0.83
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0266,
@@ -18112,11 +18117,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,6 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.47,
-    "central": 0.65,
-    "high": 1.15
+    "low": 0.19,
+    "central": 0.43,
+    "high": 1.2
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0204,
@@ -18134,7 +18139,7 @@
    "wait_days": 141,
    "position": {
     "fifo": 607,
-    "carbon": 448,
+    "carbon": 447,
     "carbonqueue": 614
    },
    "planned_week": {
@@ -18143,11 +18148,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,6 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.46,
-    "central": 0.63,
-    "high": 1.13
+    "low": 0.19,
+    "central": 0.42,
+    "high": 1.17
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0194,
@@ -18174,11 +18179,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.31,
-    "central": 0.42,
-    "high": 0.75
+    "low": 0.12,
+    "central": 0.28,
+    "high": 0.78
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0265,
@@ -18196,7 +18201,7 @@
    "wait_days": 57,
    "position": {
     "fifo": 724,
-    "carbon": 454,
+    "carbon": 453,
     "carbonqueue": 616
    },
    "planned_week": {
@@ -18205,11 +18210,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,6 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.43,
-    "central": 0.6,
-    "high": 1.07
+    "low": 0.18,
+    "central": 0.4,
+    "high": 1.1
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0178,
@@ -18227,7 +18232,7 @@
    "wait_days": 85,
    "position": {
     "fifo": 662,
-    "carbon": 453,
+    "carbon": 452,
     "carbonqueue": 617
    },
    "planned_week": {
@@ -18236,11 +18241,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,6 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.43,
-    "central": 0.6,
-    "high": 1.07
+    "low": 0.18,
+    "central": 0.4,
+    "high": 1.1
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0182,
@@ -18267,11 +18272,11 @@
     "carbonqueue": 23
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.28,
-    "central": 0.38,
-    "high": 0.68
+    "low": 0.11,
+    "central": 0.26,
+    "high": 0.71
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0156,
@@ -18570,9 +18575,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,17 MW",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.15
+    "low": 0.02,
+    "central": 0.06,
+    "high": 0.16
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0224,
@@ -18590,7 +18595,7 @@
    "wait_days": 184,
    "position": {
     "fifo": 568,
-    "carbon": 516,
+    "carbon": 523,
     "carbonqueue": 630
    },
    "planned_week": {
@@ -18601,9 +18606,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,22 MW",
    "daily_tco2": {
-    "low": 0.21,
-    "central": 0.28,
-    "high": 0.51
+    "low": 0.08,
+    "central": 0.17,
+    "high": 0.48
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0585,
@@ -18621,7 +18626,7 @@
    "wait_days": 182,
    "position": {
     "fifo": 574,
-    "carbon": 535,
+    "carbon": 534,
     "carbonqueue": 631
    },
    "planned_week": {
@@ -18632,9 +18637,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,49 MW",
    "daily_tco2": {
-    "low": 0.18,
-    "central": 0.24,
-    "high": 0.44
+    "low": 0.07,
+    "central": 0.16,
+    "high": 0.45
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0231,
@@ -18663,9 +18668,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,15 MW",
    "daily_tco2": {
-    "low": 0.05,
-    "central": 0.07,
-    "high": 0.13
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.14
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0211,
@@ -18694,9 +18699,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,28 MW",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.14,
-    "high": 0.25
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.26
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0296,
@@ -18723,11 +18728,11 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.28,
-    "central": 0.38,
-    "high": 0.68
+    "low": 0.11,
+    "central": 0.26,
+    "high": 0.71
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0206,
@@ -18754,11 +18759,11 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.28,
-    "central": 0.38,
-    "high": 0.68
+    "low": 0.11,
+    "central": 0.26,
+    "high": 0.71
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0235,
@@ -18785,11 +18790,11 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,5 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.4,
-    "central": 0.55,
-    "high": 0.98
+    "low": 0.16,
+    "central": 0.37,
+    "high": 1.01
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0185,
@@ -18816,11 +18821,11 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.25,
-    "central": 0.35,
-    "high": 0.62
+    "low": 0.1,
+    "central": 0.23,
+    "high": 0.64
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0182,
@@ -18847,11 +18852,11 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.24,
-    "central": 0.34,
-    "high": 0.6
+    "low": 0.1,
+    "central": 0.23,
+    "high": 0.63
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0238,
@@ -18878,11 +18883,11 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.24,
-    "central": 0.34,
-    "high": 0.6
+    "low": 0.1,
+    "central": 0.23,
+    "high": 0.63
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0283,
@@ -18909,45 +18914,14 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,5 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.36,
-    "central": 0.5,
-    "high": 0.89
+    "low": 0.15,
+    "central": 0.33,
+    "high": 0.92
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0211,
-   "stale": false
-  },
-  {
-   "app_id": 20523,
-   "site_name": "Tarns Farm, Silloth - Wind Turbine",
-   "authority": "Cumberland",
-   "category": "onshore_wind",
-   "technology": "Wind Onshore",
-   "generation_mw": 0.25,
-   "has_storage": false,
-   "submitted": "2026-02-25",
-   "wait_days": 149,
-   "position": {
-    "fifo": 602,
-    "carbon": 494,
-    "carbonqueue": 641
-   },
-   "planned_week": {
-    "fifo": 23,
-    "carbon": 20,
-    "carbonqueue": 24
-   },
-   "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
-   "daily_tco2": {
-    "low": 0.23,
-    "central": 0.32,
-    "high": 0.58
-   },
-   "effort_hours": 8.0,
-   "p_withdraw_12m": 0.0482,
    "stale": false
   },
   {
@@ -18963,7 +18937,7 @@
    "position": {
     "fifo": 741,
     "carbon": 512,
-    "carbonqueue": 642
+    "carbonqueue": 641
    },
    "planned_week": {
     "fifo": 27,
@@ -18971,11 +18945,11 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.21,
-    "central": 0.29,
-    "high": 0.52
+    "low": 0.09,
+    "central": 0.2,
+    "high": 0.54
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0268,
@@ -18994,7 +18968,7 @@
    "position": {
     "fifo": 593,
     "carbon": 514,
-    "carbonqueue": 643
+    "carbonqueue": 642
    },
    "planned_week": {
     "fifo": 22,
@@ -19002,45 +18976,45 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.21,
-    "central": 0.29,
-    "high": 0.52
+    "low": 0.08,
+    "central": 0.19,
+    "high": 0.53
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0218,
    "stale": false
   },
   {
-   "app_id": 20854,
-   "site_name": "Tregida, Warbstow - Wind Turbine",
-   "authority": "Cornwall",
+   "app_id": 20523,
+   "site_name": "Tarns Farm, Silloth - Wind Turbine",
+   "authority": "Cumberland",
    "category": "onshore_wind",
    "technology": "Wind Onshore",
-   "generation_mw": 0.22,
+   "generation_mw": 0.25,
    "has_storage": false,
-   "submitted": "2026-04-29",
-   "wait_days": 86,
+   "submitted": "2026-02-25",
+   "wait_days": 149,
    "position": {
-    "fifo": 659,
-    "carbon": 518,
-    "carbonqueue": 644
+    "fifo": 602,
+    "carbon": 511,
+    "carbonqueue": 643
    },
    "planned_week": {
-    "fifo": 24,
+    "fifo": 23,
     "carbon": 21,
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.21,
-    "central": 0.28,
-    "high": 0.51
+    "low": 0.09,
+    "central": 0.2,
+    "high": 0.54
    },
    "effort_hours": 8.0,
-   "p_withdraw_12m": 0.0441,
+   "p_withdraw_12m": 0.0482,
    "stale": false
   },
   {
@@ -19055,8 +19029,8 @@
    "wait_days": 52,
    "position": {
     "fifo": 733,
-    "carbon": 523,
-    "carbonqueue": 645
+    "carbon": 517,
+    "carbonqueue": 644
    },
    "planned_week": {
     "fifo": 27,
@@ -19064,45 +19038,14 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.2,
-    "central": 0.28,
-    "high": 0.5
+    "low": 0.08,
+    "central": 0.19,
+    "high": 0.52
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0272,
-   "stale": false
-  },
-  {
-   "app_id": 20926,
-   "site_name": "North Fordon Farm, Danebury Manor Road - Wind Turbine",
-   "authority": "East Riding of Yorkshire",
-   "category": "onshore_wind",
-   "technology": "Wind Onshore",
-   "generation_mw": 0.22,
-   "has_storage": false,
-   "submitted": "2026-05-15",
-   "wait_days": 70,
-   "position": {
-    "fifo": 695,
-    "carbon": 520,
-    "carbonqueue": 646
-   },
-   "planned_week": {
-    "fifo": 26,
-    "carbon": 21,
-    "carbonqueue": 24
-   },
-   "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
-   "daily_tco2": {
-    "low": 0.21,
-    "central": 0.28,
-    "high": 0.51
-   },
-   "effort_hours": 8.0,
-   "p_withdraw_12m": 0.0497,
    "stale": false
   },
   {
@@ -19117,8 +19060,8 @@
    "wait_days": 42,
    "position": {
     "fifo": 758,
-    "carbon": 526,
-    "carbonqueue": 647
+    "carbon": 520,
+    "carbonqueue": 645
    },
    "planned_week": {
     "fifo": 27,
@@ -19126,45 +19069,14 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.2,
-    "central": 0.27,
-    "high": 0.49
-   },
-   "effort_hours": 8.0,
-   "p_withdraw_12m": 0.0222,
-   "stale": false
-  },
-  {
-   "app_id": 20920,
-   "site_name": "Hall Farm, Klondyke Lane - Wind Turbines",
-   "authority": "Melton",
-   "category": "onshore_wind",
-   "technology": "Wind Onshore",
-   "generation_mw": 0.22,
-   "has_storage": false,
-   "submitted": "2026-05-06",
-   "wait_days": 79,
-   "position": {
-    "fifo": 677,
-    "carbon": 519,
-    "carbonqueue": 648
-   },
-   "planned_week": {
-    "fifo": 25,
-    "carbon": 21,
-    "carbonqueue": 24
-   },
-   "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
-   "daily_tco2": {
-    "low": 0.21,
-    "central": 0.28,
+    "low": 0.08,
+    "central": 0.18,
     "high": 0.51
    },
    "effort_hours": 8.0,
-   "p_withdraw_12m": 0.0613,
+   "p_withdraw_12m": 0.0222,
    "stale": false
   },
   {
@@ -19179,8 +19091,8 @@
    "wait_days": 67,
    "position": {
     "fifo": 706,
-    "carbon": 525,
-    "carbonqueue": 649
+    "carbon": 519,
+    "carbonqueue": 646
    },
    "planned_week": {
     "fifo": 26,
@@ -19188,45 +19100,14 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.2,
-    "central": 0.27,
-    "high": 0.49
-   },
-   "effort_hours": 8.0,
-   "p_withdraw_12m": 0.0265,
-   "stale": false
-  },
-  {
-   "app_id": 20747,
-   "site_name": "Huxhill Farm, Weare Gifford - Wind Turbine",
-   "authority": "Torridge",
-   "category": "onshore_wind",
-   "technology": "Wind Onshore",
-   "generation_mw": 0.22,
-   "has_storage": false,
-   "submitted": "2026-04-09",
-   "wait_days": 106,
-   "position": {
-    "fifo": 634,
-    "carbon": 517,
-    "carbonqueue": 650
-   },
-   "planned_week": {
-    "fifo": 24,
-    "carbon": 21,
-    "carbonqueue": 24
-   },
-   "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
-   "daily_tco2": {
-    "low": 0.21,
-    "central": 0.28,
+    "low": 0.08,
+    "central": 0.18,
     "high": 0.51
    },
    "effort_hours": 8.0,
-   "p_withdraw_12m": 0.0711,
+   "p_withdraw_12m": 0.0265,
    "stale": false
   },
   {
@@ -19242,7 +19123,7 @@
    "position": {
     "fifo": 686,
     "carbon": 481,
-    "carbonqueue": 651
+    "carbonqueue": 647
    },
    "planned_week": {
     "fifo": 25,
@@ -19250,11 +19131,11 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,4 tCO₂/gün ÷ 12 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 12 saat",
    "daily_tco2": {
-    "low": 0.29,
-    "central": 0.4,
-    "high": 0.71
+    "low": 0.12,
+    "central": 0.27,
+    "high": 0.74
    },
    "effort_hours": 12.0,
    "p_withdraw_12m": 0.0176,
@@ -19272,8 +19153,8 @@
    "wait_days": 31,
    "position": {
     "fifo": 765,
-    "carbon": 530,
-    "carbonqueue": 652
+    "carbon": 529,
+    "carbonqueue": 648
    },
    "planned_week": {
     "fifo": 27,
@@ -19281,30 +19162,92 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.18,
-    "central": 0.25,
-    "high": 0.45
+    "low": 0.07,
+    "central": 0.17,
+    "high": 0.47
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0167,
    "stale": false
   },
   {
-   "app_id": 20945,
-   "site_name": "London Design and Engineering UTC, University Way - Wind Turbines",
-   "authority": "Newham",
+   "app_id": 20854,
+   "site_name": "Tregida, Warbstow - Wind Turbine",
+   "authority": "Cornwall",
    "category": "onshore_wind",
    "technology": "Wind Onshore",
-   "generation_mw": 0.2,
+   "generation_mw": 0.22,
+   "has_storage": false,
+   "submitted": "2026-04-29",
+   "wait_days": 86,
+   "position": {
+    "fifo": 659,
+    "carbon": 525,
+    "carbonqueue": 649
+   },
+   "planned_week": {
+    "fifo": 24,
+    "carbon": 21,
+    "carbonqueue": 24
+   },
+   "lane": "carbon",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "daily_tco2": {
+    "low": 0.08,
+    "central": 0.17,
+    "high": 0.48
+   },
+   "effort_hours": 8.0,
+   "p_withdraw_12m": 0.0441,
+   "stale": false
+  },
+  {
+   "app_id": 20926,
+   "site_name": "North Fordon Farm, Danebury Manor Road - Wind Turbine",
+   "authority": "East Riding of Yorkshire",
+   "category": "onshore_wind",
+   "technology": "Wind Onshore",
+   "generation_mw": 0.22,
+   "has_storage": false,
+   "submitted": "2026-05-15",
+   "wait_days": 70,
+   "position": {
+    "fifo": 695,
+    "carbon": 527,
+    "carbonqueue": 650
+   },
+   "planned_week": {
+    "fifo": 26,
+    "carbon": 21,
+    "carbonqueue": 24
+   },
+   "lane": "carbon",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "daily_tco2": {
+    "low": 0.08,
+    "central": 0.17,
+    "high": 0.48
+   },
+   "effort_hours": 8.0,
+   "p_withdraw_12m": 0.0497,
+   "stale": false
+  },
+  {
+   "app_id": 20920,
+   "site_name": "Hall Farm, Klondyke Lane - Wind Turbines",
+   "authority": "Melton",
+   "category": "onshore_wind",
+   "technology": "Wind Onshore",
+   "generation_mw": 0.22,
    "has_storage": false,
    "submitted": "2026-05-06",
    "wait_days": 79,
    "position": {
-    "fifo": 678,
-    "carbon": 528,
-    "carbonqueue": 653
+    "fifo": 677,
+    "carbon": 526,
+    "carbonqueue": 651
    },
    "planned_week": {
     "fifo": 25,
@@ -19312,14 +19255,14 @@
     "carbonqueue": 24
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,3 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.19,
-    "central": 0.26,
-    "high": 0.46
+    "low": 0.08,
+    "central": 0.17,
+    "high": 0.48
    },
    "effort_hours": 8.0,
-   "p_withdraw_12m": 0.0359,
+   "p_withdraw_12m": 0.0613,
    "stale": false
   },
   {
@@ -19334,8 +19277,8 @@
    "wait_days": 67,
    "position": {
     "fifo": 704,
-    "carbon": 534,
-    "carbonqueue": 654
+    "carbon": 533,
+    "carbonqueue": 652
    },
    "planned_week": {
     "fifo": 26,
@@ -19345,12 +19288,43 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.18,
-    "central": 0.25,
-    "high": 0.44
+    "low": 0.07,
+    "central": 0.17,
+    "high": 0.46
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0319,
+   "stale": false
+  },
+  {
+   "app_id": 20747,
+   "site_name": "Huxhill Farm, Weare Gifford - Wind Turbine",
+   "authority": "Torridge",
+   "category": "onshore_wind",
+   "technology": "Wind Onshore",
+   "generation_mw": 0.22,
+   "has_storage": false,
+   "submitted": "2026-04-09",
+   "wait_days": 106,
+   "position": {
+    "fifo": 634,
+    "carbon": 524,
+    "carbonqueue": 653
+   },
+   "planned_week": {
+    "fifo": 24,
+    "carbon": 21,
+    "carbonqueue": 24
+   },
+   "lane": "carbon",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "daily_tco2": {
+    "low": 0.08,
+    "central": 0.17,
+    "high": 0.48
+   },
+   "effort_hours": 8.0,
+   "p_withdraw_12m": 0.0711,
    "stale": false
   },
   {
@@ -19365,8 +19339,8 @@
    "wait_days": 65,
    "position": {
     "fifo": 712,
-    "carbon": 536,
-    "carbonqueue": 655
+    "carbon": 535,
+    "carbonqueue": 654
    },
    "planned_week": {
     "fifo": 26,
@@ -19376,9 +19350,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.17,
-    "central": 0.24,
-    "high": 0.43
+    "low": 0.07,
+    "central": 0.16,
+    "high": 0.44
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0175,
@@ -19397,7 +19371,7 @@
    "position": {
     "fifo": 743,
     "carbon": 538,
-    "carbonqueue": 656
+    "carbonqueue": 655
    },
    "planned_week": {
     "fifo": 27,
@@ -19407,12 +19381,43 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.17,
-    "central": 0.23,
-    "high": 0.42
+    "low": 0.07,
+    "central": 0.16,
+    "high": 0.43
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.024,
+   "stale": false
+  },
+  {
+   "app_id": 20945,
+   "site_name": "London Design and Engineering UTC, University Way - Wind Turbines",
+   "authority": "Newham",
+   "category": "onshore_wind",
+   "technology": "Wind Onshore",
+   "generation_mw": 0.2,
+   "has_storage": false,
+   "submitted": "2026-05-06",
+   "wait_days": 79,
+   "position": {
+    "fifo": 678,
+    "carbon": 536,
+    "carbonqueue": 656
+   },
+   "planned_week": {
+    "fifo": 25,
+    "carbon": 21,
+    "carbonqueue": 24
+   },
+   "lane": "carbon",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "daily_tco2": {
+    "low": 0.07,
+    "central": 0.16,
+    "high": 0.43
+   },
+   "effort_hours": 8.0,
+   "p_withdraw_12m": 0.0359,
    "stale": false
   },
   {
@@ -19735,9 +19740,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,39 MW",
    "daily_tco2": {
-    "low": 0.14,
-    "central": 0.19,
-    "high": 0.35
+    "low": 0.06,
+    "central": 0.13,
+    "high": 0.36
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0288,
@@ -19766,9 +19771,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,32 MW",
    "daily_tco2": {
-    "low": 0.12,
-    "central": 0.16,
-    "high": 0.28
+    "low": 0.05,
+    "central": 0.11,
+    "high": 0.29
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0253,
@@ -19797,9 +19802,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,41 MW",
    "daily_tco2": {
-    "low": 0.15,
-    "central": 0.2,
-    "high": 0.36
+    "low": 0.06,
+    "central": 0.14,
+    "high": 0.38
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0231,
@@ -19828,9 +19833,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,36 MW",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.18,
-    "high": 0.32
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.33
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0295,
@@ -19859,9 +19864,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.17,
-    "central": 0.23,
-    "high": 0.41
+    "low": 0.07,
+    "central": 0.15,
+    "high": 0.42
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0457,
@@ -19888,11 +19893,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.16,
-    "central": 0.22,
-    "high": 0.39
+    "low": 0.06,
+    "central": 0.15,
+    "high": 0.41
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0245,
@@ -19919,11 +19924,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.15,
-    "central": 0.21,
-    "high": 0.38
+    "low": 0.06,
+    "central": 0.14,
+    "high": 0.4
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0398,
@@ -19950,11 +19955,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.15,
-    "central": 0.21,
-    "high": 0.37
+    "low": 0.06,
+    "central": 0.14,
+    "high": 0.39
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0215,
@@ -19981,11 +19986,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.14,
-    "central": 0.2,
-    "high": 0.36
+    "low": 0.06,
+    "central": 0.13,
+    "high": 0.37
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0226,
@@ -20012,11 +20017,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.14,
-    "central": 0.2,
-    "high": 0.36
+    "low": 0.06,
+    "central": 0.13,
+    "high": 0.37
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0232,
@@ -20043,11 +20048,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.14,
-    "central": 0.2,
-    "high": 0.36
+    "low": 0.06,
+    "central": 0.13,
+    "high": 0.37
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0264,
@@ -20074,11 +20079,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.14,
-    "central": 0.2,
-    "high": 0.36
+    "low": 0.06,
+    "central": 0.13,
+    "high": 0.37
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0303,
@@ -20105,11 +20110,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.14,
-    "central": 0.2,
-    "high": 0.36
+    "low": 0.06,
+    "central": 0.13,
+    "high": 0.37
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0311,
@@ -20136,11 +20141,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.18,
-    "high": 0.33
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.34
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0207,
@@ -20167,11 +20172,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.17,
-    "high": 0.31
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.32
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0203,
@@ -20198,11 +20203,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.13,
-    "central": 0.17,
-    "high": 0.31
+    "low": 0.05,
+    "central": 0.12,
+    "high": 0.32
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0301,
@@ -20229,11 +20234,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.12,
-    "central": 0.17,
-    "high": 0.3
+    "low": 0.05,
+    "central": 0.11,
+    "high": 0.31
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.03,
@@ -20260,11 +20265,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.12,
-    "central": 0.16,
-    "high": 0.28
+    "low": 0.05,
+    "central": 0.11,
+    "high": 0.29
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0238,
@@ -20291,11 +20296,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.12,
-    "central": 0.16,
-    "high": 0.28
+    "low": 0.05,
+    "central": 0.11,
+    "high": 0.29
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0241,
@@ -20322,11 +20327,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.11,
-    "central": 0.15,
-    "high": 0.28
+    "low": 0.05,
+    "central": 0.1,
+    "high": 0.29
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0246,
@@ -20353,11 +20358,11 @@
     "carbonqueue": 25
    },
    "lane": "carbon",
-   "reason": "Uzman saati başına yüksek karbon etkisi: 0,2 tCO₂/gün ÷ 8 saat",
+   "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.11,
-    "central": 0.15,
-    "high": 0.28
+    "low": 0.05,
+    "central": 0.1,
+    "high": 0.29
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0387,
@@ -20386,9 +20391,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.11,
-    "central": 0.15,
-    "high": 0.27
+    "low": 0.04,
+    "central": 0.1,
+    "high": 0.28
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0288,
@@ -20417,9 +20422,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.14,
-    "high": 0.26
+    "low": 0.04,
+    "central": 0.1,
+    "high": 0.27
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0319,
@@ -20448,9 +20453,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.14,
-    "high": 0.25
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.26
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0201,
@@ -20479,9 +20484,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.13,
-    "high": 0.24
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.25
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0221,
@@ -20510,9 +20515,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.1,
-    "central": 0.13,
-    "high": 0.24
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.25
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0225,
@@ -20541,9 +20546,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.13,
-    "high": 0.23
+    "low": 0.04,
+    "central": 0.09,
+    "high": 0.24
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0246,
@@ -20842,8 +20847,8 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,20 MW",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.18
    },
    "effort_hours": 8.0,
@@ -20873,8 +20878,8 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,22 MW",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.2
    },
    "effort_hours": 8.0,
@@ -20904,9 +20909,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,17 MW",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.15
+    "low": 0.02,
+    "central": 0.06,
+    "high": 0.16
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0279,
@@ -20935,9 +20940,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,24 MW",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.21
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.22
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0361,
@@ -20966,9 +20971,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.22
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.23
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0196,
@@ -20997,9 +21002,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.21
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.22
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0215,
@@ -21028,9 +21033,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.21
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.22
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0218,
@@ -21059,9 +21064,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.09,
-    "central": 0.12,
-    "high": 0.21
+    "low": 0.04,
+    "central": 0.08,
+    "high": 0.22
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0341,
@@ -21090,9 +21095,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
-    "high": 0.2
+    "low": 0.03,
+    "central": 0.08,
+    "high": 0.21
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.025,
@@ -21121,9 +21126,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
-    "high": 0.2
+    "low": 0.03,
+    "central": 0.08,
+    "high": 0.21
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0266,
@@ -21152,8 +21157,8 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.2
    },
    "effort_hours": 8.0,
@@ -21183,8 +21188,8 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.2
    },
    "effort_hours": 8.0,
@@ -21214,8 +21219,8 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.11,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.2
    },
    "effort_hours": 8.0,
@@ -21245,8 +21250,8 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.08,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.19
    },
    "effort_hours": 8.0,
@@ -21276,8 +21281,8 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.18
    },
    "effort_hours": 8.0,
@@ -21307,8 +21312,8 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.18
    },
    "effort_hours": 8.0,
@@ -21338,8 +21343,8 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.1,
+    "low": 0.03,
+    "central": 0.07,
     "high": 0.18
    },
    "effort_hours": 8.0,
@@ -21369,8 +21374,8 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.09,
+    "low": 0.03,
+    "central": 0.06,
     "high": 0.17
    },
    "effort_hours": 8.0,
@@ -21400,8 +21405,8 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.07,
-    "central": 0.09,
+    "low": 0.03,
+    "central": 0.06,
     "high": 0.17
    },
    "effort_hours": 8.0,
@@ -21431,9 +21436,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.02,
@@ -21462,9 +21467,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0208,
@@ -21493,9 +21498,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0213,
@@ -21524,9 +21529,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0222,
@@ -21555,9 +21560,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0257,
@@ -21586,9 +21591,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.026,
@@ -21617,9 +21622,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.027,
@@ -21648,9 +21653,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0286,
@@ -21679,9 +21684,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0301,
@@ -21980,9 +21985,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,17 MW",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.15
+    "low": 0.02,
+    "central": 0.06,
+    "high": 0.16
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0241,
@@ -22011,9 +22016,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,16 MW",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0288,
@@ -22042,9 +22047,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,17 MW",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.15
+    "low": 0.02,
+    "central": 0.06,
+    "high": 0.16
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0332,
@@ -22073,9 +22078,9 @@
    "lane": "small_quota",
    "reason": "Küçük proje kotası: 0,15 MW",
    "daily_tco2": {
-    "low": 0.05,
-    "central": 0.07,
-    "high": 0.13
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.14
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0279,
@@ -22104,9 +22109,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.09,
-    "high": 0.16
+    "low": 0.03,
+    "central": 0.06,
+    "high": 0.17
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0341,
@@ -22135,9 +22140,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.15
+    "low": 0.02,
+    "central": 0.06,
+    "high": 0.16
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0273,
@@ -22166,9 +22171,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.15
+    "low": 0.02,
+    "central": 0.06,
+    "high": 0.16
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0365,
@@ -22197,9 +22202,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0203,
@@ -22228,9 +22233,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0205,
@@ -22259,9 +22264,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0208,
@@ -22290,9 +22295,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.06,
-    "central": 0.08,
-    "high": 0.14
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.15
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0227,
@@ -22321,9 +22326,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.05,
-    "central": 0.07,
-    "high": 0.13
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.14
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0222,
@@ -22352,9 +22357,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.05,
-    "central": 0.07,
-    "high": 0.13
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.14
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0229,
@@ -22383,9 +22388,9 @@
    "lane": "carbon",
    "reason": "Uzman saati başına yüksek karbon etkisi: 0,1 tCO₂/gün ÷ 8 saat",
    "daily_tco2": {
-    "low": 0.05,
-    "central": 0.07,
-    "high": 0.13
+    "low": 0.02,
+    "central": 0.05,
+    "high": 0.14
    },
    "effort_hours": 8.0,
    "p_withdraw_12m": 0.0307,
