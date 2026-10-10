@@ -57,7 +57,7 @@ Y yılının simülasyon kuyruğu için tahminler. Y yılı içinde kuyrukta bul
 | `decision_dist` | list[float], 13 eleman | 30 günlük 12 dilimde ilk kararın çıkma olasılığı + son eleman "360 gün içinde karar yok". Toplamı 1 |
 | `is_fake` | bool | `True` ise sahte dosya |
 
-**Dosyalar gerçek model çıktısıdır (`is_fake=False`).** Y yılının dosyası, Y−1 sonunda kesilmiş veriyle eğitilen modelden gelir (2018–2022 kesimleri); canlı kuyruk dosyası veri kesim tarihine (24.07.2026) kadar eğitilen modelden. Kuyrukta önceden bekleyen dosyalar için tahmin, o ana kadar sonuçlanmamış olmaları koşuluyla yapılır (`as_of_date`). Model metrikleri: `reports/model_metrics.json`. Not: geri çekilme tahmini zayıf (ROC-AUC 0,57–0,66), karar süresi tahmini taban çizgiden %22–25 iyi.
+**Dosyalar gerçek model çıktısıdır (`is_fake=False`).** Y yılının dosyası, Y−1 sonunda kesilmiş veriyle eğitilen modelden gelir (2018–2022 kesimleri); canlı kuyruk dosyası veri kesim tarihine (24.07.2026) kadar eğitilen modelden. Kuyrukta önceden bekleyen dosyalar için tahmin, o ana kadar sonuçlanmamış olmaları koşuluyla yapılır (`as_of_date`). Model metrikleri: `reports/model_metrics.json`. Not: geri çekilme tahmini zayıf (ROC-AUC 0,57–0,66), karar süresi tahmini tüm geçmişin sabit dağılımından %22–25, daha güçlü taban çizgiden (son 3 yıl, kategoriye göre) yaklaşık %11 iyi (Brier); ortalama hata 2,3 dilime karşı 3,1–3,3 dilim. Dosyaların %25–27'si "360 gün içinde karar yok" diliminde olduğu için hata bu ufukta kesilmiş bir ölçümdür.
 
 Simülasyon kuyruk büyüklükleri (İngiltere, başvuru düzeyinde): 2019: 155, 2020: 245, 2021: 718, 2022: 1.391, 2023: 1.851, canlı: 800.
 

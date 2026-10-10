@@ -12,7 +12,11 @@
   "mean_pred": 0.04,
   "decision_brier": 0.6435,
   "decision_brier_baseline": 0.861,
+  "decision_brier_recent_baseline": 0.7192,
   "decision_bin_mae": 2.32,
+  "decision_bin_mae_baseline": 4.51,
+  "decision_bin_mae_recent_baseline": 3.12,
+  "no_decision_share": 0.2503,
   "calibration_quintiles": [
    [
     0.0131,
@@ -91,7 +95,11 @@
   "mean_pred": 0.0358,
   "decision_brier": 0.639,
   "decision_brier_baseline": 0.824,
+  "decision_brier_recent_baseline": 0.7165,
   "decision_bin_mae": 2.33,
+  "decision_bin_mae_baseline": 4.32,
+  "decision_bin_mae_recent_baseline": 3.34,
+  "no_decision_share": 0.2713,
   "calibration_quintiles": [
    [
     0.0144,
