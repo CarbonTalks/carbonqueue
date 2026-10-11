@@ -2,8 +2,8 @@ import React from 'react';
 import { useApp, QueueRows } from '../state.jsx';
 export default function Simulation({section='summary'}) { const ctx = useApp(); return (<div className="flex flex-col w-full">
   <div className="px-gutter-desktop py-space-xl flex flex-col gap-space-xl max-w-[1600px] mx-auto w-full historical-results">
-    <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-lg">
-      <div className="flex flex-col gap-space-xs">
+    <div className="flex flex-wrap items-end justify-end gap-space-lg">
+      {section==='setup' && <div className="flex flex-col gap-space-xs mr-auto">
         <div className="flex items-center gap-space-sm">
           <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs uppercase tracking-wider">
             <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
@@ -15,7 +15,7 @@ export default function Simulation({section='summary'}) { const ctx = useApp(); 
         <p className="font-body-md text-body-md text-on-surface-variant max-w-3xl">
           Compare review policies under the same historical workload and expert capacity. Evaluates queue reordering impact without statutory pre-commitments.
         </p>
-      </div>
+      </div>}
       <div className="flex items-center gap-space-md shrink-0">
         <button className="inline-flex items-center gap-space-sm px-space-lg py-2 rounded bg-surface-container-lowest text-on-surface shadow-sm hover:bg-surface-container transition-colors font-label-md text-label-md" type="button">
           <span className="material-symbols-outlined text-[18px]">download</span>
