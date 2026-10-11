@@ -76,15 +76,22 @@ def _asof(hist: pd.DataFrame, query: pd.DataFrame, key: str | None) -> pd.DataFr
     h_groups = dict(tuple(hist.groupby(key)))
     for k, q in query[query[key].notna()].groupby(key):
         parts.append(_asof_group(h_groups.get(k, hist.iloc[:0]), q))
-    return pd.concat(parts).reindex(query.index) if parts else pd.DataFrame(index=query.index)
+    cols = ["prior", "pending", "resolved", "withdrawn", "median_days"]
+    return pd.concat(parts).reindex(query.index) if parts else pd.DataFrame(np.nan, index=query.index, columns=cols)
 
 
-def build_features(apps: pd.DataFrame, normalize_operators: bool = True) -> pd.DataFrame:
-    """Her basvuru icin (basvuru tarihi itibariyla) ozellik satiri; index = app_id."""
+def build_features(apps: pd.DataFrame, normalize_operators: bool = True, query: pd.DataFrame | None = None) -> pd.DataFrame:
+    """Her basvuru icin (basvuru tarihi itibariyla) ozellik satiri; index = app_id.
+
+    query verilirse ozellikler yalnizca o (veride olmayan, yeni) basvurular icin, apps gecmisinden hesaplanir.
+    """
     if normalize_operators:
         apps = apps.assign(operator=apps.operator.map(operator_key, na_action="ignore"))
+        if query is not None:
+            query = query.assign(operator=query.operator.map(operator_key, na_action="ignore"))
     hist = _history(apps)
-    q = apps[apps.d_submitted.notna()].copy()
+    q = (apps if query is None else query)
+    q = q[q.d_submitted.notna()].copy()
     f = pd.DataFrame(index=q.index)
     for c in CATEGORICAL:
         f[c] = q[c].fillna("NA").astype(str)
@@ -95,8 +102,11 @@ def build_features(apps: pd.DataFrame, normalize_operators: bool = True) -> pd.D
     f["submit_month"] = q.d_submitted.dt.month
     for c in ["post_2021", "small_project", "special_route"]:
         f[c] = q[c].astype(float)
-    chain_first = apps.groupby("chain_id").d_submitted.transform("min").reindex(q.index)
-    f["is_resubmission"] = (q.d_submitted > chain_first).astype(float)
+    if query is None:
+        chain_first = apps.groupby("chain_id").d_submitted.transform("min").reindex(q.index)
+        f["is_resubmission"] = (q.d_submitted > chain_first).astype(float)
+    else:
+        f["is_resubmission"] = 0.0  # yeni basvurunun zinciri bilinmiyor
 
     a = _asof(hist, q, "authority")
     f["auth_prior_apps"] = a.prior
