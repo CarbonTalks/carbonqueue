@@ -47,15 +47,27 @@ parsed source and blocks conflicting, unsupported, invalid or low-confidence
 observations. Identical observations do not create conflicts.
 
 The initial canonical contract requires `technology` and `capacity_mw`. Optional
-fields are `project_name`, `planning_authority` and `site_location`. Capacity must
+fields are `project_name`, `planning_authority`, `site_location`, `applicant` and
+`submission_date` (a date in `YYYY-MM-DD` format). Missing optional fields are null.
+Capacity must
 be positive and explicitly stated in MW. Other units require human correction;
 the backend does not silently convert them. The confidence threshold is 0.8.
 
-The initial supported categories are solar, onshore wind, offshore wind, hydro,
-biomass, tidal and wave. Other categories, including heat pumps, return
+Supported categories are solar, onshore wind, battery, hydro, biomass, tidal and
+wave. Offshore wind and other categories, including heat pumps, return
 `readiness.domain_status = OUT_OF_DOMAIN` with “Historical model unavailable for
-this project category.” Confirm this category list with the external ML team
-before integrating a narrower trained model.
+this project category.”
+
+Capacity observations carry `capacity_scope`: `proposed_project`, `existing_project`,
+`neighbouring_project`, `grid_connection` or `unknown`. Only proposed-project values
+can become canonical capacity. The stated number must occur in its quotation;
+explicit grid-connection and earlier-permission context is rejected, including
+context immediately before a cropped quote. If only unrelated or uncertain
+capacities exist, capacity is missing and the application remains `NEEDS_REVIEW`.
+Rejected observations are retained for audit. Older observations without a scope
+default to `unknown` and require human confirmation when reconciled again.
+These conservative checks supplement the extractor; they do not establish perfect
+semantic understanding of every possible document.
 
 ## API
 
@@ -63,10 +75,14 @@ before integrating a narrower trained model.
 | --- | --- | --- |
 | POST | `/applications/extract` | Upload one or more PDFs as multipart `files` |
 | GET | `/applications` | List persisted applications |
+| POST | `/applications/import` | Atomically import a normalized pending-application batch |
+| GET | `/applications/pending` | List imported pending applications, including those awaiting confirmation |
 | GET | `/applications/{id}` | Read application, observations, evidence and outputs |
 | PATCH | `/applications/{id}/observations` | Correct canonical values with an audit record |
 | POST | `/queue/run` | Score selected ready applications and call the external scheduler |
 | GET | `/queue` | Read the latest queue; returns 409 if corrected data invalidated it |
+| POST | `/queue/live/import` | Import a cq-sim live-queue snapshot and its application records |
+| GET | `/queue/live` | Serve the imported dashboard snapshot with backend application links |
 | POST | `/simulation/run` | Call the external simulation component and persist its result |
 | GET | `/simulation/{id}` | Read a persisted simulation |
 
@@ -112,6 +128,50 @@ request ID and application ID when one has been persisted. Provider details are
 not exposed. Parsing/extraction failures remain retrievable as `FAILED` applications;
 integration failures preserve valid extraction and do not save partial model outputs.
 
+## Pending applications and the dashboard
+
+Load cq-sim's prepared queue through the backend, then have the dashboard read
+`GET /queue/live`:
+
+```sh
+curl --fail -H 'Content-Type: application/json' \
+  --data-binary @../cq-sim/results/live-queue.json \
+  http://127.0.0.1:8000/queue/live/import
+```
+
+The backend preserves `as_of`, calibration, emission factors, ranks, planned weeks,
+reasons and the separate `needs_confirmation` list. Each record gains an
+`application_id` linking to `/applications/{id}`. The snapshot stays dated source
+data; it is not a newly calculated queue. `changed_application_ids` lists records
+with human corrections, whose prepared ranks may no longer reflect current data.
+The externally supplied scoring and scheduling algorithms remain necessary to
+calculate a new queue.
+
+The supplied July 24, 2026 snapshot has 765 ranked records and 35 requiring
+confirmation, not 936. `generation_mw` becomes capacity only when supplied;
+`technology = Battery` maps to `battery`, without inventing missing storage
+capacity. Other category names are preserved. Missing capacities remain
+`NEEDS_REVIEW`, while the dashboard can still display their source records.
+
+For another pending dataset, `POST /applications/import` accepts:
+
+```json
+{
+  "source": "REPD",
+  "applications": [
+    {"external_id": "19786", "technology": "solar", "capacity_mw": null,
+     "project_name": "Arncott", "submission_date": "2025-09-01"}
+  ]
+}
+```
+
+The example date is illustrative. Batches contain 1–2000 records. Source name and
+external ID determine stable backend IDs. Imports are transactional and idempotent:
+repeating identical source data preserves corrections; changed source values return
+`IMPORT_CONFLICT` (409) without overwriting or partially importing records. An import
+does not replace or delete an older dataset. Imported values retain their source
+provenance separately from PDF observations and do not trigger model calls.
+
 ## External component contracts
 
 ML and queue algorithms are owned externally. They can be injected through
@@ -119,6 +179,25 @@ ML and queue algorithms are owned externally. They can be injected through
 `integrations/`. Set `CQ_ML_URL` and `CQ_QUEUE_ENGINE_URL` to use the HTTP adapters.
 External endpoints are **backend-defined contracts to agree with those teams**;
 no existing external service implementation was supplied with this plan.
+
+`ml` can also be a synchronous or asynchronous Python function taking a
+`ProjectFeatures` object and returning a `Prediction` or matching dictionary:
+
+```python
+from cq_backend.app import create_app
+from cq_backend.domain.application import Prediction, ProjectFeatures
+
+def predict(project: ProjectFeatures) -> Prediction:
+    return trained_model.predict(project)  # Your supplied model implementation.
+
+app = create_app(ml=predict, queue_engine=engine)
+```
+
+Here `trained_model` and `engine` are the externally supplied implementations.
+Synchronous functions run on a worker thread. Function and HTTP outputs use the
+same validation; calls have a 30-second timeout. Cancelling a timed-out synchronous
+call cannot terminate its worker thread. The optional applicant and submission date
+can be null; HTTP dates are ISO strings, while Python receives a `date` object.
 
 | External call | Request JSON | Validated response |
 | --- | --- | --- |
@@ -128,8 +207,11 @@ no existing external service implementation was supplied with this plan.
 | POST engine `/schedule` | `projects: Application[]`, `policy`, `capacity` | `entries: [{application_id, position, score?}]` |
 | POST engine `/simulate` | `application_ids`, `parameters`, backend-resolved `projects: Application[]` | `metrics: {name: number}`, optional `references` |
 
-The decision distribution is a nonempty probability mass function whose values
-sum to one; its bin definitions must be agreed with the ML team. Queue entries
+The decision distribution has exactly 13 probabilities: months 1–12 after
+submission, then no decision within 12 months. Values must lie in [0, 1] and sum
+to one. Withdrawal is reported separately; it must not be added to these bins as
+another mutually exclusive outcome. The model team must use this same time origin
+and clarify whether withdrawal is included in the final no-decision bin. Queue entries
 must reference selected applications, with unique IDs and positive unique positions.
 Run IDs are generated by the backend. Model and HTTP responses are validated before
 persistence. Calls use a 30-second HTTP timeout.
@@ -141,7 +223,7 @@ Zova transaction with revision checks; simulations use the same atomic publicati
 
 ## Limits and deployment
 
-This initial backend accepts PDFs only: up to 10 files, 20 MiB per file and 200
+Document extraction accepts PDFs only: up to 10 files, 20 MiB per file and 200
 pages per PDF. The extraction prompt has a one-million-character limit, at most
 three agent requests, and a 300-second processing timeout. These limits can be
 changed through `Settings` when creating the app. Parsing/extraction runs one
@@ -177,3 +259,15 @@ CQ_TEST_DOCLING=1 uv run pytest -q tests/test_docling_live.py
 
 This test downloads Docling models when needed and replaces only the paid LLM
 boundary with `TestModel`. It remains opt-in so routine tests need no model downloads.
+
+Check the Arncott capacity safety guards against the supplied PDFs without an LLM
+or Docling model downloads:
+
+```sh
+CQ_DEMO_DOCS=/path/to/cq-demo-docs uv run pytest -q tests/test_arncott_safety.py
+```
+
+This test reads real PDF text with PDFium and deliberately supplies incorrect 8 MW
+and 5 MW observations. It verifies `NEEDS_REVIEW`, missing capacity, preserved
+observations, blocked scoring and the audited correction path. It tests the backend
+guards, not live LLM extraction accuracy.

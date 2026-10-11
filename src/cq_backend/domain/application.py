@@ -1,9 +1,9 @@
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from enum import StrEnum
 from typing import Literal
 from uuid import uuid4
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 def utc_now() -> datetime:
@@ -19,11 +19,17 @@ class Contract(BaseModel):
 
 
 FieldName = Literal[
-    "technology", "capacity_mw", "project_name", "planning_authority", "site_location"
+    "technology",
+    "capacity_mw",
+    "project_name",
+    "planning_authority",
+    "site_location",
+    "applicant",
+    "submission_date",
 ]
 Value = str | float | int | bool | None
 SUPPORTED_TECHNOLOGIES = frozenset(
-    {"solar", "onshore_wind", "offshore_wind", "hydro", "biomass", "tidal", "wave"}
+    {"solar", "onshore_wind", "battery", "hydro", "biomass", "tidal", "wave"}
 )
 
 
@@ -40,6 +46,13 @@ class ExtractedField(Contract):
     evidence: list[Evidence] = Field(default_factory=list)
     unit: str | None = None
     conflict: bool = False
+    capacity_scope: Literal[
+        "proposed_project",
+        "existing_project",
+        "neighbouring_project",
+        "grid_connection",
+        "unknown",
+    ] = "unknown"
 
 
 class ParsedBlock(Contract):
@@ -91,6 +104,34 @@ class ProjectFeatures(Contract):
     project_name: str | None = None
     planning_authority: str | None = None
     site_location: str | None = None
+    applicant: str | None = None
+    submission_date: date | None = None
+
+    @field_validator("submission_date", mode="before")
+    @classmethod
+    def validate_submission_date(cls, value):
+        if value is None or type(value) is date:
+            return value
+        if isinstance(value, str):
+            parsed = date.fromisoformat(value)
+            if parsed.isoformat() == value:
+                return parsed
+        raise ValueError("Submission date must be a date in YYYY-MM-DD format")
+
+
+class ImportedProject(ProjectFeatures):
+    external_id: str = Field(min_length=1, max_length=200)
+    capacity_mw: float | None = Field(default=None, gt=0, strict=True)
+
+
+class ApplicationImport(Contract):
+    source: str = Field(min_length=1, max_length=200)
+    applications: list[ImportedProject] = Field(min_length=1, max_length=2000)
+
+
+class ApplicationSource(Contract):
+    name: str
+    external_id: str
 
 
 class Correction(Contract):
@@ -122,7 +163,11 @@ class ProcessingStatus(StrEnum):
 
 class Prediction(Contract):
     withdrawal_probability_12m: float = Field(ge=0, le=1)
-    decision_distribution: list[float] = Field(min_length=1)
+    decision_distribution: list[float] = Field(
+        min_length=13,
+        max_length=13,
+        description="Decision probability in months 1 through 12 after submission, followed by no decision within 12 months. Values sum to one. Withdrawal probability is a separate, potentially overlapping event.",
+    )
 
     def model_post_init(self, context: object) -> None:
         if any(value < 0 or value > 1 for value in self.decision_distribution):
@@ -163,6 +208,8 @@ class Application(Contract):
     queue_run_id: str | None = None
     simulation_ids: list[str] = Field(default_factory=list)
     error: str | None = None
+    source: ApplicationSource | None = None
+    source_values: dict[FieldName, Value] = Field(default_factory=dict)
 
 
 class ExtractionResult(Contract):

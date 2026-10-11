@@ -5,7 +5,7 @@ from pathlib import Path
 
 import zova
 
-from cq_backend.domain.application import Application
+from cq_backend.domain.application import Application, new_id
 from cq_backend.errors import BackendError
 
 
@@ -106,6 +106,51 @@ class ZovaStorage:
 
     async def get_application(self, application_id: str) -> Application:
         return await self._call(self._get_application, application_id)
+
+    async def import_applications(
+        self, applications: list[Application], *, snapshot: str | None = None
+    ) -> list[Application]:
+        return await self._call(self._import_applications, applications, snapshot)
+
+    def _import_applications(
+        self, applications: list[Application], snapshot: str | None
+    ) -> list[Application]:
+        self._db.begin_immediate()
+        try:
+            imported = []
+            for application in applications:
+                try:
+                    existing = self._get_application(application.application_id)
+                except BackendError as error:
+                    if error.code != "NOT_FOUND":
+                        raise
+                    self._save_application(application, 0)
+                    imported.append(application)
+                else:
+                    if (
+                        existing.source != application.source
+                        or existing.source_values != application.source_values
+                    ):
+                        raise BackendError(
+                            "IMPORT_CONFLICT",
+                            "Imported source data changed; existing applications were preserved",
+                            409,
+                        )
+                    imported.append(existing)
+            if snapshot is not None:
+                with self._db.prepare(
+                    "INSERT INTO outputs(id, kind, payload, sequence) VALUES (?1, ?2, ?3, (SELECT COALESCE(MAX(sequence), 0) + 1 FROM outputs))"
+                ) as statement:
+                    for index, value in enumerate(
+                        (new_id(), "live_queue", snapshot), 1
+                    ):
+                        statement.bind_text(index, value)
+                    statement.step()
+            self._db.commit()
+            return imported
+        except Exception:
+            self._db.rollback()
+            raise
 
     def _get_application(self, application_id: str) -> Application:
         with self._db.prepare(

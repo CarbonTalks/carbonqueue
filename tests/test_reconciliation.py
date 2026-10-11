@@ -13,10 +13,17 @@ from cq_backend.domain.application import (
 def field(name, value, confidence=0.99, unit=None, evidence=True):
     return ExtractedField(
         field=name,
+        capacity_scope="proposed_project" if name == "capacity_mw" else "unknown",
         value=value,
         confidence=confidence,
         unit=unit,
-        evidence=[Evidence(document_id="doc", page=1, quote="Solar 12 MW")]
+        evidence=[
+            Evidence(
+                document_id="doc",
+                page=1,
+                quote=f"Solar {value} MW" if name == "capacity_mw" else "Solar 12 MW",
+            )
+        ]
         if evidence
         else [],
     )

@@ -1,4 +1,6 @@
 import asyncio
+import json
+from uuid import NAMESPACE_URL, uuid5
 
 from pydantic import ValidationError
 
@@ -8,15 +10,19 @@ from cq_backend.config import Settings
 from cq_backend.documents.docling import DocumentParser
 from cq_backend.domain.application import (
     Application,
+    ApplicationImport,
+    ApplicationSource,
     CarbonEstimate,
     CarbonScenario,
     Correction,
     CorrectionRequest,
     EffortEstimate,
+    ImportedProject,
     Prediction,
     ProcessingStatus,
     new_id,
 )
+from cq_backend.domain.live_queue import LiveQueueSnapshot
 from cq_backend.domain.queue import (
     QueueRequest,
     QueueResult,
@@ -55,6 +61,92 @@ class OrchestrationService:
         previous = application.revision
         application.revision += 1
         await self.storage.save_application(application, expected_revision=previous)
+
+    def imported_applications(self, request: ApplicationImport) -> list[Application]:
+        ids = [project.external_id for project in request.applications]
+        if len(set(ids)) != len(ids):
+            raise BackendError(
+                "DUPLICATE_APPLICATION", "External IDs must be unique", 400
+            )
+        applications = []
+        for project in request.applications:
+            values = project.model_dump(
+                mode="json", exclude={"external_id"}, exclude_none=True
+            )
+            features, readiness = reconcile([], overrides=values)
+            applications.append(
+                Application(
+                    application_id=str(
+                        uuid5(
+                            NAMESPACE_URL,
+                            json.dumps([request.source, project.external_id]),
+                        )
+                    ),
+                    source=ApplicationSource(
+                        name=request.source, external_id=project.external_id
+                    ),
+                    source_values=values,
+                    project_features=features,
+                    readiness=readiness,
+                    status=ProcessingStatus.READY
+                    if readiness.ready_for_review
+                    else ProcessingStatus.NEEDS_REVIEW,
+                )
+            )
+        return applications
+
+    async def import_applications(
+        self, request: ApplicationImport
+    ) -> list[Application]:
+        return await self.storage.import_applications(
+            self.imported_applications(request)
+        )
+
+    async def import_live_queue(self, request: LiveQueueSnapshot) -> dict:
+        records = request.files + request.needs_confirmation
+        if not 1 <= len(records) <= 2000:
+            raise BackendError(
+                "INVALID_IMPORT", "Import must contain 1 to 2000 applications", 400
+            )
+        applications = self.imported_applications(
+            ApplicationImport(
+                source="REPD",
+                applications=[
+                    ImportedProject(
+                        external_id=str(record.app_id),
+                        technology="battery"
+                        if record.technology == "Battery"
+                        else record.category,
+                        capacity_mw=record.generation_mw,
+                        project_name=record.site_name,
+                        planning_authority=record.authority,
+                        submission_date=record.submitted,
+                    )
+                    for record in records
+                ],
+            )
+        )
+        snapshot = request.model_dump(mode="json", exclude_unset=True)
+        for record, application in zip(
+            snapshot["files"] + snapshot["needs_confirmation"],
+            applications,
+            strict=True,
+        ):
+            record["application_id"] = application.application_id
+        await self.storage.import_applications(
+            applications, snapshot=json.dumps(snapshot)
+        )
+        return await self.get_live_queue()
+
+    async def get_live_queue(self) -> dict:
+        snapshot = json.loads(await self.storage.get_output("live_queue"))
+        changed = []
+        for record in snapshot["files"] + snapshot["needs_confirmation"]:
+            application = await self.storage.get_application(record["application_id"])
+            if application.corrections:
+                changed.append(application.application_id)
+        snapshot["changed_application_ids"] = changed
+        return snapshot
 
     async def process_application(self, files) -> Application:
         if self.extractor is None:
@@ -138,7 +230,7 @@ class OrchestrationService:
             raise BackendError(
                 "INVALID_CORRECTION", "Correction contains an invalid value", 400
             )
-        overrides = {
+        overrides = application.source_values | {
             correction.field: correction.corrected_value
             for correction in application.corrections
         }

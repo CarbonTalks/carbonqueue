@@ -12,15 +12,17 @@ from cq_backend.api.applications import (
     correct_observations,
     extract,
     get_application,
+    import_applications,
     list_applications,
+    list_pending_applications,
 )
-from cq_backend.api.queue import get_queue, run_queue
+from cq_backend.api.queue import get_live_queue, get_queue, import_live_queue, run_queue
 from cq_backend.api.simulations import get_simulation, run_simulation
 from cq_backend.config import Settings
 from cq_backend.documents.docling import DoclingParser
 from cq_backend.domain.application import ProcessingStatus
 from cq_backend.errors import BackendError
-from cq_backend.integrations.ml import HTTPMLService
+from cq_backend.integrations.ml import CallableMLService, HTTPMLService
 from cq_backend.integrations.queue_engine import HTTPQueueEngine
 from cq_backend.services.documents import DocumentService
 from cq_backend.services.orchestration import OrchestrationService
@@ -83,6 +85,8 @@ def create_app(
     queue_engine=None,
 ) -> Litestar:
     settings = settings or Settings.from_env()
+    if ml is not None and callable(ml) and not hasattr(ml, "predict"):
+        ml = CallableMLService(ml)
 
     @asynccontextmanager
     async def lifespan(app: Litestar):
@@ -141,10 +145,14 @@ def create_app(
             health,
             extract,
             list_applications,
+            import_applications,
+            list_pending_applications,
             get_application,
             correct_observations,
             run_queue,
             get_queue,
+            get_live_queue,
+            import_live_queue,
             run_simulation,
             get_simulation,
         ],

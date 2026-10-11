@@ -36,6 +36,7 @@ class Extractor:
             ),
             ExtractedField(
                 field="capacity_mw",
+                capacity_scope="proposed_project",
                 value=12,
                 unit="MW",
                 confidence=0.99,
@@ -46,10 +47,17 @@ class Extractor:
             result.append(
                 ExtractedField(
                     field="capacity_mw",
+                    capacity_scope="proposed_project",
                     value=12.6,
                     unit="MW",
                     confidence=0.99,
-                    evidence=evidence,
+                    evidence=[
+                        Evidence(
+                            document_id=documents[0].document_id,
+                            page=1,
+                            quote="12.6 MW",
+                        )
+                    ],
                 )
             )
         return result
@@ -58,7 +66,8 @@ class Extractor:
 class ML:
     async def predict(self, project):
         return Prediction(
-            withdrawal_probability_12m=0.2, decision_distribution=[0.4, 0.6]
+            withdrawal_probability_12m=0.2,
+            decision_distribution=[0.4] + [0.0] * 11 + [0.6],
         )
 
 

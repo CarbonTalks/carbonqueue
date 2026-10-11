@@ -3,7 +3,11 @@ from litestar.datastructures import UploadFile
 from litestar.di import NamedDependency
 from litestar.params import FromPath, MultipartBody
 
-from cq_backend.domain.application import Application, CorrectionRequest
+from cq_backend.domain.application import (
+    Application,
+    ApplicationImport,
+    CorrectionRequest,
+)
 from cq_backend.services.orchestration import OrchestrationService
 
 
@@ -20,6 +24,24 @@ async def list_applications(
     service: NamedDependency[OrchestrationService],
 ) -> list[Application]:
     return await service.storage.list_applications()
+
+
+@post("/applications/import")
+async def import_applications(
+    data: ApplicationImport, service: NamedDependency[OrchestrationService]
+) -> list[Application]:
+    return await service.import_applications(data)
+
+
+@get("/applications/pending")
+async def list_pending_applications(
+    service: NamedDependency[OrchestrationService],
+) -> list[Application]:
+    return [
+        application
+        for application in await service.storage.list_applications()
+        if application.source is not None
+    ]
 
 
 @get("/applications/{application_id:str}")

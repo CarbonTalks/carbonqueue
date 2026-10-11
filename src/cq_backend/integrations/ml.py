@@ -1,3 +1,5 @@
+import asyncio
+import inspect
 from typing import Protocol
 
 import httpx
@@ -9,6 +11,35 @@ from cq_backend.errors import BackendError
 
 class MLService(Protocol):
     async def predict(self, project: ProjectFeatures) -> Prediction: ...
+
+
+class CallableMLService:
+    """Adapt a local Python predictor without blocking the request event loop."""
+
+    def __init__(self, predict):
+        self.function = predict
+
+    async def predict(self, project: ProjectFeatures) -> Prediction:
+        try:
+            async with asyncio.timeout(30):
+                if inspect.iscoroutinefunction(self.function):
+                    result = await self.function(project)
+                else:
+                    result = await asyncio.to_thread(self.function, project)
+                    if inspect.isawaitable(result):
+                        result = await result
+        except BackendError:
+            raise
+        except Exception as error:
+            raise BackendError("ML_UNAVAILABLE", "ML component unavailable") from error
+        try:
+            return Prediction.model_validate(result)
+        except ValidationError as error:
+            raise BackendError(
+                "ML_INVALID_RESPONSE",
+                "ML component returned an invalid prediction",
+                502,
+            ) from error
 
 
 class HTTPMLService:

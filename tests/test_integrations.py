@@ -11,9 +11,15 @@ from cq_backend.integrations.queue_engine import HTTPQueueEngine
 @pytest.mark.parametrize(
     "payload",
     [
-        {"withdrawal_probability_12m": 2, "decision_distribution": [1]},
-        {"withdrawal_probability_12m": 0.5, "decision_distribution": [-1, 2]},
-        {"withdrawal_probability_12m": 0.5, "decision_distribution": [0.3, 0.3]},
+        {"withdrawal_probability_12m": 2, "decision_distribution": [0.0] * 12 + [1]},
+        {
+            "withdrawal_probability_12m": 0.5,
+            "decision_distribution": [-1, 2] + [0.0] * 11,
+        },
+        {
+            "withdrawal_probability_12m": 0.5,
+            "decision_distribution": [0.3, 0.3] + [0.0] * 11,
+        },
         {},
     ],
 )
@@ -39,7 +45,7 @@ async def test_ml_adapter_sends_features_to_external_predict_boundary():
             200,
             json={
                 "withdrawal_probability_12m": 0.2,
-                "decision_distribution": [0.4, 0.6],
+                "decision_distribution": [0.4] + [0.0] * 11 + [0.6],
             },
         )
 

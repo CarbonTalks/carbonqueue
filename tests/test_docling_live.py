@@ -36,6 +36,7 @@ def test_real_pdf_docling_agent_and_zova_end_to_end(tmp_path, planning_pdf):
                         },
                         {
                             "field": "capacity_mw",
+                            "capacity_scope": "proposed_project",
                             "value": 12,
                             "unit": "MW",
                             "confidence": 0.99,

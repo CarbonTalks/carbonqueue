@@ -1,4 +1,6 @@
+import re
 from collections import defaultdict
+from datetime import date
 
 from cq_backend.domain.application import (
     SUPPORTED_TECHNOLOGIES,
@@ -14,9 +16,66 @@ REQUIRED_FIELDS = ("technology", "capacity_mw")
 MIN_CONFIDENCE = 0.8
 
 
+def is_proposed_capacity(
+    observation: ExtractedField, documents: list[ParsedDocument] | None
+) -> bool:
+    if observation.capacity_scope != "proposed_project":
+        return False
+    if type(observation.value) not in (int, float):
+        return True  # The ordinary value check reports invalid numeric values.
+    if observation.unit != "MW" or not observation.evidence:
+        return True  # Keep unit/evidence failures visible to ordinary checks.
+    number = r"(?<![\d.])" + re.escape(f"{observation.value:g}") + r"(?:\.0+)?\s*MW\b"
+    if not any(
+        re.search(number, evidence.quote or "", re.IGNORECASE)
+        for evidence in observation.evidence
+    ):
+        return False
+    pages = {
+        (doc.document_id, page.number): " ".join(page.text.split())
+        for doc in documents or []
+        for page in doc.pages
+    }
+    for evidence in observation.evidence:
+        quote = " ".join((evidence.quote or "").split())
+        contexts = [quote]
+        source = pages.get((evidence.document_id, evidence.page), "")
+        # Include nearby source context so cropping a historical quote cannot
+        # turn an earlier permission into the current proposal's capacity.
+        if quote:
+            start = 0
+            while (position := source.find(quote, start)) >= 0:
+                contexts.append(source[max(0, position - 240) : position + len(quote)])
+                start = position + len(quote)
+        for context in contexts:
+            if re.search(
+                number + r"\s+(?:grid\s+)?connection\b", context, re.IGNORECASE
+            ):
+                return False
+            if re.search(
+                r"planning permission was (?:approved|granted).{0,240}" + number,
+                context,
+                re.IGNORECASE,
+            ):
+                return False
+    return True
+
+
 def valid_value(field: str, value: Value) -> bool:
     if field == "capacity_mw":
         return type(value) in (int, float) and value > 0
+    if field == "submission_date":
+        if value is None:
+            return True
+        try:
+            return (
+                isinstance(value, str)
+                and date.fromisoformat(value).isoformat() == value
+            )
+        except ValueError:
+            return False
+    if value is None and field not in REQUIRED_FIELDS:
+        return True
     return isinstance(value, str) and bool(value.strip())
 
 
@@ -63,7 +122,12 @@ def reconcile(
             else:
                 canonical[name] = value
             continue
-        group = [item for item in groups[name] if item.value is not None]
+        group = [
+            item
+            for item in groups[name]
+            if item.value is not None
+            and (name != "capacity_mw" or is_proposed_capacity(item, documents))
+        ]
         if not group:
             if name in REQUIRED_FIELDS:
                 result.missing_fields.append(name)
