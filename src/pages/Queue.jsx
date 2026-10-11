@@ -93,13 +93,13 @@ export default function Queue() { const ctx = useApp(); const [policyOpen,setPol
         </div>
       </div>
     </div>
-    <div className="bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-wrap items-center justify-between gap-space-md">
-      <div className="flex flex-wrap items-center gap-space-sm flex-1 min-w-[280px]">
-        <div className="relative flex-1 min-w-[220px]">
+    <div className="queue-toolbar">
+      <div className="queue-toolbar-fields">
+        <div className="queue-toolbar-search relative">
           <span className="material-symbols-outlined absolute left-3 top-2 text-outline text-[18px]">search</span>
           <input aria-label="Search projects" value={ctx.search} onChange={e => ctx.setSearch(e.target.value)} className="w-full pl-9 pr-3 py-1.5 bg-surface-container-low focus:bg-surface-container-lowest rounded text-on-surface placeholder:text-outline font-body-sm text-body-sm outline-none transition-all focus:ring-1 focus:ring-on-surface/40" placeholder="Search projects by name, ID, or developer..." type="text" />
         </div>
-        <div className="relative inline-block">
+        <div className="queue-filter-pair"><div className="relative inline-block">
           <select value={ctx.filters[0]} aria-label="Technology" onChange={e => ctx.setFilter(0, Number(e.target.value))} className="appearance-none bg-surface-container-low text-on-surface px-space-md py-1.5 pr-8 rounded font-label-md text-label-md outline-none cursor-pointer hover:bg-surface-container transition-colors">
             <option value={0}>All Technologies</option>
             <option value={3}>Battery Storage (BESS)</option>
@@ -111,8 +111,8 @@ export default function Queue() { const ctx = useApp(); const [policyOpen,setPol
           </select>
           <span className="material-symbols-outlined absolute right-2 top-2 pointer-events-none text-outline text-[16px]">expand_more</span>
         </div>
-        <button className="queue-control" aria-label="Sort technologies alphabetically" aria-pressed={ctx.sort?.key==='tech'} onClick={()=>ctx.toggleSort('tech')}>A–Z <span className="material-symbols-outlined">{ctx.sort?.key==='tech'&&ctx.sort.direction==='desc'?'arrow_downward':'arrow_upward'}</span></button>
-        <div className="relative inline-block">
+        <button className="queue-control" aria-label="Sort technologies alphabetically" aria-pressed={ctx.sort?.key==='tech'} onClick={()=>ctx.toggleSort('tech')}>A–Z <span className="material-symbols-outlined">{ctx.sort?.key==='tech'&&ctx.sort.direction==='desc'?'arrow_downward':'arrow_upward'}</span></button></div>
+        <div className="queue-filter-pair"><div className="relative inline-block">
           <select value={ctx.filters[1]} aria-label="Capacity" onChange={e => ctx.setFilter(1, Number(e.target.value))} className="appearance-none bg-surface-container-low text-on-surface px-space-md py-1.5 pr-8 rounded font-label-md text-label-md outline-none cursor-pointer hover:bg-surface-container transition-colors">
             <option value={0}>Capacity: All Sizes</option>
             <option value={1}>&lt; 5 MW (Small)</option>
@@ -121,7 +121,7 @@ export default function Queue() { const ctx = useApp(); const [policyOpen,setPol
           </select>
           <span className="material-symbols-outlined absolute right-2 top-2 pointer-events-none text-outline text-[16px]">expand_more</span>
         </div>
-        <button className="queue-control" aria-label="Sort by capacity" aria-pressed={ctx.sort?.key==='capacity'} onClick={()=>ctx.toggleSort('capacity')}>Capacity <span className="material-symbols-outlined">{ctx.sort?.key==='capacity'&&ctx.sort.direction==='asc'?'arrow_upward':'arrow_downward'}</span></button>
+        <button className="queue-control" aria-label="Sort by capacity" aria-pressed={ctx.sort?.key==='capacity'} onClick={()=>ctx.toggleSort('capacity')}>Capacity <span className="material-symbols-outlined">{ctx.sort?.key==='capacity'&&ctx.sort.direction==='asc'?'arrow_upward':'arrow_downward'}</span></button></div>
         <div className="relative inline-block">
           <select value={ctx.filters[2]} aria-label="Waiting time" onChange={e => ctx.setFilter(2, Number(e.target.value))} className="appearance-none bg-surface-container-low text-on-surface px-space-md py-1.5 pr-8 rounded font-label-md text-label-md outline-none cursor-pointer hover:bg-surface-container transition-colors">
             <option value={0}>Wait: All Durations</option>
@@ -131,7 +131,7 @@ export default function Queue() { const ctx = useApp(); const [policyOpen,setPol
           <span className="material-symbols-outlined absolute right-2 top-2 pointer-events-none text-outline text-[16px]">expand_more</span>
         </div>
       </div>
-      <button className="queue-control" aria-expanded={policyOpen} aria-controls="policy-options" onClick={()=>setPolicyOpen(!policyOpen)}><span className="material-symbols-outlined">tune</span>Policy Optimization<span className="material-symbols-outlined">{policyOpen?'expand_less':'expand_more'}</span></button>
+      <div className="queue-toolbar-actions"><button className="queue-control" aria-expanded={policyOpen} aria-controls="policy-options" onClick={()=>setPolicyOpen(!policyOpen)}><span className="material-symbols-outlined">tune</span>Policy Optimization<span className="material-symbols-outlined">{policyOpen?'expand_less':'expand_more'}</span></button>
       <div className="flex items-center gap-1 bg-surface-container-low p-1 rounded">
         <button className="px-space-sm py-1 rounded bg-surface-container-lowest shadow-xs text-on-surface font-label-xs text-label-xs font-semibold flex items-center gap-1">
           <span className="material-symbols-outlined text-[16px]">table_rows</span>
@@ -141,6 +141,7 @@ export default function Queue() { const ctx = useApp(); const [policyOpen,setPol
           <span className="material-symbols-outlined text-[16px]">timeline</span>
           Queue Gantt
         </button>
+      </div>
       </div>
     </div>
     {policyOpen && (<div id="policy-options" className="bg-surface-container-lowest rounded-xl shadow-sm p-space-lg flex flex-col gap-space-md">
