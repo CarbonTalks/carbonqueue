@@ -14,7 +14,7 @@ from cqsim.simulator import calibrate, simulate
 CALIBRATION_YEAR = 2023  # canli kuyrukta gercek sonuc olmadigi icin katsayi en son simulasyon yilindan alinir
 TOGGLE = ("fifo", "carbon", "carbonqueue")  # dashboard'daki politika secici
 UNSCORED_WHY = {"storage": "depolama", "bioenergy_waste": "biyoenerji / atık", "other_renewable": "diğer yenilenebilir"}
-STALE_REASON = "5 yıldan uzun süredir bekliyor: durumu kurumla teyit edilmeli"
+STALE_REASON = "Çok uzun süredir bekliyor: durumu kurumla teyit edilmeli"
 
 
 def _tr(x: float, digits: int = 1) -> str:

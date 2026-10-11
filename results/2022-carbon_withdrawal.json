@@ -81,7 +81,8 @@
   },
   "simulation": {
    "capacity_factor": 1.0,
-   "max_weeks": 520
+   "max_weeks": 520,
+   "stale_years_historical": 5
   }
  },
  "emission_factor_tco2_per_mwh": {

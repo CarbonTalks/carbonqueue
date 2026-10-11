@@ -21,7 +21,7 @@ def _set(cfg: dict, section: str, **values) -> dict:
 
 
 def variants(cfg: dict) -> dict:
-    """ad -> (cfg, 5 yildan eski dosyalar cikarilsin mi)"""
+    """ad -> (cfg, eski dosyalar cikarilsin mi)"""
     return {
         "temel": (cfg, False),
         "kapasite x0,8": (_set(cfg, "simulation", capacity_factor=0.8), False),
@@ -32,7 +32,7 @@ def variants(cfg: dict) -> dict:
         "sabit efor": (_set(cfg, "effort", storage_component=0, mw_steps=[]), False),
         "kucuk proje kotasi yok": (_set(cfg, "queue", small_quota_factor=0.0), False),
         "kucuk proje kotasi tam pay": (_set(cfg, "queue", small_quota_factor=1.0), False),
-        "5 yildan eski dosyalar haric": (cfg, True),
+        "eski dosyalar haric": (cfg, True),
     }
 
 

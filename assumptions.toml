@@ -61,3 +61,6 @@ small_quota_factor = 0.5    # kucuk projeler, efor paylarinin en az bu kadarini 
 # karar suresine esit olacak sekilde. capacity_factor bu kalibre kapasiteyi carpar (duyarlilik icin).
 capacity_factor = 1.0
 max_weeks = 520
+# Yalnizca gecmis yillarin "eski dosyalar haric" duyarlilik kosusu icin. Canli kuyrukta kullanilmaz:
+# orada tanim cq-model'in stale_or_uncertain kolonundan okunur.
+stale_years_historical = 5

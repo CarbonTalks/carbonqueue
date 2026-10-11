@@ -154,7 +154,7 @@
  },
  {
   "year": 2021,
-  "variant": "5 yildan eski dosyalar haric",
+  "variant": "eski dosyalar haric",
   "policy": "carbonqueue",
   "files": 711,
   "capacity_hours_per_week": 100.4,
@@ -324,7 +324,7 @@
  },
  {
   "year": 2022,
-  "variant": "5 yildan eski dosyalar haric",
+  "variant": "eski dosyalar haric",
   "policy": "carbonqueue",
   "files": 1382,
   "capacity_hours_per_week": 232.6,
@@ -494,7 +494,7 @@
  },
  {
   "year": 2023,
-  "variant": "5 yildan eski dosyalar haric",
+  "variant": "eski dosyalar haric",
   "policy": "carbonqueue",
   "files": 1844,
   "capacity_hours_per_week": 379.7,

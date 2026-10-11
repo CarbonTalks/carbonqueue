@@ -64,7 +64,7 @@ if __name__ == "__main__":
     sub.add_parser("all")
     sub.add_parser("sensitivity")
     sub.add_parser("rank").add_argument("--include-stale", action="store_true",
-                                        help="5 yildan eski dosyalari da siraya koy (varsayilan: ayri listede)")
+                                        help="stale_or_uncertain dosyalari da siraya koy (varsayilan: ayri listede)")
     for s in sub.choices.values():
         s.add_argument("--data", type=Path, default=DATA)
         s.add_argument("--out", type=Path, default=ROOT / "results")

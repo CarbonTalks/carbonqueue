@@ -74,12 +74,12 @@ Canlı kuyrukta gerçek sonuç bilinmediği için karbon kazancı raporlanmaz.
 | `files[].reason` | Sıranın gerekçesi (Türkçe, ekranda doğrudan gösterilebilir) |
 | `files[].daily_tco2.{low,central,high}` | Günlük yer değiştirilen emisyon bandı; skorsuz dosyada `null` |
 | `files[].effort_hours`, `p_withdraw_12m`, `wait_days`, `generation_mw`, `has_storage` | Dosya bilgileri |
-| `needs_confirmation[]` | 5 yıldan uzun süredir bekleyen dosyalar: sıraya konmaz, kurumla teyit edilmek üzere ayrı listelenir (`--include-stale` ile sıraya girer) |
+| `needs_confirmation[]` | cq-model'in `stale_or_uncertain` işaretlediği dosyalar: sıraya konmaz, kurumla teyit edilmek üzere ayrı listelenir (`--include-stale` ile sıraya girer) |
 
 ## Duyarlılık
 
 `results/sensitivity.md`: 2021–2023 için CarbonQueue'nun tek bir varsayım değiştiğinde verdiği sonuç
-(kapasite ×0,8 / ×1,2, azami bekleme 180 gün, zorunlu kademe sınırsız, sabit efor, küçük proje kotası, 5 yıldan eski dosyalar hariç).
+(kapasite ×0,8 / ×1,2, azami bekleme 180 gün, zorunlu kademe sınırsız, sabit efor, küçük proje kotası, eski dosyalar hariç).
 Her varyantta kapasite yeniden kalibre edilir ve FIFO da aynı varsayımla yeniden koşar.
 
 `max_wait_capacity_share` (varsayılan 0,5): zorunlu kademenin haftalık kapasiteden alabileceği azami pay.

@@ -51,9 +51,6 @@ def _has_storage(apps: pd.DataFrame) -> pd.Series:
     return apps.application_key.isin(keys)
 
 
-STALE = pd.Timedelta(days=5 * 365)  # cq-model ile ayni: 5 yildan uzun bekleyen dosya "stale_or_uncertain"
-
-
 def _annotate(apps: pd.DataFrame, cfg: dict, year: int) -> pd.DataFrame:
     """Her basvuruya karbon, efor ve gercek sonuc kolonlarini ekler."""
     out = apps[["app_id", "site_name", "authority", "category", "technology", "app_generation_mw", "event"]].copy()
@@ -80,7 +77,9 @@ def build_queue(year: int | str, cfg: dict, data: Path = DATA) -> pd.DataFrame:
     arrival : kuyruga giris (basvuru tarihi)
     exit    : dosya incelenmeden kuyruktan kendiliginden ciktigi tarih (geri cekilme ya da redsiz temyiz)
     counts  : incelenirse karbona katkisi var mi (nihai izin almis, terk edilmemis, skorlanabilir)
-    stale   : kuyruk basladiginda 5 yildan uzun suredir bekliyor
+    stale   : durumu belirsiz eski dosya. Canli kuyrukta tanim cq-model'dedir (stale_or_uncertain kolonu).
+              Gecmis yillarda o kolon olmadigi icin yalnizca duyarlilik kosusunda kullanilan yerel kural:
+              kuyruk basladiginda simulation.stale_years_historical yildan uzun suredir bekliyor.
     """
     apps = pd.read_parquet(data / "applications.parquet")
     pred = pd.read_parquet(data / "predictions" / f"predictions_{year}.parquet")
@@ -88,7 +87,10 @@ def build_queue(year: int | str, cfg: dict, data: Path = DATA) -> pd.DataFrame:
     q = _annotate(apps, cfg, start.year).merge(pred[["app_id", "p_withdraw_12m"]], on="app_id")
     if len(q) != len(pred):
         raise ValueError("tahmin dosyasindaki bazi app_id'ler applications.parquet'te yok")
-    q["stale"] = q.arrival < start - STALE
+    if year == "live":
+        q["stale"] = q.app_id.map(apps.set_index("app_id").stale_or_uncertain).to_numpy(bool)
+    else:
+        q["stale"] = q.arrival < start - pd.Timedelta(days=365 * cfg["simulation"]["stale_years_historical"])
     q["decided_in_year"] = (q.event == "decision") & (q.d_event.dt.year == year) if year != "live" else False
     return q.sort_values(["arrival", "app_id"]).reset_index(drop=True)
 
