@@ -24,6 +24,8 @@ def test_real_pdf_docling_agent_and_zova_end_to_end(tmp_path, planning_pdf):
                     "observations": [
                         {
                             "field": "technology",
+                            "unit": None,
+                            "capacity_scope": "unknown",
                             "value": "solar",
                             "confidence": 0.99,
                             "evidence": [

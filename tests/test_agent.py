@@ -14,6 +14,8 @@ async def test_pydanticai_extracts_structured_observations_from_parsed_pages():
                     "field": "technology",
                     "value": "solar",
                     "confidence": 0.99,
+                    "unit": None,
+                    "capacity_scope": "unknown",
                     "evidence": [
                         {"document_id": "doc", "page": 1, "quote": "Solar 12 MW"}
                     ],

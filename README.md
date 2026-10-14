@@ -17,10 +17,23 @@ uv run cq-backend
 The API listens on `127.0.0.1:8000`. Health is available at `/health`, and the
 generated OpenAPI schema at `/schema/openapi.json`.
 
-Set `CQ_EXTRACTION_MODEL` to a PydanticAI `provider:model` identifier and supply
-the provider's credentials before starting the server. The installed agent package
-includes the OpenAI provider; other providers require their corresponding
-PydanticAI extras. See [PydanticAI model documentation](https://ai.pydantic.dev/models/overview/).
+For Gemini, copy `.env.example` to `.env` and paste your Google AI Studio key into
+`GOOGLE_API_KEY`:
+
+```dotenv
+CQ_EXTRACTION_MODEL=google:gemini-3.8-flash
+GOOGLE_API_KEY=your-key-here
+```
+
+Run `uv sync --locked` and `uv run cq-backend` from the project root. The backend
+loads `.env` from the current working directory; existing process environment
+variables take precedence. `.env` is excluded from Git and container build contexts.
+For containers, pass credentials at runtime with `--env-file .env`; they are not
+baked into the image. Restart the server after editing `.env`.
+
+Gemini and OpenAI providers are installed. You can change `CQ_EXTRACTION_MODEL` to
+another supported PydanticAI `provider:model` identifier. Other providers require
+their corresponding extras. See [PydanticAI Google configuration](https://pydantic.dev/docs/ai/models/google/).
 Without a configured model, extraction returns `EXTRACTOR_UNAVAILABLE`.
 No synthetic extraction is used in the running application.
 
@@ -45,6 +58,15 @@ extracts separate observations with source document IDs, one-based page numbers,
 quotations and confidence. Reconciliation verifies the quotations against the
 parsed source and blocks conflicting, unsupported, invalid or low-confidence
 observations. Identical observations do not create conflicts.
+
+The agent receives readable page text with document/page headers. Its output schema
+requires nonempty evidence quotes and explicit unit/scope metadata. Invalid values
+or quotes are returned to the model for correction, with the cited source page when
+available, within the existing three-request limit. Quote matching remains exact
+apart from whitespace. Missing capacity and genuine conflicts are not retried into
+guessed values; reconciliation still sends them to human review. Submission dates
+need explicit submitted/received context; signature and cover-letter dates are not
+accepted as substitutes.
 
 The initial canonical contract requires `technology` and `capacity_mw`. Optional
 fields are `project_name`, `planning_authority`, `site_location`, `applicant` and

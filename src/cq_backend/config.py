@@ -2,6 +2,8 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 
 @dataclass(frozen=True)
 class Settings:
@@ -28,6 +30,7 @@ class Settings:
 
     @classmethod
     def from_env(cls):
+        load_dotenv(Path.cwd() / ".env", override=False)
         return cls(
             data_dir=Path(os.getenv("CQ_DATA_DIR", ".data")),
             extraction_model=os.getenv("CQ_EXTRACTION_MODEL"),

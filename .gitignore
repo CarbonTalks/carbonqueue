@@ -11,3 +11,8 @@ wheels/
 .data/
 .pytest_cache/
 .ruff_cache/
+
+# Local credentials; keep the documented template tracked.
+.env
+.env.*
+!.env.example

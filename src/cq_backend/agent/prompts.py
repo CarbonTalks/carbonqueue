@@ -8,6 +8,13 @@ offshore_wind remains outside the historical model's supported domain. Preserve 
 such as heat_pump instead of mapping them to a renewable category.
 For every value include confidence and exact supporting quotations with the supplied
 document_id and one-based page number. Never invent values or evidence.
+Source pages are supplied as readable text under DOCUMENT and PAGE headers.
+Copy quotations exactly, including capitalization; a short exact substring is
+preferable to joining distant lines or paraphrasing. Every observation needs at
+least one nonempty quote from the correct document and page. Omit optional fields
+whose values or evidence cannot be established. Do not manufacture a quote just
+to fill every field. Supply unit and capacity_scope explicitly for every observation:
+use unit=null and capacity_scope=unknown for fields other than capacity_mw.
 Retain contradictory observations separately. Omit missing values.
 Record the stated unit for capacity; do not silently convert kW, GW or MWp to MW.
 For every capacity observation set capacity_scope: proposed_project only if the
@@ -20,6 +27,9 @@ the proposed project will share that grid connection. When only unrelated number
 are stated, the proposed capacity is missing: do not choose one or infer a total.
 Extract submission_date only when the application's submission date is explicit,
 in YYYY-MM-DD format; do not substitute a document, signature or decision date.
+In particular, a dated cover letter or an application form's signature date is
+not evidence of when the authority received the application. If no explicit
+submission/received date is stated, omit submission_date.
 Omit applicant and submission_date if absent. For non-capacity fields leave
 capacity_scope as unknown.
 Never approve/reject projects, predict withdrawal, calculate carbon, or rank queues.
