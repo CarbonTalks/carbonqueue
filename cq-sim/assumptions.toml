@@ -1,0 +1,66 @@
+# CarbonQueue K2 varsayimlari. Koddaki butun sayilar buradan gelir.
+# Karbon degerlerinin kaynaklari ve secim gerekceleri: docs/carbon_sources.md
+
+[carbon]
+# Yuk faktoru (yillik uretim / kurulu gucun azami uretimi). DUKES 2026 tablo 6.3, "unchanged configuration"
+# tabani, 2021-2025 ortalamasi (gunes %10,54; kara ruzgari %24,80). UK geneli.
+load_factor = { solar = 0.105, onshore_wind = 0.248 }
+# Iznin erken cikmasiyla kazanilan uretim, izinden bu kadar yil sonraki sebekeyi etkiler; emisyon faktoru
+# kuyruk yili + operation_lag_years icin okunur. REPD'de izinden isletmeye medyan ~1 yil (tamamlananlar);
+# faktorler yillar icinde dustugu icin 2 yil temkinli taraftir.
+operation_lag_years = 2
+# Yer degistirme emisyon faktoru, tCO2e/MWh, yila gore. Faktor siralamayi degistirmez (ayni yil icinde her
+# teknolojiye ayni carpan), yalnizca raporlanan tonu degistirir. Tabloda olmayan yil icin en yakin onceki yil.
+
+[carbon.emission_factor.low]      # sebeke ortalamasi, uretim bazli (Green Book veri tablolari, Tablo 1)
+2021 = 0.19794
+2022 = 0.14390
+2023 = 0.13308
+2024 = 0.13833
+2025 = 0.12003
+2026 = 0.08965
+2027 = 0.06681
+2028 = 0.05790
+
+[carbon.emission_factor.central]  # uzun donem marjinal, uretim bazli (Green Book veri tablolari, Tablo 1)
+2021 = 0.25495
+2022 = 0.24102
+2023 = 0.22605
+2024 = 0.20997
+2025 = 0.19269
+2026 = 0.17413
+2027 = 0.15419
+2028 = 0.13276
+
+[carbon.emission_factor.high]     # gaz santrali uretiminin yogunlugu (DUKES 2026 tablo 5.14, tCO2/MWh)
+2021 = 0.37706
+2022 = 0.38089
+2023 = 0.37832
+2024 = 0.37660
+2025 = 0.36537
+
+[carbon.scenarios]
+# Yansima orani: iznin erken cikmasinin ne kadari isletmeye erken girmeye yansir. Siralamayi degistirmez.
+alpha = [0.2, 0.5, 1.0]
+
+[effort]
+# Kural tabanli efor puani; REPD'den turetilebilen kurallar. 1 puan = hours_per_point saat.
+hours_per_point = 2
+base = 4
+storage_component = 2   # basvuruda depolama bileseni var
+mw_steps = [[1, 2], [20, 2]]  # [esik MW, ek puan]: >= 1 MW +2, >= 20 MW +2 daha
+
+[queue]
+max_wait_days = 365         # zorunlu kademe: bu sureyi asan dosya one alinir (ic politika, yasal sure degil)
+max_wait_capacity_share = 0.5  # zorunlu kademenin kullanabilecegi azami kapasite payi (1.0 = sinirsiz)
+small_project_mw = 1.0      # kucuk proje esigi
+small_quota_factor = 0.5    # kucuk projeler, efor paylarinin en az bu kadarini garanti alir
+
+[simulation]
+# Kapasite yil yil kalibre edilir: FIFO simulasyonundaki medyan bekleme, ayni dosyalarin gercek medyan
+# karar suresine esit olacak sekilde. capacity_factor bu kalibre kapasiteyi carpar (duyarlilik icin).
+capacity_factor = 1.0
+max_weeks = 520
+# Yalnizca gecmis yillarin "eski dosyalar haric" duyarlilik kosusu icin. Canli kuyrukta kullanilmaz:
+# orada tanim cq-model'in stale_or_uncertain kolonundan okunur.
+stale_years_historical = 5
