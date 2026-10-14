@@ -12,12 +12,13 @@ WINDOW = pd.Timedelta(days=3 * 365)  # kurumun "son 3 yil" karar suresi penceres
 STALE = pd.Timedelta(days=5 * 365)  # 5 yildan uzun acik kalan kayit artik kuyruk yuku sayilmaz
 CATEGORICAL = ["category", "technology", "solar_mounting", "storage_type", "country", "region", "authority"]
 NUMERIC = [
-    "log_capacity_mw", "log_generation_mw", "n_components", "submit_year", "submit_month",
+    "log_capacity_mw", "log_generation_mw", "n_components", "submit_month",
     "post_2021", "small_project", "special_route", "is_resubmission",
     "auth_prior_apps", "auth_pending", "auth_median_decision_days", "auth_withdraw_rate",
     "op_prior_apps", "op_prior_withdrawn", "op_prior_resolved", "op_withdraw_rate",
-    "uk_pending", "uk_median_decision_days",
 ]
+# submit_year ve UK geneli kuyruk ozellikleri (uk_pending, uk_median_decision_days) bilerek yok: zamanla
+# kayan bu ozellikler canli modeli guncel basvurularda kotumser, gecmis kesimlerde iyimser yapiyordu.
 FEATURES = CATEGORICAL + NUMERIC
 
 
@@ -98,7 +99,6 @@ def build_features(apps: pd.DataFrame, normalize_operators: bool = True, query: 
     f["log_capacity_mw"] = np.log1p(q.capacity_mw)
     f["log_generation_mw"] = np.log1p(q.app_generation_mw)
     f["n_components"] = q.n_components
-    f["submit_year"] = q.d_submitted.dt.year
     f["submit_month"] = q.d_submitted.dt.month
     for c in ["post_2021", "small_project", "special_route"]:
         f[c] = q[c].astype(float)
@@ -119,10 +119,6 @@ def build_features(apps: pd.DataFrame, normalize_operators: bool = True, query: 
     f["op_prior_withdrawn"] = o.withdrawn
     f["op_prior_resolved"] = o.resolved
     f["op_withdraw_rate"] = (o.withdrawn + 0.5) / (o.resolved + 10)
-
-    u = _asof(hist, q, None)
-    f["uk_pending"] = u.pending
-    f["uk_median_decision_days"] = u.median_days
 
     f.index = q.app_id.values
     f.index.name = "app_id"
