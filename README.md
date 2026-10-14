@@ -84,3 +84,31 @@ Her varyantta kapasite yeniden kalibre edilir ve FIFO da aynı varsayımla yenid
 
 `max_wait_capacity_share` (varsayılan 0,5): zorunlu kademenin haftalık kapasiteden alabileceği azami pay.
 1,0 iken kuyruğun çoğu azami beklemeyi aşmışsa CarbonQueue FIFO'ya dönüşür.
+
+## Backend için kuyruk motoru (cq-sim → cq-backend)
+
+```sh
+PYTHONPATH=src python -m cqsim serve          # http://127.0.0.1:9002
+```
+
+Backend'de `CQ_QUEUE_ENGINE_URL=http://127.0.0.1:9002`. Uçlar backend'in `HTTPQueueEngine` sözleşmesini birebir uygular
+([engine.py](src/cqsim/engine.py)); hesaplar simülatörle aynıdır.
+
+| Uç | Ne döner |
+|---|---|
+| `POST /carbon` | `tonnes_co2e`: günlük tCO₂e (`scenario.parameters.level`: `low` / `central` / `high`, varsayılan `central`). Emisyon faktörü bugünün yılı + 2 yıl. Bant `methodology_reference` metninde |
+| `POST /effort` | `reviewer_hours`: kural tabanlı efor |
+| `POST /schedule` | `entries`: verilen dosyaların sırası (`position` = simülatördeki inceleme bitiş sırası), `score` = karbon skoru. `capacity` = haftalık uzman saati. Politika adları: `fifo` (ya da `FIFO`), `carbon`, `carbon_withdrawal`, `carbon_withdrawal_effort`, `carbonqueue` |
+| `POST /simulate` | Geçmiş kuyruk simülasyonunun hazır sonucu, düz metrikler (`parameters.year`, varsayılan 2023; `parameters.policy`, varsayılan `carbonqueue`). Yeni yüklenen dosyaların gerçek sonucu olmadığı için karbon kazancı onlar üzerinden hesaplanmaz |
+
+Teknoloji eşlemesi: `solar`, `onshore_wind` → skorlu; `battery` → depolama; `biomass` → biyoenerji; `hydro`, `tidal`, `wave` → diğer yenilenebilir.
+Son dördü skorsuzdur.
+
+### Mevcut sözleşmenin sınırları (backend ile konuşulacak)
+
+Backend'in sözleşmesi ek alan kabul etmiyor; bu yüzden şimdilik:
+
+1. **Skorsuz dosya:** `tonnes_co2e = 0` ve `methodology_reference` "SKORSUZ" ile başlıyor. Öneri: `tonnes_co2e` boş olabilsin ya da `scored: bool` alanı eklensin; 0 "karbon etkisi yok" diye okunabilir.
+2. **Karbon bandı:** yalnızca metinde. Öneri: `band: {low, central, high}` ve `unit: "tCO2e/day"` alanları.
+3. **Kademe ve gerekçe:** kuyruk girdisinde yok. Öneri: `QueueEntry`'ye `lane` ve `reason` (canlı kuyruktaki `reason` metinleriyle aynı), isteğe bağlı `planned_week`.
+4. **Depolama bileşeni:** `ProjectFeatures`'ta yok; güneş + batarya ortak başvurularında efor 2 puan düşük çıkar. Öneri: `has_storage: bool`.
