@@ -25,7 +25,7 @@ from cq.serve import load_predictor   # cq-model/src PYTHONPATH'te olmalı
 app = create_app(ml=load_predictor())
 ```
 
-- Gerekenler: `data/processed/applications.parquet` ve `data/models/model_live.cbm` (yukarıdaki komutlarla üretilir), `pandas`, `pyarrow`, `catboost`.
+- Gerekenler: `data/processed/applications.parquet` ve `data/models/model_live.cbm`, `pandas`, `pyarrow`, `catboost`. Yalnızca canlı modeli üretmek için: `PYTHONPATH=src python scripts/make_predictions.py --live-model-only` (tahmin dosyalarına dokunmaz). Model sunucusu modeli başlangıçta bir kez yükler; yeni dosyadan sonra yeniden başlatın.
 - Girdi: `ProjectFeatures` (`technology`, `capacity_mw`, opsiyonel `planning_authority`, `applicant`, `submission_date`). Kurum adı REPD'deki ada eşlenir ("Cherwell District Council" → "Cherwell"); bulunamazsa kurum özellikleri boş kalır, tahmin yine üretilir.
 - Çıktı: `withdrawal_probability_12m` ve 13 elemanlı `decision_distribution` (12 aylık dilim + "12 ay içinde karar yok").
 - Desteklenmeyen teknolojide `ValueError` verir. Bir çağrı yaklaşık 0,3 saniye; veri ve model başlangıçta bir kez yüklenir.

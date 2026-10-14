@@ -1,12 +1,21 @@
 """Backend tahmin fonksiyonu: cikti backend'in Prediction sozlesmesine uymali.
 
 Calistirma: PYTHONPATH=src python tests/test_serve.py  (data/models/model_live.cbm gerekir)
+Veri ya da model dosyasi yoksa (or. birlesik repo kopyasi) test atlanir.
 """
 import time
 
 import numpy as np
 
-from cq.serve import load_predictor
+from cq.serve import APPLICATIONS, MODEL, load_predictor
+
+if not (MODEL.exists() and APPLICATIONS.exists()):
+    try:
+        import pytest
+    except ImportError:
+        print("atlandi: veri ya da model dosyasi yok")
+        raise SystemExit(0)
+    pytest.skip("veri ya da model dosyasi yok", allow_module_level=True)
 
 P = load_predictor()
 HANWELL = {"technology": "solar", "capacity_mw": 40.0, "planning_authority": "Cherwell District Council",
