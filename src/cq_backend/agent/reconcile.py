@@ -62,6 +62,8 @@ def is_proposed_capacity(
 
 
 def valid_value(field: str, value: Value) -> bool:
+    if field == "has_storage":
+        return value is None or type(value) is bool
     if field == "capacity_mw":
         return type(value) in (int, float) and value > 0
     if field == "submission_date":

@@ -22,7 +22,7 @@ from cq_backend.domain.application import (
     ProcessingStatus,
     new_id,
 )
-from cq_backend.domain.live_queue import LiveQueueSnapshot
+from cq_backend.domain.live_queue import LIVE_QUEUE_DISPLAY_FIELDS, LiveQueueSnapshot
 from cq_backend.domain.queue import (
     QueueRequest,
     QueueResult,
@@ -121,6 +121,7 @@ class OrchestrationService:
                         project_name=record.site_name,
                         planning_authority=record.authority,
                         submission_date=record.submitted,
+                        has_storage=record.has_storage,
                     )
                     for record in records
                 ],
@@ -145,6 +146,15 @@ class OrchestrationService:
             application = await self.storage.get_application(record["application_id"])
             if application.corrections:
                 changed.append(application.application_id)
+        for key in ("files", "needs_confirmation"):
+            snapshot[key] = [
+                {
+                    name: value
+                    for name, value in record.items()
+                    if name in LIVE_QUEUE_DISPLAY_FIELDS
+                }
+                for record in snapshot[key]
+            ]
         snapshot["changed_application_ids"] = changed
         return snapshot
 

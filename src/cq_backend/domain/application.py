@@ -26,6 +26,7 @@ FieldName = Literal[
     "site_location",
     "applicant",
     "submission_date",
+    "has_storage",
 ]
 Value = str | float | int | bool | None
 SUPPORTED_TECHNOLOGIES = frozenset(
@@ -106,6 +107,19 @@ class ProjectFeatures(Contract):
     site_location: str | None = None
     applicant: str | None = None
     submission_date: date | None = None
+    has_storage: bool | None = Field(default=None, strict=True)
+
+    @property
+    def simulation_category(self) -> str:
+        return {
+            "solar": "solar",
+            "onshore_wind": "onshore_wind",
+            "battery": "storage",
+            "biomass": "bioenergy_waste",
+            "hydro": "other_renewable",
+            "tidal": "other_renewable",
+            "wave": "other_renewable",
+        }[self.technology]
 
     @field_validator("submission_date", mode="before")
     @classmethod
@@ -166,7 +180,7 @@ class Prediction(Contract):
     decision_distribution: list[float] = Field(
         min_length=13,
         max_length=13,
-        description="Decision probability in months 1 through 12 after submission, followed by no decision within 12 months. Values sum to one. Withdrawal probability is a separate, potentially overlapping event.",
+        description="Decision probabilities for the next twelve 30-day bins from the prediction date, conditional on still pending, followed by no decision within 360 days (including withdrawal). Values sum to one; withdrawal is reported separately.",
     )
 
     def model_post_init(self, context: object) -> None:
@@ -181,9 +195,27 @@ class CarbonScenario(Contract):
     parameters: dict[str, Value] = Field(default_factory=dict)
 
 
+class CarbonBands(Contract):
+    low: float = Field(ge=0)
+    central: float = Field(ge=0)
+    high: float = Field(ge=0)
+
+    def model_post_init(self, context: object) -> None:
+        if not self.low <= self.central <= self.high:
+            raise ValueError("Carbon bands must satisfy low <= central <= high")
+
+
 class CarbonEstimate(Contract):
-    tonnes_co2e: float
+    # Legacy total estimates remain readable; daily rates have explicit units.
+    tonnes_co2e: float | None = Field(default=None, ge=0)
+    daily_tco2: CarbonBands | None = None
+    unscored_reason: str | None = Field(default=None, min_length=1)
     methodology_reference: str = Field(min_length=1)
+
+    def model_post_init(self, context: object) -> None:
+        estimates = int(self.tonnes_co2e is not None) + int(self.daily_tco2 is not None)
+        if estimates + int(self.unscored_reason is not None) != 1:
+            raise ValueError("Provide one total, daily bands, or unscored reason")
 
 
 class EffortEstimate(Contract):
