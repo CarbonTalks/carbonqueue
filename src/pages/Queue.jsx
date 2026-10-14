@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 import { useApp, QueueRows } from '../state.jsx';
+import { queueSortLabels } from '../queue-sort.js';
+function SortHeading({ sortKey, children }) {
+  const ctx = useApp();
+  const active = ctx.sort?.key === sortKey;
+  return <th scope="col" className="queue-column-heading" aria-sort={active ? (ctx.sort.direction === 'asc' ? 'ascending' : 'descending') : 'none'}>
+    <button type="button" className="sort-heading" onClick={() => ctx.toggleSort(sortKey)}>{children || queueSortLabels[sortKey]}<span aria-hidden="true">{active ? (ctx.sort.direction === 'asc' ? '↑' : '↓') : '↕'}</span></button>
+    {sortKey === 'compliant' && <small className="block normal-case font-normal">Demo status</small>}
+  </th>;
+}
+
 export default function Queue() { const ctx = useApp(); const [policyOpen,setPolicyOpen]=useState(false), [whyOpen,setWhyOpen]=useState(false); return (<div className="flex flex-col w-full text-on-surface antialiased pb-space-xl">
   <div className="px-gutter-desktop pt-space-lg pb-space-md flex flex-col gap-space-md border-b border-outline-variant/30 bg-surface-container-lowest">
     <div className="flex flex-wrap items-center justify-between gap-y-space-md">
@@ -133,11 +143,11 @@ export default function Queue() { const ctx = useApp(); const [policyOpen,setPol
       </div>
       <div className="queue-toolbar-actions"><button className="queue-control" aria-expanded={policyOpen} aria-controls="policy-options" onClick={()=>setPolicyOpen(!policyOpen)}><span className="material-symbols-outlined">tune</span>Policy Optimization<span className="material-symbols-outlined">{policyOpen?'expand_less':'expand_more'}</span></button>
       <div className="flex items-center gap-1 bg-surface-container-low p-1 rounded">
-        <button className="px-space-sm py-1 rounded bg-surface-container-lowest shadow-xs text-on-surface font-label-xs text-label-xs font-semibold flex items-center gap-1">
+        <button type="button" aria-pressed={ctx.view==='table'} className={"px-space-sm py-1 rounded font-label-xs text-label-xs flex items-center gap-1 "+(ctx.view==='table'?'bg-white shadow-xs text-on-surface font-semibold':'text-on-surface-variant hover:text-on-surface font-medium')}>
           <span className="material-symbols-outlined text-[16px]">table_rows</span>
           Table View
         </button>
-        <button className="px-space-sm py-1 rounded text-on-surface-variant hover:text-on-surface font-label-xs text-label-xs font-medium flex items-center gap-1">
+        <button type="button" aria-pressed={ctx.view==='gantt'} className={"px-space-sm py-1 rounded font-label-xs text-label-xs flex items-center gap-1 "+(ctx.view==='gantt'?'bg-white shadow-xs text-on-surface font-semibold':'text-on-surface-variant hover:text-on-surface font-medium')}>
           <span className="material-symbols-outlined text-[16px]">timeline</span>
           Queue Gantt
         </button>
@@ -149,13 +159,25 @@ export default function Queue() { const ctx = useApp(); const [policyOpen,setPol
       <div className="bg-surface-container-low p-1 rounded-lg flex flex-wrap gap-1"><button  className={"policy-tab flex-1 min-w-[120px] px-space-md py-space-sm rounded text-label-md " + (ctx.policy === 0 ? "bg-white shadow-sm font-semibold" : "text-on-surface-variant")} type="button">1. FIFO</button><button  className={"policy-tab flex-1 min-w-[120px] px-space-md py-space-sm rounded text-label-md " + (ctx.policy === 1 ? "bg-white shadow-sm font-semibold" : "text-on-surface-variant")} type="button">2. Carbon Only</button><button  className={"policy-tab flex-1 min-w-[120px] px-space-md py-space-sm rounded text-label-md " + (ctx.policy === 2 ? "bg-white shadow-sm font-semibold" : "text-on-surface-variant")} type="button">3. + Withdrawal Risk</button><button  className={"policy-tab flex-1 min-w-[120px] px-space-md py-space-sm rounded text-label-md " + (ctx.policy === 3 ? "bg-white shadow-sm font-semibold" : "text-on-surface-variant")} type="button">4. + Effort</button><button  className={"policy-tab flex-1 min-w-[120px] px-space-md py-space-sm rounded text-label-md " + (ctx.policy === 4 ? "bg-white shadow-sm font-semibold" : "text-on-surface-variant")} type="button"><span>5. CarbonQueue</span><span className="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-xs text-[10px] uppercase font-bold tracking-wider">Recommended</span></button></div>
       <div className="bg-surface-container-low rounded-lg p-space-md flex items-start gap-space-md shadow-xs"><span className="material-symbols-outlined text-secondary text-[22px] mt-0.5 shrink-0">insights</span><div className="flex flex-col gap-0.5"><div className="font-title-sm text-[14px] font-semibold text-on-surface">Simulation preview</div><p className="font-body-md text-body-md text-on-surface-variant">Compared with FIFO, CarbonQueue changes review order based on modeled carbon impact, withdrawal risk, review effort, and fairness constraints.</p></div></div>
     </div>)}
-    <div className="queue-explanation-bar"><span>{ctx.sort ? (ctx.sort.key==='capacity'?'Capacity':'Technology')+' · '+(ctx.sort.direction==='desc'?'Descending':'Ascending') : 'Ordered by selected policy'}</span><div>{ctx.sort&&<button className="queue-control" onClick={()=>ctx.setSort(null)}>Reset order</button>}<button className="queue-control" aria-expanded={whyOpen} aria-controls="queue-explanation" onClick={()=>setWhyOpen(!whyOpen)}><span className="material-symbols-outlined">psychology_alt</span>Why this queue?<span className="material-symbols-outlined">{whyOpen?'chevron_right':'chevron_left'}</span></button></div></div>
+    <div className="queue-explanation-bar"><span>{ctx.sort ? queueSortLabels[ctx.sort.key]+' · '+(ctx.sort.direction==='desc'?'Descending':'Ascending') : 'Ordered by selected policy'}</span><div>{ctx.sort&&<button className="queue-control" onClick={()=>ctx.setSort(null)}>Reset order</button>}<button className="queue-control" aria-expanded={whyOpen} aria-controls="queue-explanation" onClick={()=>setWhyOpen(!whyOpen)}><span className="material-symbols-outlined">psychology_alt</span>Why this queue?<span className="material-symbols-outlined">{whyOpen?'chevron_right':'chevron_left'}</span></button></div></div>
     <div className={'queue-layout '+(whyOpen?'with-explanation':'')}>
       <div className="min-w-0 bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="queue-table w-full text-left border-collapse">
+            <colgroup>{[4,18,12,9,12,9,6,7,13,10].map((width,index)=><col key={index} style={{width:width+'%'}} />)}</colgroup>
             <thead>
-              <tr className="bg-surface-container-low font-label-xs text-label-xs uppercase text-on-surface-variant tracking-wider"><th className="py-space-sm px-space-md font-semibold text-center w-14">#</th><th className="py-space-sm px-space-md font-semibold">Project &amp; Developer</th><th className="py-space-sm px-space-sm font-semibold" aria-sort={ctx.sort?.key==='tech'?(ctx.sort.direction==='asc'?'ascending':'descending'):'none'}><button className="sort-heading" onClick={()=>ctx.toggleSort('tech')}>Technology <span aria-hidden="true">{ctx.sort?.key==='tech'?(ctx.sort.direction==='asc'?'↑':'↓'):'↕'}</span></button></th><th className="py-space-sm px-space-sm font-semibold text-right" aria-sort={ctx.sort?.key==='capacity'?(ctx.sort.direction==='asc'?'ascending':'descending'):'none'}><button className="sort-heading" onClick={()=>ctx.toggleSort('capacity')}>Capacity <span aria-hidden="true">{ctx.sort?.key==='capacity'?(ctx.sort.direction==='asc'?'↑':'↓'):'↓'}</span></button></th><th className="py-space-sm px-space-sm font-semibold text-right">Est. Carbon Impact</th><th className="py-space-sm px-space-sm font-semibold text-center">Withdrawal</th><th className="py-space-sm px-space-sm font-semibold text-right">Effort</th><th className="py-space-sm px-space-sm font-semibold text-right">Waiting</th><th className="py-space-sm px-space-md font-semibold">Reason</th><th className="py-space-sm px-space-md font-semibold"><span className="inline-flex items-center gap-1"><span className="material-symbols-outlined" aria-hidden="true">gavel</span>Compliance</span><small className="block normal-case font-normal">Demo status</small></th></tr>
+              <tr className="bg-surface-container-low font-label-xs text-label-xs uppercase text-on-surface-variant tracking-wider">
+                <th scope="col" className="py-space-sm px-space-md font-semibold text-center w-14">#</th>
+                <SortHeading sortKey="name" />
+                <SortHeading sortKey="tech" />
+                <SortHeading sortKey="capacity" />
+                <SortHeading sortKey="carbon" />
+                <SortHeading sortKey="risk" />
+                <SortHeading sortKey="effort" />
+                <SortHeading sortKey="wait" />
+                <SortHeading sortKey="reason" />
+                <SortHeading sortKey="compliant"><span className="inline-flex items-center gap-1"><span className="material-symbols-outlined" aria-hidden="true">gavel</span>Compliance</span></SortHeading>
+              </tr>
             </thead>
             <QueueRows />
           </table>

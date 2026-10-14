@@ -1,3 +1,5 @@
+import CarbonRanges from '../components/CarbonRanges.jsx';
+import WaitingDistribution from '../components/WaitingDistribution.jsx';
 import React from 'react';
 import { useApp, QueueRows } from '../state.jsx';
 export default function Simulation({section='summary'}) { const ctx = useApp(); return (<div className="flex flex-col w-full">
@@ -329,41 +331,7 @@ export default function Simulation({section='summary'}) { const ctx = useApp(); 
             Comparison of P10, P25, Median (P50), P75, and P90 review durations against the 180-day Maximum-Wait Policy threshold.
           </p>
         </div>
-        <div className="waiting-distribution-chart w-full bg-surface-container-low rounded-lg p-space-md">
-          <svg className="w-full h-auto text-on-surface" preserveAspectRatio="xMidYMid meet" viewBox="-30 0 560 180" role="img" aria-label="Waiting time distribution: FIFO median 74 days, P90 188 days; CarbonQueue median 51 days, P90 142 days. Maximum-wait threshold 180 days.">
-            <line stroke="currentColor" strokeDasharray="2 2" strokeOpacity="0.1" x1={70} x2={70} y1={20} y2={135} />
-            <line stroke="currentColor" strokeDasharray="2 2" strokeOpacity="0.1" x1={190} x2={190} y1={20} y2={135} />
-            <line stroke="currentColor" strokeDasharray="2 2" strokeOpacity="0.1" x1={310} x2={310} y1={20} y2={135} />
-            <line stroke="#ba1a1a" strokeDasharray="4 2" strokeOpacity="0.4" strokeWidth="1.5" x1={430} x2={430} y1={20} y2={135} />
-            <line stroke="currentColor" strokeDasharray="2 2" strokeOpacity="0.1" x1={490} x2={490} y1={20} y2={135} />
-            <text fill="#76777d" fontFamily="Inter" fontSize={10} textAnchor="middle" x={70} y={152}>0 d</text>
-            <text fill="#76777d" fontFamily="Inter" fontSize={10} textAnchor="middle" x={190} y={152}>60 d</text>
-            <text fill="#76777d" fontFamily="Inter" fontSize={10} textAnchor="middle" x={310} y={152}>120 d</text>
-            <text fill="#ba1a1a" fontFamily="Inter" fontSize={10} fontWeight={600} textAnchor="middle" x={430} y={152}>180 d<tspan x={430} dy={13} fontSize={8}>(Max-Wait)</tspan></text>
-            <text fill="#76777d" fontFamily="Inter" fontSize={10} textAnchor="middle" x={490} y={152}>210 d</text>
-            <text fill="#0b1c30" fontFamily="Inter" fontSize={11} fontWeight={600} textAnchor="end" x={60} y={55}>FIFO</text>
-            <rect fill="#cbd5e1" fillOpacity="0.4" height={18} rx={3} width={312} x={134} y={44} />
-            <rect fill="#64748b" fillOpacity="0.3" height={26} rx={4} width={128} x={166} y={40} />
-            <line stroke="#0b1c30" strokeWidth="2.5" x1={218} x2={218} y1={36} y2={70} />
-            <circle cx={218} cy={53} fill="#0b1c30" r="3.5" />
-            <line stroke="#ba1a1a" strokeWidth={2} x1={446} x2={446} y1={40} y2={66} />
-            <text fill="#ba1a1a" fontFamily="Inter" fontSize={9} textAnchor="middle" x={446} y={34}>188d (tail breach)</text>
-            <text fill="#006c4e" fontFamily="Inter" fontSize={11} fontWeight={600} textAnchor="end" x={60} y={105}>CarbonQueue</text>
-            <rect fill="#97f5cc" fillOpacity="0.4" height={18} rx={3} width={236} x={118} y={94} />
-            <rect fill="#006c4e" fillOpacity="0.25" height={26} rx={4} width={96} x={142} y={90} />
-            <line stroke="#006c4e" strokeWidth="2.5" x1={172} x2={172} y1={86} y2={120} />
-            <circle cx={172} cy={103} fill="#006c4e" r="3.5" />
-            <line stroke="#006c4e" strokeWidth={2} x1={354} x2={354} y1={90} y2={116} />
-            <text fill="#006c4e" fontFamily="Inter" fontSize={9} fontWeight={600} textAnchor="middle" x={354} y={84}>142d (compliant)</text>
-          </svg>
-        </div>
-        <div className="flex flex-wrap items-center justify-between gap-3 text-on-surface-variant font-label-xs text-label-xs">
-          <div className="flex flex-wrap items-center gap-space-md">
-            <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 bg-slate-300 rounded-sm" /> Interquartile Range (IQR)</span>
-            <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-0.5 bg-on-surface" /> Median P50</span>
-          </div>
-          <span className="text-error font-medium">Vertical red dashed: 180 d Policy Cap</span>
-        </div>
+        <WaitingDistribution />
       </div>)}
     {section==='carbon' && (<div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between gap-space-lg">
         <div className="flex flex-col gap-1">
@@ -375,40 +343,7 @@ export default function Simulation({section='summary'}) { const ctx = useApp(); 
             Uncertainty intervals across policies. Modeled displacement potential under dispatch constraints; not guaranteed real-world savings.
           </p>
         </div>
-        <div className="w-full bg-surface-container-low rounded-lg p-space-md">
-          <svg className="w-full h-auto text-on-surface" preserveAspectRatio="xMidYMid meet" viewBox="0 0 520 180">
-            <line stroke="currentColor" strokeDasharray="2 2" strokeOpacity="0.1" x1={100} x2={100} y1={15} y2={140} />
-            <line stroke="currentColor" strokeDasharray="2 2" strokeOpacity="0.1" x1={190} x2={190} y1={15} y2={140} />
-            <line stroke="currentColor" strokeDasharray="2 2" strokeOpacity="0.1" x1={280} x2={280} y1={15} y2={140} />
-            <line stroke="currentColor" strokeDasharray="2 2" strokeOpacity="0.1" x1={370} x2={370} y1={15} y2={140} />
-            <line stroke="currentColor" strokeDasharray="2 2" strokeOpacity="0.1" x1={460} x2={460} y1={15} y2={140} />
-            <text fill="#76777d" fontFamily="Inter" fontSize={10} textAnchor="middle" x={100} y={155}>0 kt</text>
-            <text fill="#76777d" fontFamily="Inter" fontSize={10} textAnchor="middle" x={190} y={155}>1.0 kt</text>
-            <text fill="#76777d" fontFamily="Inter" fontSize={10} textAnchor="middle" x={280} y={155}>2.0 kt</text>
-            <text fill="#76777d" fontFamily="Inter" fontSize={10} textAnchor="middle" x={370} y={155}>3.0 kt</text>
-            <text fill="#76777d" fontFamily="Inter" fontSize={10} textAnchor="middle" x={460} y={155}>4.0 kt</text>
-            <text fill="#45464d" fontFamily="Inter" fontSize={10} textAnchor="end" x={90} y={36}>FIFO</text>
-            <circle cx={100} cy={32} fill="#76777d" r={4} />
-            <text fill="#76777d" fontFamily="Inter" fontSize={9} x={112} y={36}>Baseline (0.0)</text>
-            <text fill="#45464d" fontFamily="Inter" fontSize={10} textAnchor="end" x={90} y={62}>Carbon Only</text>
-            <line stroke="#76777d" strokeWidth={2} x1={172} x2={334} y1={58} y2={58} />
-            <rect fill="#d3e4fe" height={12} rx={2} width={60} x={235} y={52} />
-            <circle cx={271} cy={58} fill="#131b2e" r="3.5" />
-            <text fill="#45464d" fontFamily="Inter" fontSize={10} textAnchor="end" x={90} y={88}>+ Withdrawal</text>
-            <line stroke="#76777d" strokeWidth={2} x1={190} x2={370} y1={84} y2={84} />
-            <rect fill="#d3e4fe" height={12} rx={2} width={65} x={260} y={78} />
-            <circle cx={298} cy={84} fill="#131b2e" r="3.5" />
-            <text fill="#45464d" fontFamily="Inter" fontSize={10} textAnchor="end" x={90} y={114}>+ Effort</text>
-            <line stroke="#76777d" strokeWidth={2} x1={199} x2={406} y1={110} y2={110} />
-            <rect fill="#bec6e0" height={12} rx={2} width={70} x={310} y={104} />
-            <circle cx={352} cy={110} fill="#131b2e" r="3.5" />
-            <text fill="#006c4e" fontFamily="Inter" fontSize={10} fontWeight={600} textAnchor="end" x={90} y={140}>CarbonQueue</text>
-            <line stroke="#006c4e" strokeWidth="2.5" x1={208} x2={442} y1={136} y2={136} />
-            <rect fill="#97f5cc" height={13} rx={2} width={85} x={330} y={130} />
-            <circle cx={379} cy="136.5" fill="#006c4e" r={4} />
-            <text fill="#006c4e" fontFamily="Inter" fontSize={10} fontWeight={600} x={450} y={139}>+3.1 kt</text>
-          </svg>
-        </div>
+        <CarbonRanges />
         <div className="flex items-center justify-between text-on-surface-variant font-label-xs text-label-xs">
           <span>Whisker: 10th–90th percentile modeled variance</span>
           <span className="text-on-surface font-medium">Box &amp; Point: Interquartile mass &amp; Median</span>

@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from 'react';
+import { queueReason } from './queue-sort.js';
 export const AppContext = createContext(null);
 export const useApp = () => useContext(AppContext);
 export const projects = [
@@ -22,7 +23,7 @@ export function QueueRows() {
       <td className="px-3 whitespace-nowrap text-right font-mono">{p.capacity ? `${p.capacity.toFixed(1)} MW` : '—'}</td>
       <td className="px-3 whitespace-nowrap text-right"><strong className="font-mono">{p.carbon.map(n=>n.toFixed(1)).join('–')}</strong> <small>tCO₂e/day</small></td>
       <td className="px-3 text-center"><strong>{p.risk}%</strong><div className="h-1.5 bg-surface-container-highest rounded w-10 mx-auto mt-1"><div className="bg-secondary h-full rounded" style={{width:`${p.risk}%`}} /></div></td>
-      <td className="px-3 whitespace-nowrap">{p.effort} h</td><td className="px-3 whitespace-nowrap">{p.wait} days</td><td className="px-3 whitespace-nowrap">{p.wait>120?'Maximum-wait protection':'Carbon impact / reviewer hour'}</td>
+      <td className="px-3 whitespace-nowrap">{p.effort} h</td><td className="px-3 whitespace-nowrap">{p.wait} days</td><td className="px-3 whitespace-nowrap">{queueReason(p)}</td>
       <td className="px-3 whitespace-nowrap"><span className={'compliance-badge '+(p.compliant?'compliant':'non-compliant')} title="Sample filing status — demonstration data"><Icon>gavel</Icon>{p.compliant?'Compliant':'Non-compliant'}</span></td>
     </tr>)}
   </tbody>;

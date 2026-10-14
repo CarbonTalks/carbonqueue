@@ -62,30 +62,6 @@ export default function Project() { return (<div className="flex flex-col w-full
         </div>
       </div>
     </div>
-    <div className="relative overflow-hidden bg-surface-container-lowest p-space-xl rounded-xl shadow-sm">
-      <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-secondary" />
-      <div className="flex flex-col md:flex-row md:items-start justify-between gap-space-lg pl-space-sm">
-        <div className="space-y-space-sm max-w-4xl">
-          <div className="flex flex-wrap items-center gap-space-sm">
-            <span className="font-headline-md text-headline-md text-on-surface">Why is this project #1?</span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-secondary-fixed text-on-secondary-fixed-variant font-label-xs text-label-xs font-semibold uppercase tracking-wider">
-              <span className="material-symbols-outlined text-[14px]">format_image_left</span>
-              Maximum-wait protection
-            </span>
-          </div>
-          <p className="font-title-sm text-title-sm text-on-surface leading-relaxed">
-            This application is approaching the configured maximum waiting period. CarbonQueue protects it from further delay regardless of its optimization score.
-          </p>
-          <p className="font-body-md text-body-md text-on-surface-variant">
-            It also demonstrates high modeled carbon displacement relative to its estimated reviewer effort. Under statutory review protocols, queue-time bounds strictly prevent starvation while accelerating decarbonization throughput.
-          </p>
-        </div>
-        <div className="flex items-center gap-2 self-start bg-surface-container-low px-space-md py-space-sm rounded text-on-surface-variant font-label-xs text-label-xs">
-          <span className="material-symbols-outlined text-[16px] text-secondary">verified</span>
-          <span>Deterministic Audit Rule #CQ-180D</span>
-        </div>
-      </div>
-    </div>
     <div className="bg-surface-container-lowest p-space-xl rounded-xl shadow-sm space-y-space-md">
           <div className="flex items-center justify-between">
             <h2 className="font-headline-md text-headline-md text-on-surface">Data Quality &amp; Integrity Flags</h2>
@@ -124,6 +100,30 @@ export default function Project() { return (<div className="flex flex-col w-full
             </div>
           </div>
         </div>
+    <div className="relative overflow-hidden bg-surface-container-lowest p-space-xl rounded-xl shadow-sm">
+      <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-secondary" />
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-space-lg pl-space-sm">
+        <div className="space-y-space-sm max-w-4xl">
+          <div className="flex flex-wrap items-center gap-space-sm">
+            <span className="font-headline-md text-headline-md text-on-surface">Why is this project #1?</span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-secondary-fixed text-on-secondary-fixed-variant font-label-xs text-label-xs font-semibold uppercase tracking-wider">
+              <span className="material-symbols-outlined text-[14px]">format_image_left</span>
+              Maximum-wait protection
+            </span>
+          </div>
+          <p className="font-title-sm text-title-sm text-on-surface leading-relaxed">
+            This application is approaching the configured maximum waiting period. CarbonQueue protects it from further delay regardless of its optimization score.
+          </p>
+          <p className="font-body-md text-body-md text-on-surface-variant">
+            It also demonstrates high modeled carbon displacement relative to its estimated reviewer effort. Under statutory review protocols, queue-time bounds strictly prevent starvation while accelerating decarbonization throughput.
+          </p>
+        </div>
+        <div className="flex items-center gap-2 self-start bg-surface-container-low px-space-md py-space-sm rounded text-on-surface-variant font-label-xs text-label-xs">
+          <span className="material-symbols-outlined text-[16px] text-secondary">verified</span>
+          <span>Deterministic Audit Rule #CQ-180D</span>
+        </div>
+      </div>
+    </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
       {[
         {id:'carbon',label:'Modeled Carbon Impact',value:'22.4–31.7',unit:'tCO₂e / day',description:'Estimated displacement range. Modeled bounded carbon impact potential, not guaranteed emissions savings.'},

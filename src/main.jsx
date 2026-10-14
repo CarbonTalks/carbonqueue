@@ -8,6 +8,7 @@ import Results from './pages/Results.jsx';
 import Settings from './pages/Settings.jsx';
 import Methodology from './pages/Methodology.jsx';
 import './styles.css';
+import { compareQueueProjects } from './queue-sort.js';
 import {readResultsLocation} from './results-navigation.js';
 
 const routes = ['queue','project','upload','results','settings','methodology'];
@@ -26,6 +27,7 @@ function App() {
   const [resultsLocation,setResultsLocation]=useState(readResultsLocation);
   const fileInput=useRef(null);
   const [sort,setSort]=useState(null), [navCollapsed,setNavCollapsed]=useState(false);
+  const toggleNavigation=()=>window.matchMedia('(max-width:760px)').matches?setMobile(open=>!open):setNavCollapsed(collapsed=>!collapsed);
   const toggleSort=key=>setSort(s=>({key,direction:s?.key===key?(s.direction==='asc'?'desc':'asc'):(key==='capacity'?'desc':'asc')}));
   useEffect(()=> {const cb=()=>{setRoute(currentRoute());setResultsLocation(readResultsLocation());setMobile(false);window.scrollTo(0,0);};window.addEventListener('hashchange',cb);return ()=>window.removeEventListener('hashchange',cb);},[]);
   useEffect(()=>{if(notice){const timer=setTimeout(()=>setNotice(''),4500);return ()=>clearTimeout(timer);}},[notice]);
@@ -71,17 +73,17 @@ function App() {
     else if(label.includes('Add value')){setEditing(['Site Area','']);setEditValue('');}
     else if(target.title?.includes('citation'))setNotice('Select a field in Extracted Project Data to inspect its citation.');
   }
-  if(sort) visible.sort((a,b)=>sort.key==='capacity' ? (!a.capacity ? 1 : !b.capacity ? -1 : (a.capacity-b.capacity)*(sort.direction==='desc'?-1:1)) : a.tech.localeCompare(b.tech)*(sort.direction==='desc'?-1:1));
+  if(sort) visible.sort((a,b)=>compareQueueProjects(a,b,sort));
   const ctx={settings,saveSettings,resultsLocation,fieldValues,editField,sort,toggleSort,setSort,filters,search,setSearch,setFilter:(i,n)=>setFilters(f=>f.map((v,j)=>i===j?n:v)),policy,visible,view,field,breakdown,queued,projects:sampleProjects,openProject};
   const Page={queue:Queue,project:Project,upload:Upload,results:Results,settings:Settings,methodology:Methodology}[route];
   return <AppContext.Provider value={ctx}>
     <aside id="main-navigation" className={'sidebar '+(mobile?'is-open ':'')+(navCollapsed?'is-collapsed':'')}>
-      <a href="#/queue" className="brand"><span className="brand-mark"><Icon>eco</Icon></span><div><strong>CarbonQueue</strong><small>PUBLIC ENERGY AUTHORITY</small></div></a>
-      <div className="nav-group"><small>REVIEW MODULES</small>{[['queue','format_list_numbered','Queue'],['upload','cloud_upload','Upload'],['results','bar_chart','Results']].map(([r,icon,label])=><a key={r} href={'#/'+r} aria-current={route===r?'page':undefined} className={route===r||r==='queue'&&route==='project'?'active':''}><Icon>{icon}</Icon>{label}</a>)}</div>
+      <button type="button" className="brand" aria-label="Toggle navigation" aria-controls="main-navigation" aria-expanded={mobile || !navCollapsed} onClick={toggleNavigation}><span className="brand-mark"><img src="/carbonqueue-logo.svg" width="36" height="36" alt="" aria-hidden="true" /></span><span className="brand-name"><strong>CarbonQueue</strong><small>PUBLIC ENERGY AUTHORITY</small></span></button>
+      <div className="nav-group">{[['queue','format_list_numbered','Queue'],['upload','cloud_upload','Upload'],['results','bar_chart','Results']].map(([r,icon,label])=><a key={r} href={'#/'+r} aria-current={route===r?'page':undefined} className={route===r||r==='queue'&&route==='project'?'active':''}><Icon>{icon}</Icon>{label}</a>)}</div>
       <div className="nav-bottom"><div className="nav-group"><small>DOCUMENTATION & OPS</small>{[['methodology','menu_book','Methodology'],['settings','settings','Settings']].map(([r,icon,label])=><a key={r} href={'#/'+r} className={route===r?'active':''} aria-current={route===r?'page':undefined}><Icon>{icon}</Icon><span>{label}</span></a>)}</div><div className="jurisdiction"><Icon>verified_user</Icon><div><small>JURISDICTION CONTEXT</small><strong>State Energy & Infrastructure Authority</strong></div></div></div>
     </aside>
     {mobile&&<button className="mobile-overlay" aria-label="Close navigation" onClick={()=>setMobile(false)}/>}
-    <header className={'topbar '+(navCollapsed?'nav-collapsed':'')}><button className="menu-button" aria-label="Toggle navigation" aria-controls="main-navigation" onClick={()=>window.matchMedia('(max-width:760px)').matches?setMobile(!mobile):setNavCollapsed(!navCollapsed)}><Icon>menu</Icon></button><span className="demo-label">{settings.name.toUpperCase()}</span><div className="profile"><div><strong>Dr. Elena Vance</strong><small>Senior Grid Analyst</small></div><span className="avatar">EV</span></div></header>
+    <header className={'topbar '+(navCollapsed?'nav-collapsed':'')}><button type="button" className="mobile-brand-toggle brand-mark" aria-label="Toggle navigation" aria-controls="main-navigation" aria-expanded={mobile} onClick={toggleNavigation}><img src="/carbonqueue-logo.svg" width="36" height="36" alt="" aria-hidden="true" /></button><div className="profile"><div><strong>Dr. Elena Vance</strong><small>Senior Grid Analyst</small></div><span className="avatar">EV</span></div></header>
     <main className={'app-main '+(navCollapsed?'nav-collapsed ':'')+(settings.compact?'compact-tables':'')} onClick={handleClick} onDragOver={e=>{if(route==='upload')e.preventDefault();}} onDrop={e=>{if(route==='upload'){e.preventDefault();addFiles(e.dataTransfer.files);}}}>
       <Page/>
       {route==='upload'&&files.length>0&&<section className="local-files"><h2>Locally selected documents</h2><p>Files are kept in this session; extraction is not connected.</p>{files.map((f,i)=><div key={i}>{f.name} · {(f.size/1024).toFixed(0)} KB <button onClick={()=>setFiles(fs=>fs.filter((_,j)=>j!==i))}>Remove</button></div>)}</section>}
