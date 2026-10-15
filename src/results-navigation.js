@@ -1,3 +1,3 @@
-export const resultSections = [['overview','Weekly overview'],['throughput','Applications'],['waiting','Waiting time'],['capacity','Capacity & ratios']];
-export const historicalSections = [['summary','Summary KPIs'],['comparison','Policy comparison'],['distribution','Waiting distribution'],['carbon','Carbon potential'],['sensitivity','Stale records'],['performance','Performance breakdown'],['setup','Model & assumptions']];
-export function readResultsLocation(){const params=new URLSearchParams(location.hash.split('?')[1]||'');const section=params.get('section');const detail=params.get('detail');return {section:[...resultSections.map(x=>x[0]),'historical'].includes(section)?section:'overview',detail:historicalSections.some(x=>x[0]===detail)?detail:'summary'};}
+export const resultSections = [['overview','Planned workload'],['historical','Historical analysis']];
+export const historicalSections = [['summary','Summary'],['comparison','Policy comparison'],['distribution','Waiting times'],['carbon','Carbon gain'],['setup','Model & assumptions']];
+export function readResultsLocation(){const params=new URLSearchParams(location.hash.split('?')[1]||'');const section=params.get('section');const detail=params.get('detail');return {section:resultSections.some(x=>x[0]===section)?section:'overview',detail:historicalSections.some(x=>x[0]===detail)?detail:'summary'};}

@@ -16,19 +16,30 @@ npm run build
 npm run preview
 ```
 
+## Backend bağlantısı
+
+Dashboard verilerini cq-backend'den okur; örnek veri içermez.
+
+- Adres: varsayılan `http://localhost:8000`. Değiştirmek için proje kökünde `.env.local` dosyasına `VITE_API_URL=http://...` yazın.
+- Backend'de `.env`: `CQ_CORS_ORIGINS=http://localhost:5173`, `CQ_SIMULATION_RESULTS_DIR=../cq-sim/results`, `CQ_ML_URL`, `CQ_QUEUE_ENGINE_URL` ve belge çıkarma için `GOOGLE_API_KEY` (ayrıntılar cq-backend README).
+- Canlı kuyruk bir kez backend'e yüklenmelidir: `curl -H 'Content-Type: application/json' --data-binary @../cq-sim/results/live-queue.json http://localhost:8000/queue/live/import`
+
 ## Sayfalar
 
-- `/#/queue`: Başvuru kuyruğu; arama, teknoloji / kapasite / bekleme filtreleri, örnek sıralama, CSV dışa aktarma.
-- `/#/project`: Riverside Solar proje detayı.
-- `/#/upload`: Belge seçme / sürükleyip bırakma, örnek kanıt alanı inceleme, oturum içi değer düzenleme ve yerel taslak kaydı.
-- `/#/simulation`: Referans simülasyon sonuçları, teknoloji / proje büyüklüğü sekmeleri, CSV dışa aktarma.
+| Sayfa | Veri kaynağı |
+|---|---|
+| `#/queue` | `GET /queue/live` (cq-sim canlı kuyruğu, 765 sıralı başvuru). Politika seçici: FIFO / Carbon only / CarbonQueue; oklar FIFO'ya göre sıra değişimi. Üstteki KPI'lar 2023 geçmiş simülasyonundan. CSV dışa aktarma filtrelenmiş kuyruğu verir |
+| `#/project` | Seçilen kuyruk kaydı + `GET /applications/{id}` (eksik alanlar, çakışmalar, model kapsamı) |
+| `#/upload` | `POST /applications/extract` (agent: belge, sayfa, alıntı), eksik alan için `PATCH /applications/{id}/observations`, skorlama için `POST /queue/run` |
+| `#/results` | Planlanan iş yükü: canlı kuyruğun haftalara dağılımı. Geçmiş analiz: `GET /simulation/historical/{yıl}/{politika}`, 2019–2023, beş politika |
+| `#/methodology`, `#/settings` | Yöntem, kaynaklar, sınırlamalar; bağlantı durumu |
+
+Uzman ekranlarında gerçekleşme olasılığı gibi alanlar gösterilmez; backend bunları zaten sunmuyor.
 
 ## Yapı
 
-`src/pages/` dört ekranı, `src/main.jsx` ortak yerleşim ve gezinmeyi, `src/state.jsx` örnek proje verilerini ve kuyruk satırlarını içerir. Renk ve tipografi ayarları `tailwind.config.cjs`, uyarlanabilir ekran kuralları `src/styles.css` dosyasındadır. Orijinal tasarımlar `references/` altında korunmuştur.
+`src/api.js` backend istemcisi, `src/live-data.js` canlı kuyruk kayıtlarını tablo satırlarına çevirir, `src/main.jsx` ortak yerleşim, gezinme ve kuyruk durumunu, `src/state.jsx` kuyruk satırlarını, `src/chart.jsx` grafikleri içerir. Renk ve tipografi `tailwind.config.cjs`, uyarlanabilir ekran kuralları `src/styles.css` dosyasındadır.
 
 ## Kapsam
 
-Bu bir ön yüz prototipidir. Tasarımlardaki 42 başvuruluk özet ve tarihsel simülasyon metrikleri referans verileridir; etkileşimli tabloda tasarımların içerdiği 7 örnek proje bulunur. Sıralama düğmeleri basitleştirilmiş gösterimlerdir; gerçek CarbonQueue modelini çalıştırmaz. Orijinal kaynak PDF'ler ZIP dosyalarında bulunmadığı için PDF alanı tasarım önizlemesidir.
-
-Seçilen dosyalar sunucuya gönderilmez. OCR, AI belge çıkarımı, gerçek simülasyon, kullanıcı kimlik doğrulaması ve kalıcı sunucu kaydı bağlı değildir. Taslak kaydı bu tarayıcının localStorage alanına yapılır. Google Fonts için internet bağlantısı gerekir; CSS derleme sırasında yerel üretilir, Tailwind CDN kullanılmaz.
+Kimlik doğrulama yok; düzeltmeler `dashboard-reviewer` adıyla kaydedilir. Ekrandaki gerekçe metinleri cq-sim'den gelir ve Türkçedir. Belge çıkarma backend'de Gemini anahtarı gerektirir; anahtar yoksa Upload sayfası backend'in hata mesajını gösterir. Google Fonts için internet bağlantısı gerekir.

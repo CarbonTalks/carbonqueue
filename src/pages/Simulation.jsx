@@ -1,642 +1,89 @@
-import CarbonRanges from '../components/CarbonRanges.jsx';
-import WaitingDistribution from '../components/WaitingDistribution.jsx';
-import React from 'react';
-import { useApp, QueueRows } from '../state.jsx';
-export default function Simulation({section='summary'}) { const ctx = useApp(); return (<div className="flex flex-col w-full">
-  <div className="px-gutter-desktop py-space-xl flex flex-col gap-space-xl max-w-[1600px] mx-auto w-full historical-results">
-    <div className="flex flex-wrap items-end justify-end gap-space-lg">
-      {section==='setup' && <div className="flex flex-col gap-space-xs mr-auto">
-        <div className="flex items-center gap-space-sm">
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs uppercase tracking-wider">
-            <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-            Evaluation &amp; Counterfactual Research Module
-          </span>
-          <span className="font-label-xs text-label-xs text-outline tracking-wider uppercase">SIM-RUN-2021-V4</span>
-        </div>
-        <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight">Historical Analysis</h1>
-        <p className="font-body-md text-body-md text-on-surface-variant max-w-3xl">
-          Compare review policies under the same historical workload and expert capacity. Evaluates queue reordering impact without statutory pre-commitments.
-        </p>
-      </div>}
-      <div className="flex items-center gap-space-md shrink-0">
-        <button className="inline-flex items-center gap-space-sm px-space-lg py-2 rounded bg-surface-container-lowest text-on-surface shadow-sm hover:bg-surface-container transition-colors font-label-md text-label-md" type="button">
-          <span className="material-symbols-outlined text-[18px]">download</span>
-          Export Results
-        </button>
-        <button className="inline-flex items-center gap-space-sm px-space-lg py-2 rounded bg-primary text-on-primary shadow-sm hover:opacity-90 transition-opacity font-label-md text-label-md" id="btn-run-sim" type="button">
-          <span className="material-symbols-outlined text-[18px]" id="sim-spin-icon">refresh</span>
-          <span>Run Simulation</span>
-        </button>
-      </div>
+import React, { useState } from 'react';
+import { useHistorical, HISTORICAL_POLICIES } from '../api.js';
+import { fmt } from '../live-data.js';
+import { Chart } from '../chart.jsx';
+
+const YEARS = [2019, 2020, 2021, 2022, 2023];
+const NAMES = { fifo: 'FIFO', carbon: 'Carbon only', carbon_withdrawal: '+ Withdrawal risk', carbon_withdrawal_effort: '+ Effort', carbonqueue: 'CarbonQueue' };
+const GROUPS = [['all', 'All files'], ['small_scored', 'Small (<1 MW)'], ['large_scored', 'Large scored'], ['unscored', 'Unscored']];
+const kt = t => fmt(t / 1000, 1);
+
+function Kpi({ label, value, unit, note }) {
+  return <div className="results-kpi"><div className="results-kpi-label"><span>{label}</span></div><div className="results-kpi-value">{value}<small>{unit}</small></div><div className="results-kpi-bottom"><span>{note}</span></div></div>;
+}
+
+function Panel({ title, children }) { return <section className="results-panel"><h2>{title}</h2>{children}</section>; }
+
+export default function Simulation({ section = 'summary' }) {
+  const [year, setYear] = useState(2023);
+  const history = useHistorical(year);
+  const d = history.data;
+  const cq = d?.carbonqueue, fifo = d?.fifo;
+  return <div className="flex flex-col gap-space-lg">
+    <div className="results-archive-note"><span className="material-symbols-outlined" aria-hidden="true">history</span>
+      <span>Replay of a real English queue with each policy, same calibrated capacity and effort rules. Carbon counts only applications that were actually permitted.</span>
+      <label className="results-week ml-auto">Queue year<select value={year} onChange={e => setYear(Number(e.target.value))}>{YEARS.map(y => <option key={y} value={y}>{y}{y < 2021 ? ' (small queue)' : ''}</option>)}</select></label>
     </div>
-    {section==='setup' && (<div className="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-wrap items-center justify-between gap-space-md">
-      <div className="flex flex-wrap items-center gap-space-sm text-on-surface">
-        <div className="flex items-center gap-1.5 bg-surface-container-low px-space-md py-1.5 rounded">
-          <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Year:</span>
-          <span className="font-label-md text-label-md font-semibold">2021</span>
-          <span className="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
-        </div>
-        <div className="flex items-center gap-1.5 bg-surface-container-low px-space-md py-1.5 rounded">
-          <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Policy Set:</span>
-          <span className="font-label-md text-label-md font-semibold">All Policies</span>
-          <span className="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
-        </div>
-        <div className="flex items-center gap-1.5 bg-surface-container px-space-md py-1.5 rounded">
-          <span className="material-symbols-outlined text-[15px] text-secondary">speed</span>
-          <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Capacity:</span>
-          <span className="font-label-md text-label-md font-semibold">320 h / week</span>
-        </div>
-        <div className="flex items-center gap-1.5 bg-surface-container-low px-space-md py-1.5 rounded">
-          <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Stale Records:</span>
-          <span className="font-label-md text-label-md font-semibold text-secondary">Included</span>
-          <span className="material-symbols-outlined text-[14px] text-secondary">toggle_on</span>
-        </div>
-        <div className="flex items-center gap-1.5 bg-surface-container-low px-space-md py-1.5 rounded">
-          <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Scenario:</span>
-          <span className="font-label-md text-label-md font-semibold">Central (Mid)</span>
-          <span className="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
-        </div>
-        <div className="flex items-center gap-1.5 bg-surface-container-low px-space-md py-1.5 rounded" title="Strict operational threshold, not a statutory determination">
-          <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Max-Wait Policy:</span>
-          <span className="font-label-md text-label-md font-semibold">180 days</span>
-        </div>
+    {history.status === 'loading' && <Panel title="Loading">Loading {year} results…</Panel>}
+    {history.status === 'error' && <Panel title="Historical results unavailable"><p>{history.error.message}. Set CQ_SIMULATION_RESULTS_DIR in the backend (see README).</p></Panel>}
+    {d && section === 'summary' && <>
+      <div className="results-kpis">
+        <Kpi label="Carbon gain vs FIFO" value={kt(cq.carbon_gain_tco2_vs_fifo['alpha_0.5'].central)} unit="ktCO₂e" note={`Range ${kt(cq.carbon_gain_tco2_vs_fifo['alpha_0.2'].low)}–${kt(cq.carbon_gain_tco2_vs_fifo['alpha_1.0'].high)} kt`} />
+        <Kpi label="Median wait" value={fmt(cq.wait_days.all.median, 0)} unit="days" note={`FIFO ${fmt(fifo.wait_days.all.median, 0)} days`} />
+        <Kpi label="P90 wait" value={fmt(cq.wait_days.all.p90, 0)} unit="days" note={`FIFO ${fmt(fifo.wait_days.all.p90, 0)} days`} />
+        <Kpi label="Small projects, P90 wait" value={fmt(cq.wait_days.small_scored.p90, 0)} unit="days" note={`FIFO ${fmt(fifo.wait_days.small_scored.p90, 0)} · carbon only ${fmt(d.carbon.wait_days.small_scored.p90, 0)}`} />
       </div>
-      <a className="inline-flex items-center gap-1 text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" href="#">
-        <span className="material-symbols-outlined text-[16px]">tune</span>
-        Advanced settings
-      </a>
-    </div>)}
-    {section==='setup' && (<div className="bg-surface-container-low rounded-xl p-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-lg relative overflow-hidden">
-      <div className="flex items-start gap-space-md">
-        <div className="p-2 rounded bg-surface-container-highest text-secondary shrink-0">
-          <span className="material-symbols-outlined text-[20px]">science</span>
-        </div>
-        <div className="flex flex-col gap-0.5">
-          <div className="flex items-center gap-space-sm">
-            <span className="font-label-xs text-label-xs uppercase font-semibold text-secondary">Historical Evaluation Sandbox</span>
-            <span className="text-outline-variant font-label-xs">•</span>
-            <span className="font-body-sm text-body-sm text-on-surface font-medium">Cohort-matched counterfactual simulation</span>
-          </div>
-          <p className="font-body-sm text-body-sm text-on-surface-variant">
-            All policies are evaluated using the identical application cohort, review capacity, and simulation rules. 
-            The machine learning model for each simulated year is trained <span className="font-medium text-on-surface">strictly on information available prior to that year</span> to prevent temporal leakage.
-          </p>
-        </div>
-      </div>
-      <div className="shrink-0 flex items-center gap-space-sm bg-surface-container-lowest px-space-md py-1.5 rounded shadow-sm">
-        <span className="material-symbols-outlined text-secondary text-[16px]">lock_clock</span>
-        <span className="font-label-xs text-label-xs text-on-surface-variant">Leakage guard active</span>
-      </div>
-    </div>)}
-    {section==='setup' && (<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
-      <div className="flex items-center gap-space-xs overflow-x-auto pb-1 sm:pb-0">
-        <span className="font-label-xs text-label-xs text-on-surface-variant uppercase pr-space-sm shrink-0">Simulated Cohort:</span>
-        <button className="px-space-md py-1 rounded text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md transition-colors">2019</button>
-        <button className="px-space-md py-1 rounded text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md transition-colors flex items-center gap-1">
-          2020
-          <span className="font-label-xs text-[10px] text-outline">(COVID context)</span>
-        </button>
-        <button className="px-space-md py-1 rounded bg-primary text-on-primary font-label-md text-label-md shadow-sm font-semibold flex items-center gap-1.5">
-          <span>2021</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-secondary-container" />
-          <span className="font-label-xs text-label-xs text-on-primary/80">Active</span>
-        </button>
-        <button className="px-space-md py-1 rounded text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md transition-colors">2022</button>
-        <button className="px-space-md py-1 rounded text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md transition-colors">2023</button>
-      </div>
-      <p className="font-label-xs text-label-xs text-on-surface-variant italic">
-        Each simulated year is evaluated independently without conflating historical cohorts or multi-year state carryovers.
-      </p>
-    </div>)}
-    {section==='summary' && (<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-space-md">
-      <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between gap-space-md hover:shadow-md transition-shadow">
-        <div className="flex items-center justify-between">
-          <span className="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant">Median Wait</span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-fixed-variant font-label-xs text-label-xs font-semibold">
-            -23 days
-          </span>
-        </div>
-        <div className="flex flex-col gap-1">
-          <div className="flex items-baseline gap-space-sm">
-            <span className="font-metric-num text-metric-num text-on-surface">51</span>
-            <span className="font-body-md text-body-md text-on-surface-variant">days</span>
-          </div>
-          <div className="flex items-center gap-space-sm font-body-sm text-body-sm">
-            <span className="text-on-surface-variant">FIFO baseline:</span>
-            <span className="font-medium text-on-surface">74 days</span>
-          </div>
-        </div>
-        <div className="pt-space-sm flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant bg-surface-container-low/60 -mx-space-lg -mb-space-lg p-space-sm px-space-lg rounded-b-xl">
-          <span>Simulated review cycle</span>
-          <span className="material-symbols-outlined text-[14px]">calendar_month</span>
-        </div>
-      </div>
-      <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between gap-space-md hover:shadow-md transition-shadow">
-        <div className="flex items-center justify-between">
-          <span className="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant">P90 Tail Wait</span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-fixed-variant font-label-xs text-label-xs font-semibold">
-            -46 days
-          </span>
-        </div>
-        <div className="flex flex-col gap-1">
-          <div className="flex items-baseline gap-space-sm">
-            <span className="font-metric-num text-metric-num text-on-surface">142</span>
-            <span className="font-body-md text-body-md text-on-surface-variant">days</span>
-          </div>
-          <div className="flex items-center gap-space-sm font-body-sm text-body-sm">
-            <span className="text-on-surface-variant">FIFO baseline:</span>
-            <span className="font-medium text-on-surface">188 days</span>
-          </div>
-        </div>
-        <div className="pt-space-sm flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant bg-surface-container-low/60 -mx-space-lg -mb-space-lg p-space-sm px-space-lg rounded-b-xl">
-          <span>Cap threshold: 180 d</span>
-          <span className="material-symbols-outlined text-[14px]">timer</span>
-        </div>
-      </div>
-      <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between gap-space-md hover:shadow-md transition-shadow">
-        <div className="flex items-center justify-between">
-          <span className="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant">Avoided-Delay CO₂e</span>
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-surface-container text-secondary font-label-xs text-label-xs font-semibold">
-            Modeled
-          </span>
-        </div>
-        <div className="flex flex-col gap-1">
-          <div className="flex items-baseline gap-1">
-            <span className="font-metric-num text-metric-num text-secondary">1.2–3.8</span>
-            <span className="font-body-sm text-body-sm text-on-surface-variant">ktCO₂e</span>
-          </div>
-          <div className="flex items-center gap-space-sm font-body-sm text-body-sm">
-            <span className="text-on-surface-variant">FIFO baseline:</span>
-            <span className="font-medium text-on-surface">0.0 (Ref)</span>
-          </div>
-        </div>
-        <div className="pt-space-sm flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant bg-surface-container-low/60 -mx-space-lg -mb-space-lg p-space-sm px-space-lg rounded-b-xl" title="Modeled displacement potential under dispatch constraints; not guaranteed real-world savings.">
-          <span className="truncate">Central scenario range</span>
-          <span className="material-symbols-outlined text-[14px]">eco</span>
-        </div>
-      </div>
-      <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between gap-space-md hover:shadow-md transition-shadow">
-        <div className="flex items-center justify-between">
-          <span className="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant">Max-Wait Violations</span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-fixed-variant font-label-xs text-label-xs font-semibold">
-            -5 apps
-          </span>
-        </div>
-        <div className="flex flex-col gap-1">
-          <div className="flex items-baseline gap-space-sm">
-            <span className="font-metric-num text-metric-num text-on-surface">2</span>
-            <span className="font-body-md text-body-md text-on-surface-variant">cases</span>
-          </div>
-          <div className="flex items-center gap-space-sm font-body-sm text-body-sm">
-            <span className="text-on-surface-variant">FIFO baseline:</span>
-            <span className="font-medium text-error">7 cases</span>
-          </div>
-        </div>
-        <div className="pt-space-sm flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant bg-surface-container-low/60 -mx-space-lg -mb-space-lg p-space-sm px-space-lg rounded-b-xl">
-          <span>Exceeding &gt;180 days</span>
-          <span className="material-symbols-outlined text-[14px]">rule</span>
-        </div>
-      </div>
-      <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between gap-space-md hover:shadow-md transition-shadow">
-        <div className="flex items-center justify-between">
-          <span className="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant">Wasted Review Effort</span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-fixed-variant font-label-xs text-label-xs font-semibold">
-            -35 h (-36%)
-          </span>
-        </div>
-        <div className="flex flex-col gap-1">
-          <div className="flex items-baseline gap-space-sm">
-            <span className="font-metric-num text-metric-num text-on-surface">61</span>
-            <span className="font-body-md text-body-md text-on-surface-variant">hours</span>
-          </div>
-          <div className="flex items-center gap-space-sm font-body-sm text-body-sm">
-            <span className="text-on-surface-variant">FIFO baseline:</span>
-            <span className="font-medium text-on-surface">96 hours</span>
-          </div>
-        </div>
-        <div className="pt-space-sm flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant bg-surface-container-low/60 -mx-space-lg -mb-space-lg p-space-sm px-space-lg rounded-b-xl">
-          <span className="truncate">On later-withdrawn apps</span>
-          <span className="material-symbols-outlined text-[14px]">hourglass_disabled</span>
-        </div>
-      </div>
-    </div>)}
-    {section==='comparison' && (<div className="bg-surface-container-lowest rounded-xl shadow-sm p-space-lg flex flex-col gap-space-md">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
-        <div>
-          <div className="flex items-center gap-space-sm">
-            <h2 className="font-headline-md text-headline-md text-on-surface">What changes as policy components are added?</h2>
-            <span className="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-xs text-label-xs font-medium">Illustrative simulation values</span>
-          </div>
-          <p className="font-body-sm text-body-sm text-on-surface-variant">Incremental contribution of each policy constraint under identical 320 h/week reviewer capacity.</p>
-        </div>
-        <div className="flex items-center gap-space-sm">
-          <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Comparator Mode:</span>
-          <span className="font-label-md text-label-md font-semibold text-on-surface">Stepwise Progression</span>
-        </div>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-surface-container-low text-on-surface-variant font-label-md text-label-md uppercase">
-              <th className="py-space-md px-space-lg rounded-l">Metric</th>
-              <th className="py-space-md px-space-md text-right">FIFO (Baseline)</th>
-              <th className="py-space-md px-space-md text-right">+ Carbon Only</th>
-              <th className="py-space-md px-space-md text-right">+ Withdrawal Risk</th>
-              <th className="py-space-md px-space-md text-right">+ Review Effort</th>
-              <th className="py-space-md px-space-lg text-right rounded-r bg-surface-container font-semibold text-on-surface">
-                <span className="inline-flex items-center gap-1.5">
-                  CarbonQueue
-                  <span className="px-1.5 py-0.5 rounded bg-primary text-on-primary font-label-xs text-[10px] uppercase font-normal">Recommended</span>
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y-0 text-on-surface font-body-md text-body-md">
-            <tr className="hover:bg-surface-container-low/50 transition-colors">
-              <td className="py-3 px-space-lg font-medium">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[16px] text-on-surface-variant">speed</span>
-                  <span>Median Wait Time</span>
-                </div>
-              </td>
-              <td className="py-3 px-space-md text-right font-medium">74 d</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">68 d</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">64 d</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">58 d</td>
-              <td className="py-3 px-space-lg text-right font-semibold bg-surface-container-low text-secondary">51 d (-31%)</td>
-            </tr>
-            <tr className="hover:bg-surface-container-low/50 transition-colors">
-              <td className="py-3 px-space-lg font-medium">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[16px] text-on-surface-variant">hourglass_top</span>
-                  <span>P90 Tail Wait</span>
-                </div>
-              </td>
-              <td className="py-3 px-space-md text-right font-medium">188 d</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">176 d</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">168 d</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">154 d</td>
-              <td className="py-3 px-space-lg text-right font-semibold bg-surface-container-low text-secondary">142 d (-24%)</td>
-            </tr>
-            <tr className="hover:bg-surface-container-low/50 transition-colors">
-              <td className="py-3 px-space-lg font-medium">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[16px] text-on-surface-variant">warning</span>
-                  <span>Max-Wait Exceedances (&gt;180 d)</span>
-                </div>
-              </td>
-              <td className="py-3 px-space-md text-right font-medium text-error">7 apps</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">6 apps</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">5 apps</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">4 apps</td>
-              <td className="py-3 px-space-lg text-right font-semibold bg-surface-container-low text-secondary">2 apps (-71%)</td>
-            </tr>
-            <tr className="hover:bg-surface-container-low/50 transition-colors">
-              <td className="py-3 px-space-lg font-medium">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[16px] text-on-surface-variant">work_history</span>
-                  <span>Wasted Review Effort</span>
-                </div>
-              </td>
-              <td className="py-3 px-space-md text-right font-medium">96 h</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">94 h</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">76 h</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">64 h</td>
-              <td className="py-3 px-space-lg text-right font-semibold bg-surface-container-low text-secondary">61 h (-36%)</td>
-            </tr>
-            <tr className="hover:bg-surface-container-low/50 transition-colors">
-              <td className="py-3 px-space-lg font-medium">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[16px] text-on-surface-variant">cloud_sync</span>
-                  <span>Modeled Avoided-Delay Carbon</span>
-                </div>
-              </td>
-              <td className="py-3 px-space-md text-right font-medium text-on-surface-variant">Baseline (0.0)</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">+1.9 kt</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">+2.2 kt</td>
-              <td className="py-3 px-space-md text-right text-on-surface-variant">+2.8 kt</td>
-              <td className="py-3 px-space-lg text-right font-semibold bg-surface-container-low text-secondary">+3.1 ktCO₂e</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>)}
-    {section==='distribution' && (<div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between gap-space-lg">
-        <div className="flex flex-col gap-1">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h3 className="font-headline-md text-headline-md text-on-surface">Waiting Time Distribution</h3>
-            <span className="font-label-xs text-label-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">Percentile Spread</span>
-          </div>
-          <p className="font-body-sm text-body-sm text-on-surface-variant">
-            Comparison of P10, P25, Median (P50), P75, and P90 review durations against the 180-day Maximum-Wait Policy threshold.
-          </p>
-        </div>
-        <WaitingDistribution />
-      </div>)}
-    {section==='carbon' && (<div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between gap-space-lg">
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center justify-between">
-            <h3 className="font-headline-md text-headline-md text-on-surface">Modeled Carbon Potential Ranges</h3>
-            <span className="font-label-xs text-label-xs text-secondary bg-surface-container px-2 py-0.5 rounded">Central Scenario</span>
-          </div>
-          <p className="font-body-sm text-body-sm text-on-surface-variant">
-            Uncertainty intervals across policies. Modeled displacement potential under dispatch constraints; not guaranteed real-world savings.
-          </p>
-        </div>
-        <CarbonRanges />
-        <div className="flex items-center justify-between text-on-surface-variant font-label-xs text-label-xs">
-          <span>Whisker: 10th–90th percentile modeled variance</span>
-          <span className="text-on-surface font-medium">Box &amp; Point: Interquartile mass &amp; Median</span>
-        </div>
-      </div>)}
-    {section==='sensitivity' && (<div className="flex flex-col gap-space-lg">
-        <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-space-sm">
-              <div className="p-1.5 rounded bg-surface-container-low text-on-surface">
-                <span className="material-symbols-outlined text-[18px]">find_replace</span>
-              </div>
-              <h3 className="font-headline-md text-headline-md text-on-surface">Stale Record Sensitivity</h3>
-            </div>
-            <span className="font-label-xs text-label-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">Robustness Check</span>
-          </div>
-          <p className="font-body-sm text-body-sm text-on-surface-variant">
-            Long-waiting or uncertain historical submissions are flagged rather than silently excluded. Reporting both conditions confirms whether tail results hinge on dormant files.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
-            <div className="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-space-sm">
-              <div className="flex items-center justify-between">
-                <span className="font-label-md text-label-md font-semibold text-on-surface">Stale Records Included</span>
-                <span className="font-label-xs text-label-xs bg-surface-container px-1.5 py-0.5 rounded text-on-surface-variant">Default</span>
-              </div>
-              <div className="flex flex-col gap-1 text-on-surface-variant font-body-sm text-body-sm">
-                <div className="flex justify-between"><span>Median Wait:</span> <span className="font-medium text-on-surface">51 days</span></div>
-                <div className="flex justify-between"><span>P90 Tail Wait:</span> <span className="font-medium text-on-surface">142 days</span></div>
-                <div className="flex justify-between"><span>Modeled Carbon:</span> <span className="font-medium text-secondary">1.2–3.8 ktCO₂e</span></div>
-              </div>
-            </div>
-            <div className="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-space-sm">
-              <div className="flex items-center justify-between">
-                <span className="font-label-md text-label-md font-semibold text-on-surface">Stale Records Excluded</span>
-                <span className="font-label-xs text-label-xs bg-surface-container px-1.5 py-0.5 rounded text-on-surface-variant">Filtered</span>
-              </div>
-              <div className="flex flex-col gap-1 text-on-surface-variant font-body-sm text-body-sm">
-                <div className="flex justify-between"><span>Median Wait:</span> <span className="font-medium text-on-surface">48 days</span></div>
-                <div className="flex justify-between"><span>P90 Tail Wait:</span> <span className="font-medium text-on-surface">136 days</span></div>
-                <div className="flex justify-between"><span>Modeled Carbon:</span> <span className="font-medium text-secondary">1.1–3.5 ktCO₂e</span></div>
-              </div>
-            </div>
-          </div>
-          <p className="font-label-xs text-label-xs text-on-surface-variant italic">
-            Delta is minor (+3 days median, +6 days P90), showing policy performance is robust against historical administrative backlog artifacts.
-          </p>
-        </div>
-      </div>)}
-    {section==='performance' && (<div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between gap-space-md">
-        <div className="flex flex-col gap-space-sm">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
-            <h3 className="font-headline-md text-headline-md text-on-surface">Performance Breakdown</h3>
-            <div className="inline-flex p-0.5 bg-surface-container rounded-lg self-start">
-              <button className={"px-space-md py-1 rounded font-label-md text-label-md " + (ctx.breakdown === 'tech' ? 'bg-white shadow-sm font-semibold' : 'text-on-surface-variant')} aria-pressed={ctx.breakdown === 'tech'} id="tab-btn-tech">Technology</button>
-              <button className={"px-space-md py-1 rounded font-label-md text-label-md " + (ctx.breakdown === 'size' ? 'bg-white shadow-sm font-semibold' : 'text-on-surface-variant')} aria-pressed={ctx.breakdown === 'size'} id="tab-btn-size">Project Size</button>
-            </div>
-          </div>
-          <p className="font-body-sm text-body-sm text-on-surface-variant">Cohort performance across technical categories under the CarbonQueue schedule.</p>
-        </div>
-        <div className="flex flex-col gap-space-sm" id="view-tech" style={{display: ctx.breakdown === "tech" ? "flex" : "none"}}>
-          <div className="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors">
-            <div className="flex items-center gap-space-md">
-              <div className="p-2 rounded bg-surface-container-lowest text-on-surface">
-                <span className="material-symbols-outlined text-[20px]">solar_power</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-label-md text-label-md font-semibold text-on-surface">Solar PV</span>
-                <span className="font-label-xs text-label-xs text-on-surface-variant">18 active applications</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-space-xl text-right">
-              <div className="flex flex-col">
-                <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Median Wait</span>
-                <span className="font-body-md text-body-md font-semibold text-on-surface">49 days</span>
-              </div>
-              <div className="flex flex-col min-w-[110px]">
-                <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Modeled CO₂e</span>
-                <span className="font-body-md text-body-md font-semibold text-secondary">0.8–1.6 kt</span>
-              </div>
-            </div>
-          </div>
-          <div className="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors">
-            <div className="flex items-center gap-space-md">
-              <div className="p-2 rounded bg-surface-container-lowest text-on-surface">
-                <span className="material-symbols-outlined text-[20px]">mode_fan</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-label-md text-label-md font-semibold text-on-surface">Onshore &amp; Offshore Wind</span>
-                <span className="font-label-xs text-label-xs text-on-surface-variant">8 active applications</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-space-xl text-right">
-              <div className="flex flex-col">
-                <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Median Wait</span>
-                <span className="font-body-md text-body-md font-semibold text-on-surface">46 days</span>
-              </div>
-              <div className="flex flex-col min-w-[110px]">
-                <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Modeled CO₂e</span>
-                <span className="font-body-md text-body-md font-semibold text-secondary">0.9–1.8 kt</span>
-              </div>
-            </div>
-          </div>
-          <div className="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors">
-            <div className="flex items-center gap-space-md">
-              <div className="p-2 rounded bg-surface-container-lowest text-on-surface">
-                <span className="material-symbols-outlined text-[20px]">battery_charging_full</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-label-md text-label-md font-semibold text-on-surface">Battery Energy Storage</span>
-                <span className="font-label-xs text-label-xs text-on-surface-variant">7 active applications</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-space-xl text-right">
-              <div className="flex flex-col">
-                <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Median Wait</span>
-                <span className="font-body-md text-body-md font-semibold text-on-surface">53 days</span>
-              </div>
-              <div className="flex flex-col min-w-[110px]">
-                <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Modeled CO₂e</span>
-                <span className="font-body-md text-body-md font-semibold text-secondary">0.4–0.7 kt</span>
-              </div>
-            </div>
-          </div>
-          <div className="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors">
-            <div className="flex items-center gap-space-md">
-              <div className="p-2 rounded bg-surface-container-lowest text-on-surface">
-                <span className="material-symbols-outlined text-[20px]">ev_station</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-label-md text-label-md font-semibold text-on-surface">Commercial EV Fleet Hubs</span>
-                <span className="font-label-xs text-label-xs text-on-surface-variant">5 active applications</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-space-xl text-right">
-              <div className="flex flex-col">
-                <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Median Wait</span>
-                <span className="font-body-md text-body-md font-semibold text-on-surface">57 days</span>
-              </div>
-              <div className="flex flex-col min-w-[110px]">
-                <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Modeled CO₂e</span>
-                <span className="font-body-md text-body-md font-semibold text-secondary">0.2–0.5 kt</span>
-              </div>
-            </div>
-          </div>
-          <div className="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors">
-            <div className="flex items-center gap-space-md">
-              <div className="p-2 rounded bg-surface-container-lowest text-on-surface">
-                <span className="material-symbols-outlined text-[20px]">heat_pump</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-label-md text-label-md font-semibold text-on-surface">Industrial Heat Pump Cluster</span>
-                <span className="font-label-xs text-label-xs text-on-surface-variant">4 active applications</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-space-xl text-right">
-              <div className="flex flex-col">
-                <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Median Wait</span>
-                <span className="font-body-md text-body-md font-semibold text-on-surface">62 days</span>
-              </div>
-              <div className="flex flex-col min-w-[110px]">
-                <span className="font-label-xs text-label-xs text-on-surface-variant uppercase">Modeled CO₂e</span>
-                <span className="font-body-md text-body-md font-semibold text-secondary">0.3–0.6 kt</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="hidden flex-col gap-space-sm" id="view-size" style={{display: ctx.breakdown === "size" ? "flex" : "none"}}>
-          <div className="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between">
-            <div className="flex flex-col">
-              <span className="font-label-md text-label-md font-semibold text-on-surface">Small Projects (&lt; 5 MW)</span>
-              <span className="font-label-xs text-label-xs text-on-surface-variant">14 applications</span>
-            </div>
-            <div className="flex items-center gap-space-lg text-right">
-              <div><span className="font-label-xs text-label-xs text-on-surface-variant">Median:</span> <span className="font-body-md text-body-md font-semibold">58 d</span></div>
-              <div><span className="font-label-xs text-label-xs text-on-surface-variant">P90:</span> <span className="font-body-md text-body-md font-semibold">146 d</span></div>
-            </div>
-          </div>
-          <div className="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between">
-            <div className="flex flex-col">
-              <span className="font-label-md text-label-md font-semibold text-on-surface">Medium Projects (5–50 MW)</span>
-              <span className="font-label-xs text-label-xs text-on-surface-variant">20 applications</span>
-            </div>
-            <div className="flex items-center gap-space-lg text-right">
-              <div><span className="font-label-xs text-label-xs text-on-surface-variant">Median:</span> <span className="font-body-md text-body-md font-semibold">50 d</span></div>
-              <div><span className="font-label-xs text-label-xs text-on-surface-variant">P90:</span> <span className="font-body-md text-body-md font-semibold">138 d</span></div>
-            </div>
-          </div>
-          <div className="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between">
-            <div className="flex flex-col">
-              <span className="font-label-md text-label-md font-semibold text-on-surface">Large Utility (&gt; 50 MW)</span>
-              <span className="font-label-xs text-label-xs text-on-surface-variant">8 applications</span>
-            </div>
-            <div className="flex items-center gap-space-lg text-right">
-              <div><span className="font-label-xs text-label-xs text-on-surface-variant">Median:</span> <span className="font-body-md text-body-md font-semibold">44 d</span></div>
-              <div><span className="font-label-xs text-label-xs text-on-surface-variant">P90:</span> <span className="font-body-md text-body-md font-semibold">132 d</span></div>
-            </div>
-          </div>
-        </div>
-        <div className="pt-space-sm border-t-0 flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant">
-          <span>Total simulated projects: 42</span>
-          <span>Aggregated capacity: 418 MW</span>
-        </div>
-      </div>)}
-    {section==='setup' && (<div className="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
-      <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-space-sm">
-            <div className="p-1.5 rounded bg-surface-container-low text-on-surface">
-              <span className="material-symbols-outlined text-[18px]">model_training</span>
-            </div>
-            <h3 className="font-headline-md text-headline-md text-on-surface">Historical Model Setup</h3>
-          </div>
-          <span className="font-label-xs text-label-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">CatBoost v1.2</span>
-        </div>
-        <p className="font-body-sm text-body-sm text-on-surface-variant">
-          Each simulation year strictly utilizes a model trained on data registered before that year to avoid temporal leakage.
-        </p>
-        <div className="grid grid-cols-2 gap-space-sm text-on-surface font-body-sm text-body-sm">
-          <div className="bg-surface-container-low p-space-sm rounded">
-            <span className="font-label-xs text-label-xs text-on-surface-variant uppercase block">Simulated Year</span>
-            <span className="font-semibold">2021 Cohort</span>
-          </div>
-          <div className="bg-surface-container-low p-space-sm rounded">
-            <span className="font-label-xs text-label-xs text-on-surface-variant uppercase block">Training Cutoff</span>
-            <span className="font-semibold">31 Dec 2020</span>
-          </div>
-          <div className="bg-surface-container-low p-space-sm rounded">
-            <span className="font-label-xs text-label-xs text-on-surface-variant uppercase block">Window Interval</span>
-            <span className="font-semibold">30-day Batches</span>
-          </div>
-          <div className="bg-surface-container-low p-space-sm rounded">
-            <span className="font-label-xs text-label-xs text-on-surface-variant uppercase block">Hyperparameters</span>
-            <span className="font-semibold">Fixed Pre-Run</span>
-          </div>
-        </div>
-        <div className="pt-space-xs">
-          <span className="font-label-xs text-label-xs text-outline">Validation Strategy: Expanding historical window without post-period leakage.</span>
-        </div>
-      </div>
-      <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between gap-space-md">
-        <div className="flex flex-col gap-space-sm">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-space-sm">
-              <div className="p-1.5 rounded bg-surface-container-low text-on-surface">
-                <span className="material-symbols-outlined text-[18px]">rule_folder</span>
-              </div>
-              <h3 className="font-headline-md text-headline-md text-on-surface">Simulation Assumptions</h3>
-            </div>
-            <a className="font-label-md text-label-md text-secondary hover:underline flex items-center gap-0.5" href="#">
-              Full methodology
-              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </a>
-          </div>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-space-md gap-y-1.5 text-on-surface font-body-sm text-body-sm">
-            <li className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-secondary">check</span>
-              <span>Identical cohort across policies</span>
-            </li>
-            <li className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-secondary">check</span>
-              <span>Fixed capacity (320 h/wk)</span>
-            </li>
-            <li className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-secondary">check</span>
-              <span>Identical review-effort models</span>
-            </li>
-            <li className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-secondary">check</span>
-              <span>Shared carbon grid scenarios</span>
-            </li>
-            <li className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-secondary">check</span>
-              <span>Max-wait protection enabled</span>
-            </li>
-            <li className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-secondary">check</span>
-              <span>Fairness constraint active</span>
-            </li>
-            <li className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-secondary">check</span>
-              <span>Withdrawn = 0 carbon benefit</span>
-            </li>
-            <li className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-secondary">check</span>
-              <span>Exits queue upon drop date</span>
-            </li>
-          </ul>
-        </div>
-        <div className="bg-surface-container-low p-space-sm rounded font-label-xs text-label-xs text-on-surface-variant flex items-center gap-2">
-          <span className="material-symbols-outlined text-[16px] text-outline">info</span>
-          <span>Historical outcomes are not used to determine simulated queue order (ex-ante scoring only).</span>
-        </div>
-      </div>
-    </div>)}
-  </div>
-</div>); }
+      <Panel title="Reading the result">
+        <p>CarbonQueue reviews high-impact projects earlier without adding reviewers: across the {fmt(cq.files, 0)} files of the {year} queue, earlier permissions shift about {kt(cq.carbon_gain_tco2_vs_fifo['alpha_0.5'].central)} kt of displaced emissions forward (central emission factor, 50% of earlier permission passed through to earlier operation).</p>
+        <p>Fairness protections cost part of the gain: carbon-only ordering reaches {kt(d.carbon.carbon_gain_tco2_vs_fifo['alpha_0.5'].central)} kt but pushes the slowest small projects to {fmt(d.carbon.wait_days.small_scored.p90, 0)} days.</p>
+      </Panel>
+    </>}
+    {d && section === 'comparison' && <Panel title="What changes as policy components are added?">
+      <div className="overflow-x-auto"><table className="w-full text-left text-body-sm">
+        <thead><tr className="uppercase font-label-xs text-label-xs text-on-surface-variant"><th className="py-2 pr-3">Policy</th><th className="pr-3 text-right">Carbon gain (kt)</th><th className="pr-3 text-right">Median wait</th><th className="pr-3 text-right">P90 wait</th><th className="pr-3 text-right">Small P90</th><th className="pr-3 text-right">Over 365 days</th><th className="text-right">Hours on withdrawn files</th></tr></thead>
+        <tbody className="divide-y divide-surface-container">{HISTORICAL_POLICIES.map(p => { const r = d[p]; return <tr key={p} className={p === 'carbonqueue' ? 'font-semibold' : ''}>
+          <td className="py-2 pr-3">{NAMES[p]}</td>
+          <td className="pr-3 text-right">{p === 'fifo' ? '—' : kt(r.carbon_gain_tco2_vs_fifo['alpha_0.5'].central)}</td>
+          <td className="pr-3 text-right">{fmt(r.wait_days.all.median, 0)} d</td>
+          <td className="pr-3 text-right">{fmt(r.wait_days.all.p90, 0)} d</td>
+          <td className="pr-3 text-right">{fmt(r.wait_days.small_scored.p90, 0)} d</td>
+          <td className="pr-3 text-right">{fmt(r.over_max_wait_share * 100)}%</td>
+          <td className="text-right">{fmt(r.wasted_hours_on_withdrawn, 0)} h</td>
+        </tr>; })}</tbody>
+      </table></div>
+      <p>Almost all of the gain comes from ordering by carbon impact. The withdrawal-risk and effort terms change it by less than 2%; the fairness tiers trade part of the gain for shorter tails for small projects.</p>
+    </Panel>}
+    {d && section === 'distribution' && <div className="results-chart-grid">
+      <Chart title="Median wait by group" subtitle={`${year} queue, simulated`} unit="days" labels={GROUPS.map(g => g[1])} series={[{ name: 'FIFO', values: GROUPS.map(g => fifo.wait_days[g[0]].median || 0), color: '#b6c9df' }, { name: 'CarbonQueue', values: GROUPS.map(g => cq.wait_days[g[0]].median || 0), color: '#00785b' }]} />
+      <Chart title="P90 wait by group" subtitle="The slowest 10% of each group" unit="days" labels={GROUPS.map(g => g[1])} series={[{ name: 'FIFO', values: GROUPS.map(g => fifo.wait_days[g[0]].p90 || 0), color: '#b6c9df' }, { name: 'CarbonQueue', values: GROUPS.map(g => cq.wait_days[g[0]].p90 || 0), color: '#00785b' }]} />
+    </div>}
+    {d && section === 'carbon' && <Panel title={`Carbon gain vs FIFO, ${year} (ktCO₂e)`}>
+      <div className="overflow-x-auto"><table className="w-full text-left text-body-sm">
+        <thead><tr className="uppercase font-label-xs text-label-xs text-on-surface-variant"><th className="py-2 pr-3">Pass-through (α)</th><th className="pr-3 text-right">Low factor</th><th className="pr-3 text-right">Central factor</th><th className="text-right">High factor</th></tr></thead>
+        <tbody className="divide-y divide-surface-container">{Object.entries(cq.carbon_gain_tco2_vs_fifo).map(([alpha, v]) => <tr key={alpha}><td className="py-2 pr-3">{Number(alpha.split('_')[1]) * 100}%</td><td className="pr-3 text-right">{kt(v.low)}</td><td className="pr-3 text-right font-semibold">{kt(v.central)}</td><td className="text-right">{kt(v.high)}</td></tr>)}</tbody>
+      </table></div>
+      <p>Emission factors (tCO₂e/MWh): low {cq.emission_factor_tco2_per_mwh.low} (grid average), central {cq.emission_factor_tco2_per_mwh.central} (long-run marginal), high {cq.emission_factor_tco2_per_mwh.high} (gas-fired). α is the share of an earlier permission that turns into earlier operation; it is an assumption, reported separately from the emission-factor uncertainty.</p>
+    </Panel>}
+    {d && section === 'setup' && <div className="results-chart-grid">
+      <Panel title="Calibration">
+        <dl className="settings-reference">
+          <div><dt>Weekly reviewer capacity</dt><dd>{fmt(cq.calibration.capacity_hours_per_week, 0)} h (factor ×{cq.calibration.calibration_factor})</dd></div>
+          <div><dt>Median decision time, real vs simulated FIFO</dt><dd>{fmt(cq.calibration.real_wait_median, 0)} / {fmt(cq.calibration.fifo_wait_median, 0)} days</dd></div>
+          <div><dt>P90 decision time, real vs simulated FIFO</dt><dd>{fmt(cq.calibration.real_wait_p90, 0)} / {fmt(cq.calibration.fifo_wait_p90, 0)} days (not calibrated; a known limitation)</dd></div>
+          <div><dt>Files · counted for carbon · outcome unknown</dt><dd>{cq.files} · {cq.carbon_files} · {cq.unresolved_files}</dd></div>
+          <div><dt>Capacity share: unscored lane · small-project quota</dt><dd>{fmt(cq.lane_share.unscored * 100)}% · {fmt(cq.lane_share.small_quota * 100)}%</dd></div>
+        </dl>
+      </Panel>
+      <Panel title="Assumptions">
+        <dl className="settings-reference">
+          <div><dt>Load factor (DUKES 2026, 2021–2025 mean)</dt><dd>Solar {cq.assumptions.carbon.load_factor.solar} · onshore wind {cq.assumptions.carbon.load_factor.onshore_wind}</dd></div>
+          <div><dt>Emission factor year</dt><dd>Queue year + {cq.assumptions.carbon.operation_lag_years} years</dd></div>
+          <div><dt>Effort rule</dt><dd>{cq.assumptions.effort.base} points base, +{cq.assumptions.effort.storage_component} storage, MW steps {cq.assumptions.effort.mw_steps.map(([mw, pts]) => `≥${mw} MW +${pts}`).join(', ')}; 1 point = {cq.assumptions.effort.hours_per_point} h</dd></div>
+          <div><dt>Maximum wait</dt><dd>{cq.assumptions.queue.max_wait_days} days, up to {cq.assumptions.queue.max_wait_capacity_share * 100}% of capacity</dd></div>
+          <div><dt>Small-project quota</dt><dd>Below {cq.assumptions.queue.small_project_mw} MW, {cq.assumptions.queue.small_quota_factor * 100}% of their effort share</dd></div>
+          <div><dt>Single pool</dt><dd>One England-wide reviewer pool; authorities receive too few renewable files to reorder individually.</dd></div>
+        </dl>
+      </Panel>
+    </div>}
+  </div>;
+}

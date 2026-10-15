@@ -1,135 +1,120 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useApp } from '../state.jsx';
-export default function Upload() { const ctx = useApp();
+import { api } from '../api.js';
+import { LANE_LABELS, fmt } from '../live-data.js';
+
+const FIELD_LABELS = { technology: 'Technology', capacity_mw: 'Capacity (MW)', project_name: 'Project name', planning_authority: 'Planning authority',
+  site_location: 'Site location', applicant: 'Applicant', submission_date: 'Submission date', has_storage: 'Storage component' };
+const TECHNOLOGIES = ['solar', 'onshore_wind', 'battery', 'hydro', 'biomass', 'tidal', 'wave'];
+const STATUS = { NEEDS_REVIEW: 'Needs human review', READY: 'Ready for review', SCORED: 'Scored', FAILED: 'Failed' };
+
+function Card({ title, value, note, tone }) {
+  return <div className="bg-surface-container-low p-space-md rounded-lg flex flex-col">
+    <span className="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">{title}</span>
+    <span className={'font-metric-num text-metric-num mt-1 '+(tone==='bad'?'text-error':'text-on-surface')}>{value}</span>
+    {note && <span className="font-label-xs text-label-xs text-on-surface-variant mt-0.5">{note}</span>}
+  </div>;
+}
+
+export default function Upload() {
+  const ctx = useApp();
+  const input = useRef(null);
+  const [files, setFiles] = useState([]), [phase, setPhase] = useState('idle'), [error, setError] = useState(null);
+  const [app, setApp] = useState(null), [entry, setEntry] = useState(null), [edits, setEdits] = useState({});
+  const addFiles = list => { const pdfs = Array.from(list).filter(f => /\.pdf$/i.test(f.name) && f.size <= 20 * 1024 * 1024); setFiles(prev => [...prev, ...pdfs].slice(0, 10)); if (pdfs.length < list.length) ctx.setNotice('Only PDF files up to 20 MB are accepted.'); };
+  const fail = e => { setError(e); setPhase('error'); };
+
+  async function extract() {
+    setPhase('extracting'); setError(null); setApp(null); setEntry(null);
+    try { setApp(await api.extract(files)); setPhase('done'); } catch (e) { fail(e); }
+  }
+  async function correct(e) {
+    e.preventDefault();
+    const values = Object.fromEntries(Object.entries(edits).filter(([, v]) => v !== '').map(([k, v]) => [k, k === 'capacity_mw' ? Number(v) : v]));
+    if (!Object.keys(values).length) return;
+    try { setApp(await api.correct(app.application_id, app.revision, values, 'Confirmed by reviewer from source documents')); setEdits({}); ctx.setNotice('Correction recorded with audit trail.'); } catch (err) { fail(err); }
+  }
+  async function score() {
+    setPhase('scoring');
+    try {
+      const capacity = ctx.live.data?.calibration?.capacity_hours_per_week || 300;
+      const result = await api.runQueue([app.application_id], capacity);
+      setEntry(result.entries[0]); setApp(await api.application(app.application_id)); setPhase('done');
+    } catch (e) { fail(e); }
+  }
+
+  const readiness = app?.readiness;
+  const docName = Object.fromEntries((app?.documents || []).map(d => [d.document_id, d.filename]));
+  const required = ['technology', 'capacity_mw'].filter(f => readiness?.missing_fields.includes(f) || readiness?.low_confidence_fields.includes(f) || readiness?.conflicts.some(c => c.field === f));
   return (<div className="flex flex-col w-full">
   <div className="px-gutter-desktop py-space-xl max-w-[1600px] mx-auto w-full flex flex-col gap-space-xl">
-    <div className="flex flex-col gap-space-lg">
-      <div className="flex flex-col gap-space-xs">
-        <div className="flex items-center gap-space-sm">
-          <span className="font-headline-lg text-headline-lg text-on-surface">Application Intake</span>
-          <span className="bg-secondary-container text-on-secondary-container font-label-xs text-label-xs px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold">AI-Assisted Document Inspection</span>
-        </div>
-        <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl">
-          Extract, verify, and cross-reference structured project parameters from application dossiers against statutory intake schemas.
-        </p>
+    <div className="flex flex-col gap-space-xs">
+      <div className="flex items-center gap-space-sm">
+        <span className="font-headline-lg text-headline-lg text-on-surface">Application intake</span>
+        <span className="bg-secondary-container text-on-secondary-container font-label-xs text-label-xs px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold">AI document extraction</span>
       </div>
-      <nav className="intake-progress" aria-label="Application progress">
-        <ol>
-          <li className="complete"><span className="intake-step-icon material-symbols-outlined" aria-hidden="true">check</span><div><span className="intake-step-label">Step 01 · Complete</span><strong>Documents</strong></div></li>
-          <li className="complete"><span className="intake-step-icon material-symbols-outlined" aria-hidden="true">check</span><div><span className="intake-step-label">Step 02 · Complete</span><strong>Extraction</strong></div></li>
-          <li className="current" aria-current="step"><span className="intake-step-icon" aria-hidden="true">3</span><div><span className="intake-step-label">Step 03 · Current</span><strong>Review &amp; Confirm</strong></div></li>
-        </ol>
-      </nav>
+      <p className="font-body-md text-body-md text-on-surface-variant max-w-3xl">The agent reads planning PDFs and extracts each value with its document, page and quote. Values that are missing, conflicting or unsupported by a quote are sent to a human; nothing is invented.</p>
     </div>
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-stretch">
-      <div className="lg:col-span-4 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
-        <div>
-          <div className="flex items-center justify-between mb-space-sm">
-            <span className="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider font-semibold">Intake Docket</span>
-            <span className="font-label-xs text-label-xs text-secondary font-semibold">3 Files Synced</span>
-          </div>
-          <div className="bg-surface-container-low hover:bg-surface-container transition-colors rounded-lg p-space-md flex flex-col items-center justify-center text-center cursor-pointer group">
-            <div className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary mb-2 group-hover:scale-105 transition-transform">
-              <span className="material-symbols-outlined text-[20px]">upload_file</span>
-            </div>
-            <p className="font-label-md text-label-md text-on-surface font-semibold">Drop application documents here</p>
-            <p className="font-label-xs text-label-xs text-on-surface-variant mt-0.5">PDF, XLSX, or DOCX (Max 60MB)</p>
-            <button className="mt-2.5 px-3 py-1 bg-surface-container-lowest text-on-surface font-label-md text-label-md font-medium rounded shadow-sm hover:bg-surface transition-colors">
-              Browse files
-            </button>
-          </div>
+      <div className="lg:col-span-4 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md"
+        onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); addFiles(e.dataTransfer.files); }}>
+        <span className="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider font-semibold">Documents</span>
+        <div className="bg-surface-container-low rounded-lg p-space-md flex flex-col items-center justify-center text-center">
+          <span className="material-symbols-outlined text-[24px] text-primary">upload_file</span>
+          <p className="font-label-md text-label-md text-on-surface font-semibold">Drop application PDFs here</p>
+          <p className="font-label-xs text-label-xs text-on-surface-variant mt-0.5">Up to 10 PDFs, 20 MB each</p>
+          <button className="mt-2.5 px-3 py-1 bg-surface-container-lowest text-on-surface font-label-md text-label-md font-medium rounded shadow-sm" onClick={() => input.current.click()}>Browse files</button>
+          <input ref={input} type="file" accept=".pdf" multiple hidden onChange={e => { addFiles(e.target.files); e.target.value = ''; }} />
         </div>
-        <div className="flex flex-col gap-1.5 mt-space-md pt-space-sm">
-          <div className="flex items-center justify-between text-body-sm font-body-sm bg-surface-container-low px-2.5 py-1.5 rounded">
-            <div className="flex items-center gap-2 truncate">
-              <span className="material-symbols-outlined text-[16px] text-error">picture_as_pdf</span>
-              <span className="truncate font-medium text-on-surface">Technical Report.pdf</span>
-              <span className="text-on-surface-variant text-[11px]">2.4 MB</span>
-            </div>
-            <span className="bg-secondary-container text-on-secondary-container text-[10px] px-1.5 py-0.5 rounded font-semibold uppercase shrink-0">Processed</span>
-          </div>
-          <div className="flex items-center justify-between text-body-sm font-body-sm bg-surface-container-low px-2.5 py-1.5 rounded">
-            <div className="flex items-center gap-2 truncate">
-              <span className="material-symbols-outlined text-[16px] text-error">picture_as_pdf</span>
-              <span className="truncate font-medium text-on-surface">Application Form.pdf</span>
-              <span className="text-on-surface-variant text-[11px]">840 KB</span>
-            </div>
-            <span className="bg-secondary-container text-on-secondary-container text-[10px] px-1.5 py-0.5 rounded font-semibold uppercase shrink-0">Processed</span>
-          </div>
-          <div className="flex items-center justify-between text-body-sm font-body-sm bg-surface-container-low px-2.5 py-1.5 rounded">
-            <div className="flex items-center gap-2 truncate">
-              <span className="material-symbols-outlined text-[16px] text-secondary">table_view</span>
-              <span className="truncate font-medium text-on-surface">Project Timeline.xlsx</span>
-              <span className="text-on-surface-variant text-[11px]">126 KB</span>
-            </div>
-            <span className="bg-secondary-container text-on-secondary-container text-[10px] px-1.5 py-0.5 rounded font-semibold uppercase shrink-0">Processed</span>
-          </div>
-        </div>
+        {files.map((f, i) => <div key={i} className="flex items-center justify-between text-body-sm bg-surface-container-low px-2.5 py-1.5 rounded">
+          <span className="truncate font-medium text-on-surface">{f.name} <span className="text-on-surface-variant text-[11px]">{(f.size / 1024).toFixed(0)} KB</span></span>
+          <button className="text-on-surface-variant" aria-label={`Remove ${f.name}`} onClick={() => setFiles(fs => fs.filter((_, j) => j !== i))}>×</button>
+        </div>)}
+        <button className="px-space-lg py-2 bg-primary text-on-primary font-label-md text-label-md font-semibold rounded shadow-md disabled:opacity-40" disabled={!files.length || phase === 'extracting'} onClick={extract}>
+          {phase === 'extracting' ? 'Extracting… (first run downloads OCR models)' : 'Run extraction'}
+        </button>
       </div>
-      <div className="lg:col-span-8 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-md">
-          <div className="flex items-center gap-space-sm">
-            <div className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
-              <span className="material-symbols-outlined text-[18px]">done_all</span>
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-title-sm text-title-sm text-on-surface">Extraction Run Complete</span>
-                <span className="bg-secondary-container text-on-secondary-container font-label-xs text-label-xs px-2 py-0.5 rounded-full font-semibold">Ready for review</span>
-              </div>
-              <p className="font-label-xs text-label-xs text-on-surface-variant">All required schema fields mapped to source citations in submitted dossier.</p>
-            </div>
+      <div className="lg:col-span-8 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+        {!app && phase !== 'error' && <p className="font-body-md text-body-md text-on-surface-variant">Select the documents of one application and run extraction. Results appear here with their source citations.</p>}
+        {phase === 'error' && <div role="alert" className="p-space-md rounded-lg bg-surface-container-low"><strong className="text-error">{error.code || 'Error'}</strong><p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{error.message}{error.code === 'EXTRACTOR_UNAVAILABLE' ? ' (GOOGLE_API_KEY in the backend .env).' : ''}</p></div>}
+        {app && <>
+          <div className="flex flex-wrap items-center justify-between gap-space-sm">
+            <span className="font-title-sm text-title-sm text-on-surface">{app.project_features?.project_name || 'Extracted application'}</span>
+            <span className="bg-secondary-container text-on-secondary-container font-label-xs text-label-xs px-2 py-0.5 rounded-full font-semibold">{STATUS[app.status] || app.status}</span>
           </div>
-          <span className="font-label-xs text-label-xs text-on-surface-variant bg-surface-container px-2.5 py-1 rounded">Model: CQ-GridParser v2.4 (Deterministic)</span>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-space-sm mt-space-sm">
-          <div className="bg-surface-container-low p-space-md rounded-lg flex flex-col">
-            <span className="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Documents Analyzed</span>
-            <span className="font-metric-num text-metric-num text-on-surface mt-1">3</span>
-            <span className="font-label-xs text-label-xs text-secondary mt-0.5 flex items-center gap-1">
-              <span className="material-symbols-outlined text-[12px]">check</span> Parsed
-            </span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-space-sm">
+            <Card title="Documents" value={app.documents.length} />
+            <Card title="Observations" value={app.observations.length} note="each with a quote" />
+            <Card title="Conflicts" value={readiness.conflicts.length} tone={readiness.conflicts.length ? 'bad' : ''} />
+            <Card title="Missing" value={readiness.missing_fields.length} note={readiness.missing_fields.map(f => FIELD_LABELS[f] || f).join(', ') || 'none'} tone={readiness.missing_fields.length ? 'bad' : ''} />
           </div>
-          <div className="bg-surface-container-low p-space-md rounded-lg flex flex-col">
-            <span className="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Fields Extracted</span>
-            <span className="font-metric-num text-metric-num text-on-surface mt-1">{ctx.fieldValues['Site Area']?8:7}</span>
-            <span className="font-label-xs text-label-xs text-on-surface-variant mt-0.5">7 required fields</span>
-          </div>
-          <div className="bg-surface-container-low p-space-md rounded-lg flex flex-col">
-            <span className="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Citation Conflicts</span>
-            <span className="font-metric-num text-metric-num text-secondary mt-1">0</span>
-            <span className="font-label-xs text-label-xs text-secondary mt-0.5 flex items-center gap-1">
-              <span className="material-symbols-outlined text-[12px]">verified</span> Zero Divergence
-            </span>
-          </div>
-          <div className="bg-surface-container-low p-space-md rounded-lg flex flex-col">
-            <span className="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Missing Optional</span>
-            <span className="font-metric-num text-metric-num text-on-surface mt-1">{ctx.fieldValues['Site Area']?0:1}</span>
-            <span className="font-label-xs text-label-xs text-on-surface-variant mt-0.5">Site Area (Optional)</span>
-          </div>
-        </div>
-        <div className="mt-space-md pt-space-sm flex items-center justify-between text-label-xs font-label-xs text-on-surface-variant">
-          <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[15px] text-secondary">info</span>
-            <span>Ready for analyst review</span>
-          </div>
-          <span className="hidden md:inline">Run ID: <code className="font-mono text-on-surface">EXT-2024-0514-88A</code></span>
-        </div>
-      </div>
-    </div>
-
-    <div className="sticky bottom-4 z-30 bg-surface-container-lowest/95 backdrop-blur-md p-space-md rounded-xl shadow-xl flex flex-col sm:flex-row items-center justify-end gap-space-md">
-      <div className="flex items-center gap-space-sm w-full sm:w-auto justify-end">
-        <button className="px-space-md py-2 text-on-surface-variant hover:text-on-surface font-label-md text-label-md font-medium transition-colors">
-          Cancel
-        </button>
-        <button className="px-space-md py-2 bg-surface-container-highest hover:bg-surface-container text-on-surface font-label-md text-label-md font-semibold rounded shadow-sm transition-colors">
-          Save for Review
-        </button>
-        <button className="px-space-lg py-2 bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-semibold rounded shadow-md transition-all flex items-center gap-2" id="queue-btn" disabled={ctx.queued}>
-          <span className="material-symbols-outlined text-[18px]">playlist_add_check</span>
-          <span>Confirm &amp; Add to Queue</span>
-        </button>
+          {readiness.message && <p className="font-body-sm text-body-sm text-on-surface-variant">{readiness.message}</p>}
+          <div className="overflow-x-auto"><table className="w-full text-left text-body-sm">
+            <thead><tr className="text-on-surface-variant uppercase font-label-xs text-label-xs"><th className="py-2 pr-3">Field</th><th className="pr-3">Value</th><th className="pr-3">Confidence</th><th>Evidence</th></tr></thead>
+            <tbody className="divide-y divide-surface-container">{app.observations.map((o, i) => <tr key={i}>
+              <td className="py-2 pr-3 font-medium">{FIELD_LABELS[o.field] || o.field}{o.field === 'capacity_mw' && o.capacity_scope && o.capacity_scope !== 'proposed_project' && <div className="text-error text-[11px]">{o.capacity_scope.replaceAll('_', ' ')}: not used</div>}</td>
+              <td className="pr-3 font-mono">{String(o.value)}{o.unit ? ` ${o.unit}` : ''}</td>
+              <td className="pr-3">{fmt(o.confidence * 100, 0)}%</td>
+              <td className="text-on-surface-variant">{o.evidence.map((ev, j) => <div key={j}><span className="font-mono text-on-surface">{docName[ev.document_id] || 'document'}{ev.page ? ` · p.${ev.page}` : ''}</span>{ev.quote && <div className="italic pl-2 border-l-2 border-outline-variant/40">“{ev.quote}”</div>}</div>)}</td>
+            </tr>)}</tbody>
+          </table></div>
+          {required.length > 0 && <form onSubmit={correct} className="p-space-md rounded-lg bg-surface-container-low flex flex-wrap items-end gap-space-md">
+            <div className="w-full font-label-md text-label-md font-semibold text-on-surface">Human confirmation needed</div>
+            {required.includes('technology') && <label className="flex flex-col text-body-sm">Technology<select value={edits.technology || ''} onChange={e => setEdits(v => ({ ...v, technology: e.target.value }))} className="bg-surface-container-lowest rounded px-2 py-1"><option value="">Select…</option>{TECHNOLOGIES.map(t => <option key={t} value={t}>{t.replace('_', ' ')}</option>)}</select></label>}
+            {required.includes('capacity_mw') && <label className="flex flex-col text-body-sm">Capacity of the proposed project (MW)<input type="number" min="0.01" step="0.01" value={edits.capacity_mw || ''} onChange={e => setEdits(v => ({ ...v, capacity_mw: e.target.value }))} className="bg-surface-container-lowest rounded px-2 py-1" /></label>}
+            <button className="px-space-md py-1.5 bg-primary text-on-primary rounded font-label-md text-label-md">Record correction</button>
+          </form>}
+          {(app.status === 'READY' || app.status === 'SCORED') && <div className="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-space-sm">
+            {!app.carbon && <button className="self-start px-space-lg py-2 bg-primary text-on-primary font-label-md text-label-md font-semibold rounded shadow-md disabled:opacity-40" disabled={phase === 'scoring'} onClick={score}>{phase === 'scoring' ? 'Scoring…' : 'Score with model and queue engine'}</button>}
+            {app.carbon && <div className="grid grid-cols-2 md:grid-cols-4 gap-space-sm">
+              <Card title="Displaced emissions" value={app.carbon.daily_tco2 ? `${fmt(app.carbon.daily_tco2.low)}–${fmt(app.carbon.daily_tco2.high)}` : 'Unscored'} note={app.carbon.daily_tco2 ? 'tCO₂e / day' : app.carbon.unscored_reason} />
+              <Card title="Review effort" value={`${fmt(app.effort.reviewer_hours, 0)} h`} />
+              <Card title="Withdrawal, 12 mo" value={`${fmt(app.prediction.withdrawal_probability_12m * 100)}%`} />
+              <Card title="No decision in 12 mo" value={`${fmt(app.prediction.decision_distribution[12] * 100, 0)}%`} note="current process, model estimate" />
+            </div>}
+            {entry && <p className="font-body-sm text-body-sm text-on-surface"><strong>{LANE_LABELS[entry.lane] || entry.lane}:</strong> {entry.reason}</p>}
+          </div>}
+        </>}
       </div>
     </div>
   </div>
