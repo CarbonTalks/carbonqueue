@@ -203,9 +203,10 @@ ML and queue algorithms are owned externally. They can be injected through
 `integrations/`. Set `CQ_ML_URL` and `CQ_QUEUE_ENGINE_URL` to use the HTTP adapters.
 External endpoints are **backend-defined contracts to agree with those teams**;
 The model can run in a separate Python process using the bridge below.
-The queue engine adapter is still supplied by the simulation team. Its required
-protocol has three methods: `carbon`, `effort`, and `schedule`; `simulate` is only
-needed when retaining the legacy uploaded-application simulation path.
+The queue engine is cq-sim's HTTP adapter (`PYTHONPATH=src python -m cqsim serve` in cq-sim,
+port 9002; set `CQ_QUEUE_ENGINE_URL=http://127.0.0.1:9002`). It implements `carbon`, `effort`
+and `schedule`; `simulate` is only needed when retaining the legacy uploaded-application
+simulation path.
 
 `ml` can also be a synchronous or asynchronous Python function taking a
 `ProjectFeatures` object and returning a `Prediction` or matching dictionary:
@@ -336,10 +337,10 @@ must build those inputs and translate its outputs. No training or synthetic
 predictions are performed by this bridge.
 
 ```sh
-# Replace MODEL_PREDICTOR with the actual supplied module:function.
-# Run from an environment where that module is importable.
-MODEL_PREDICTOR=your_model_adapter:predict
-python integration/ml_server.py --predictor "$MODEL_PREDICTOR" --port 9001
+# From cq-model, in its Python environment (pandas, pyarrow, catboost).
+# cq.serve:predict loads the data and model_live.cbm once, on the first request.
+cd ../cq-model
+PYTHONPATH=src python ../cq-backend/integration/ml_server.py --predictor cq.serve:predict --port 9001
 ```
 
 Set `CQ_ML_URL=http://127.0.0.1:9001` in the backend `.env`, then start the backend
@@ -349,6 +350,39 @@ by default. For a backend container, supply a URL reachable from that container;
 its `127.0.0.1` refers to the container itself. Use `--host` only when the bridge
 must bind to another interface. The bridge handles requests sequentially, avoiding
 concurrent access to a shared model instance.
+
+## Full demo stack
+
+Four processes, each in its own terminal, with the four repositories side by side:
+
+```sh
+# 1. Model (cq-model environment; generate data and model_live.cbm first, see cq-model README)
+cd cq-model && PYTHONPATH=src python ../cq-backend/integration/ml_server.py --predictor cq.serve:predict --port 9001
+
+# 2. Queue engine (cq-sim)
+cd cq-sim && PYTHONPATH=src python -m cqsim serve
+
+# 3. Backend (this repository), with .env:
+#    CQ_ML_URL=http://127.0.0.1:9001
+#    CQ_QUEUE_ENGINE_URL=http://127.0.0.1:9002
+#    CQ_CORS_ORIGINS=http://localhost:5173
+#    CQ_SIMULATION_RESULTS_DIR=../cq-sim/results
+#    CQ_EXTRACTION_MODEL=google:gemini-3.8-flash and GOOGLE_API_KEY=... for PDF extraction
+uv run cq-backend
+
+# 4. Dashboard (cq-website)
+cd cq-website && npm install && npm run dev
+```
+
+Load the live queue once:
+
+```sh
+curl --fail -H 'Content-Type: application/json'   --data-binary @../cq-sim/results/live-queue.json   http://127.0.0.1:8000/queue/live/import
+```
+
+Checked end to end on 15 October 2026: import → model prediction → carbon band or unscored
+reason → `/queue/run` with lane, reason and planned week → historical simulation → CORS for
+the dashboard origin. PDF extraction needs the Gemini key and was not part of that check.
 
 ## Dashboard and historical simulation handoff
 
