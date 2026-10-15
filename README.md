@@ -36,10 +36,14 @@ Dashboard verilerini cq-backend'den okur; örnek veri içermez.
 
 Uzman ekranlarında gerçekleşme olasılığı gibi alanlar gösterilmez; backend bunları zaten sunmuyor.
 
+## Dil
+
+Arayüz Türkçe ve İngilizcedir; sağ üstteki TR / EN seçiciyle (ya da Ayarlar → Dil) değiştirilir, seçim tarayıcıda saklanır, varsayılan Türkçedir. Metinlerin anahtarı İngilizce metnin kendisidir; Türkçeleri `src/i18n-tr.js` içindedir, eksik bir çeviri İngilizce görünür. Yöntem sayfasının uzun metinleri `src/pages/Methodology.jsx` içinde iki dilde tutulur. Kuyruktaki gerekçe metinleri, motorun Türkçe metni yerine kademe ve sayılardan seçilen dilde yeniden üretilir.
+
 ## Yapı
 
-`src/api.js` backend istemcisi, `src/live-data.js` canlı kuyruk kayıtlarını tablo satırlarına çevirir, `src/main.jsx` ortak yerleşim, gezinme ve kuyruk durumunu, `src/state.jsx` kuyruk satırlarını, `src/chart.jsx` grafikleri içerir. Renk ve tipografi `tailwind.config.cjs`, uyarlanabilir ekran kuralları `src/styles.css` dosyasındadır.
+`src/api.js` backend istemcisi, `src/i18n.jsx` dil seçimi ve çeviri, `src/live-data.js` canlı kuyruk kayıtlarını tablo satırlarına çevirir, `src/main.jsx` ortak yerleşim, gezinme ve kuyruk durumunu, `src/state.jsx` kuyruk satırlarını, `src/chart.jsx` grafikleri içerir. Renk ve tipografi `tailwind.config.cjs`, uyarlanabilir ekran kuralları `src/styles.css` dosyasındadır.
 
 ## Kapsam
 
-Kimlik doğrulama yok; düzeltmeler `dashboard-reviewer` adıyla kaydedilir. Ekrandaki gerekçe metinleri cq-sim'den gelir ve Türkçedir. Belge çıkarma backend'de Gemini anahtarı gerektirir; anahtar yoksa Upload sayfası backend'in hata mesajını gösterir. Google Fonts için internet bağlantısı gerekir.
+Kimlik doğrulama yok; düzeltmeler `dashboard-reviewer` adıyla kaydedilir. Belge çıkarma backend'de Gemini anahtarı gerektirir; anahtar yoksa Upload sayfası backend'in hata mesajını gösterir. Google Fonts için internet bağlantısı gerekir.

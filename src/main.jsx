@@ -11,7 +11,8 @@ import './styles.css';
 import { compareQueueProjects } from './queue-sort.js';
 import {readResultsLocation} from './results-navigation.js';
 import {api} from './api.js';
-import {LIVE_POLICIES, toRow} from './live-data.js';
+import {LIVE_POLICIES, toRow, reasonFor} from './live-data.js';
+import {LangProvider, LangSwitch, useT} from './i18n.jsx';
 
 const routes = ['queue','project','upload','results','settings','methodology'];
 const currentRoute = () => { const r = location.hash.slice(2).split('?')[0]; return r === 'simulation' ? 'results' : routes.includes(r) ? r : 'queue'; };
@@ -23,6 +24,7 @@ const CAPACITY = [p => true, p => p.capacity > 0 && p.capacity < 5, p => p.capac
 const WAIT = [p => true, p => p.wait > 90, p => p.wait > 365];
 
 function App() {
+  const {t}=useT();
   const [settings,setSettings]=useState(loadSettings);
   function saveSettings(next){localStorage.setItem('carbonqueue-settings',JSON.stringify(next));setSettings(next);setPolicy(next.policy);setView(next.view);setSort(null);}
   const [route,setRoute]=useState(currentRoute), [search,setSearch]=useState(''), [filters,setFilters]=useState(['',0,0]);
@@ -53,10 +55,10 @@ function App() {
 
   function openProject(p) { setSelected(p); navigate('project'); }
   function exportCsv() {
-    const header=['Position','REPD ID','Project','Authority','Technology','Capacity MW','Carbon low tCO2e/day','Carbon central','Carbon high','Withdrawal %','Effort h','Waiting days','Lane','Reason'];
-    const lines=[header,...visible.map(p=>[p.position[policyKey],p.id,p.name,p.authority,p.tech,p.capacity||'',p.carbon?.[0]??'',p.carbon?.[1]??'',p.carbon?.[2]??'',p.risk,p.effort,p.wait,p.lane,p.reason])];
+    const header=['Position','REPD ID','Project','Authority','Technology','Capacity MW','Carbon low tCO2e/day','Carbon central','Carbon high','Withdrawal %','Effort h','Waiting days','Lane','Reason'].map(h=>t(h));
+    const lines=[header,...visible.map(p=>[p.position[policyKey],p.id,p.name,p.authority,p.tech,p.capacity||'',p.carbon?.[0]??'',p.carbon?.[1]??'',p.carbon?.[2]??'',p.risk,p.effort,p.wait,p.lane,reasonFor(p,policyKey).text])];
     const blob=new Blob(['﻿'+lines.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});
-    const url=URL.createObjectURL(blob), a=document.createElement('a');a.href=url;a.download=`carbonqueue-${policyKey}-${live.data?.as_of||'queue'}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setNotice(`${visible.length} applications exported.`);
+    const url=URL.createObjectURL(blob), a=document.createElement('a');a.href=url;a.download=`carbonqueue-${policyKey}-${live.data?.as_of||'queue'}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setNotice(t('{n} applications exported.',{n:visible.length}));
   }
 
   const ctx={settings,saveSettings,resultsLocation,sort,toggleSort,setSort,filters,search,setSearch,setFilter:(i,n)=>setFilters(f=>f.map((v,j)=>i===j?n:v)),
@@ -64,17 +66,17 @@ function App() {
   const Page={queue:Queue,project:Project,upload:Upload,results:Results,settings:Settings,methodology:Methodology}[route];
   return <AppContext.Provider value={ctx}>
     <aside id="main-navigation" className={'sidebar '+(mobile?'is-open ':'')+(navCollapsed?'is-collapsed':'')}>
-      <button type="button" className="brand" aria-label="Toggle navigation" aria-controls="main-navigation" aria-expanded={mobile || !navCollapsed} onClick={toggleNavigation}><span className="brand-mark"><img src="/carbonqueue-logo.svg" width="36" height="36" alt="" aria-hidden="true" /></span><span className="brand-name"><strong>CarbonQueue</strong><small>PUBLIC ENERGY AUTHORITY</small></span></button>
-      <div className="nav-group">{[['queue','format_list_numbered','Queue'],['upload','cloud_upload','Upload'],['results','bar_chart','Results']].map(([r,icon,label])=><a key={r} href={'#/'+r} aria-current={route===r?'page':undefined} className={route===r||r==='queue'&&route==='project'?'active':''}><Icon>{icon}</Icon>{label}</a>)}</div>
-      <div className="nav-bottom"><div className="nav-group"><small>DOCUMENTATION & OPS</small>{[['methodology','menu_book','Methodology'],['settings','settings','Settings']].map(([r,icon,label])=><a key={r} href={'#/'+r} className={route===r?'active':''} aria-current={route===r?'page':undefined}><Icon>{icon}</Icon><span>{label}</span></a>)}</div><div className="jurisdiction"><Icon>verified_user</Icon><div><small>DATA SOURCE</small><strong>UK REPD · England pending applications</strong></div></div></div>
+      <button type="button" className="brand" aria-label={t("Toggle navigation")} aria-controls="main-navigation" aria-expanded={mobile || !navCollapsed} onClick={toggleNavigation}><span className="brand-mark"><img src="/carbonqueue-logo.svg" width="36" height="36" alt="" aria-hidden="true" /></span><span className="brand-name"><strong>CarbonQueue</strong><small>{t('PUBLIC ENERGY AUTHORITY')}</small></span></button>
+      <div className="nav-group">{[['queue','format_list_numbered','Queue'],['upload','cloud_upload','Upload'],['results','bar_chart','Results']].map(([r,icon,label])=><a key={r} href={'#/'+r} aria-current={route===r?'page':undefined} className={route===r||r==='queue'&&route==='project'?'active':''}><Icon>{icon}</Icon>{t(label)}</a>)}</div>
+      <div className="nav-bottom"><div className="nav-group"><small>{t('DOCUMENTATION & OPS')}</small>{[['methodology','menu_book','Methodology'],['settings','settings','Settings']].map(([r,icon,label])=><a key={r} href={'#/'+r} className={route===r?'active':''} aria-current={route===r?'page':undefined}><Icon>{icon}</Icon><span>{t(label)}</span></a>)}</div><div className="jurisdiction"><Icon>verified_user</Icon><div><small>{t('DATA SOURCE')}</small><strong>{t('UK REPD · England pending applications')}</strong></div></div></div>
     </aside>
-    {mobile&&<button className="mobile-overlay" aria-label="Close navigation" onClick={()=>setMobile(false)}/>}
-    <header className={'topbar '+(navCollapsed?'nav-collapsed':'')}><button type="button" className="mobile-brand-toggle brand-mark" aria-label="Toggle navigation" aria-controls="main-navigation" aria-expanded={mobile} onClick={toggleNavigation}><img src="/carbonqueue-logo.svg" width="36" height="36" alt="" aria-hidden="true" /></button><div className="profile"><div><strong>Planning reviewer</strong><small>{settings.name}</small></div><span className="avatar">PR</span></div></header>
+    {mobile&&<button className="mobile-overlay" aria-label={t("Close navigation")} onClick={()=>setMobile(false)}/>}
+    <header className={'topbar '+(navCollapsed?'nav-collapsed':'')}><button type="button" className="mobile-brand-toggle brand-mark" aria-label={t("Toggle navigation")} aria-controls="main-navigation" aria-expanded={mobile} onClick={toggleNavigation}><img src="/carbonqueue-logo.svg" width="36" height="36" alt="" aria-hidden="true" /></button><div className="profile"><LangSwitch/><div><strong>{t('Planning reviewer')}</strong><small>{settings.name}</small></div><span className="avatar">PR</span></div></header>
     <main className={'app-main '+(navCollapsed?'nav-collapsed ':'')+(settings.compact?'compact-tables':'')}>
-      {live.status==='error'&&route!=='upload'&&<div className="backend-banner" role="alert"><Icon>cloud_off</Icon><span>{live.error.message}. Start the backend and import the live queue (see README).</span><button className="queue-control" onClick={loadLive}>Retry</button></div>}
+      {live.status==='error'&&route!=='upload'&&<div className="backend-banner" role="alert"><Icon>cloud_off</Icon><span>{t(live.error.message)}. {t('Start the backend and import the live queue (see README).')}</span><button className="queue-control" onClick={loadLive}>{t('Retry')}</button></div>}
       <Page/>
     </main>
-    {notice&&<div className="toast" role="status">{notice}<button onClick={()=>setNotice('')} aria-label="Dismiss">×</button></div>}
+    {notice&&<div className="toast" role="status">{notice}<button onClick={()=>setNotice('')} aria-label={t("Dismiss")}>×</button></div>}
   </AppContext.Provider>;
 }
-createRoot(document.getElementById('root')).render(<App/>);
+createRoot(document.getElementById('root')).render(<LangProvider><App/></LangProvider>);

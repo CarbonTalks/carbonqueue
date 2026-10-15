@@ -1,3 +1,4 @@
+// English labels; translated at render.
 export const queueSortLabels = {
   name: 'Project & Authority', tech: 'Technology', capacity: 'Capacity',
   carbon: 'Est. Carbon Impact', risk: 'Withdrawal', effort: 'Effort',

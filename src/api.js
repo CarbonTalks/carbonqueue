@@ -16,7 +16,7 @@ async function request(path, options = {}) {
   try {
     response = await fetch(API_URL + path, options);
   } catch {
-    throw new ApiError(0, 'BACKEND_UNREACHABLE', `Backend unreachable at ${API_URL}`);
+    throw new ApiError(0, 'BACKEND_UNREACHABLE', 'Backend unreachable');
   }
   const body = await response.json().catch(() => null);
   if (!response.ok) throw new ApiError(response.status, body?.code, body?.message);

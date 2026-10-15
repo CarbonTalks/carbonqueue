@@ -2,7 +2,10 @@ import React from 'react';
 
 const round=value=>Number(value.toFixed(1));
 
+import {useT} from './i18n.jsx';
+
 export function Chart({title,subtitle,labels,series,line=false,unit}) {
+  const {t}=useT();
   const max=Math.max(1,...series.flatMap(s=>s.values));
   const ceiling=Math.ceil(max/4)*4;
   const x=i=>58+(i+.5)*560/labels.length;
@@ -18,7 +21,7 @@ export function Chart({title,subtitle,labels,series,line=false,unit}) {
         {s.values.map((value,i)=>line?<g key={i}><circle cx={x(i)} cy={y(value)} r="4" fill="white" stroke={s.color} strokeWidth="2"><title>{labels[i]} · {s.name}: {round(value)} {unit}</title></circle><text x={x(i)} y={y(value)-12} textAnchor="middle" fill={s.color} fontSize="11">{round(value)}</text></g>:<g key={i}><rect x={x(i)+(si-series.length/2)*25} y={y(value)} width="20" height={224-y(value)} rx="4" fill={s.color}><title>{labels[i]} · {s.name}: {round(value)} {unit}</title></rect><text x={x(i)+(si-series.length/2)*25+10} y={y(value)-7} textAnchor="middle" fill={s.color} fontSize="10">{round(value)}</text></g>)}
       </g>)}
     </svg>
-    <details className="chart-values"><summary>View chart data</summary><div className="overflow-x-auto"><table><thead><tr><th>Period</th>{series.map(s=><th key={s.name}>{s.name} ({unit})</th>)}</tr></thead><tbody>{labels.map((label,i)=><tr key={label}><th>{label}</th>{series.map(s=><td key={s.name}>{round(s.values[i])}</td>)}</tr>)}</tbody></table></div></details>
+    <details className="chart-values"><summary>{t('View chart data')}</summary><div className="overflow-x-auto"><table><thead><tr><th>{t('Period')}</th>{series.map(s=><th key={s.name}>{s.name} ({unit})</th>)}</tr></thead><tbody>{labels.map((label,i)=><tr key={label}><th>{label}</th>{series.map(s=><td key={s.name}>{round(s.values[i])}</td>)}</tr>)}</tbody></table></div></details>
   </section>;
 }
 
