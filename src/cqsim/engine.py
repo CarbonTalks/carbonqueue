@@ -1,8 +1,8 @@
 """cq-backend icin kuyruk motoru: backend'in QueueEngine sozlesmesindeki dort cagri (carbon, effort, schedule, simulate).
 
-Girdi ve cikti backend'in JSON sozlesmesidir (cq-backend/src/cq_backend/domain). Backend ek alan kabul etmedigi icin
-sozlesmeye sigmayan bilgiler (karbon bandi, skorsuz durum) methodology_reference metnine yazilir.
-Hesaplar cq-sim'in geri kalaniyla aynidir: ayni karbon formulu, efor kurali ve simulator.
+Girdi ve cikti backend'in JSON sozlesmesidir (cq-backend/src/cq_backend/domain, 15 Ekim surumu):
+karbon gunluk bant (daily_tco2) ya da skorsuz nedeni (unscored_reason), kuyruk girdisinde lane / reason / planned_week.
+Hesaplar cq-sim'in geri kalaniyla aynidir: ayni karbon formulu, efor kurali, simulator ve gerekce metinleri.
 """
 import json
 from datetime import date
@@ -10,6 +10,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
+from cqsim.live import _reason
 from cqsim.prepare import ROOT, daily_tco2, effort_hours, emission_factors, score
 from cqsim.simulator import POLICIES, simulate
 
@@ -49,12 +50,14 @@ def frame(projects: list[dict], cfg: dict, year: int) -> pd.DataFrame:
         prediction = p.get("prediction") or {}
         rows.append({
             "application_id": p.get("application_id"), "category": CATEGORY[f["technology"]],
+            "has_storage_field": f.get("has_storage"),
             "app_generation_mw": float(f["capacity_mw"]), "arrival": pd.Timestamp(submitted),
             "p_withdraw_12m": float(prediction.get("withdrawal_probability_12m", 0.0)),
         })
     q = pd.DataFrame(rows)
     gen = q.app_generation_mw.where(q.category.isin(cfg["carbon"]["load_factor"]))
-    q["has_storage"] = q.category == "storage"
+    # has_storage bos (bilinmiyor) ise yalnizca bataryanin kendisi depolama sayilir
+    q["has_storage"] = (q.category == "storage") | q.has_storage_field.eq(True)
     q["daily_tco2"] = daily_tco2(q.category, gen, cfg, year)
     q["scored"] = q.daily_tco2.notna()
     q["effort"] = effort_hours(q.app_generation_mw, q.has_storage, cfg)
@@ -65,22 +68,20 @@ def frame(projects: list[dict], cfg: dict, year: int) -> pd.DataFrame:
 
 
 def carbon(project: dict, scenario: dict | None, cfg: dict, year: int | None = None) -> dict:
-    """Gunluk yer degistirilen emisyon (tCO2e/gun). Skorsuz teknolojide 0 ve metinde "SKORSUZ"."""
+    """Gunluk yer degistirilen emisyon bandi (tCO2e/gun) ya da skorsuz nedeni. Senaryo kullanilmaz: bant uc seviyeyi tasir."""
     year = year or date.today().year
     q = frame([project], cfg, year).iloc[0]
-    level = (scenario or {}).get("parameters", {}).get("level", "central")
-    ef = emission_factors(cfg, year)
-    if level not in ef:
-        raise EngineError(f"bilinmeyen senaryo seviyesi: {level} (low/central/high)")
     if not q.scored:
-        return {"tonnes_co2e": 0.0, "methodology_reference": (
-            f"SKORSUZ ({UNSCORED_WHY.get(q.category, q.category)}): karbon skoru yok; "
-            "kuyrukta efor payi kadar kapasiteyle basvuru sirasina gore ilerler. cq-sim docs/carbon_sources.md")}
+        return {"unscored_reason": (
+            f"Skorsuz yol ({UNSCORED_WHY.get(q.category, q.category)}): bu teknoloji icin uretim karbonu hesaplanmiyor; "
+            "kuyrukta efor payi kadar kapasiteyle basvuru sirasina gore ilerler"),
+            "methodology_reference": "cq-sim docs/carbon_sources.md"}
+    ef = emission_factors(cfg, year)
     band = {k: round(float(q.daily_tco2 * v / ef["central"]), 3) for k, v in ef.items()}
-    return {"tonnes_co2e": band[level], "methodology_reference": (
-        f"tCO2e/gun ({level}); bant dusuk {band['low']} - merkezi {band['central']} - yuksek {band['high']}. "
-        f"MW x 24 x yuk faktoru (DUKES 2026 tablo 6.3) x emisyon faktoru {year + cfg['carbon']['operation_lag_years']} "
-        "(Green Book tablo 1 / DUKES 5.14). cq-sim docs/carbon_sources.md")}
+    return {"daily_tco2": band, "methodology_reference": (
+        f"tCO2e/gun = MW x 24 x yuk faktoru (DUKES 2026 tablo 6.3) x yer degistirme emisyon faktoru "
+        f"{year + cfg['carbon']['operation_lag_years']}: dusuk sebeke ortalamasi, merkezi uzun donem marjinal "
+        "(Green Book tablo 1), yuksek gaz santrali (DUKES 5.14). cq-sim docs/carbon_sources.md")}
 
 
 def effort(project: dict, cfg: dict) -> dict:
@@ -92,6 +93,8 @@ def schedule(projects: list[dict], policy: dict, capacity: float, cfg: dict) -> 
     """Verilen dosyalari secilen politikayla haftalik kapasite (saat) altinda siralar.
 
     position: incelemenin bitis sirasi (simulator). score: politikanin karbon skoru; skorsuz ya da FIFO'da bos.
+    lane / reason: dosyanin hangi kademeden incelendigi ve gerekcesi (canli kuyruktaki metinlerle ayni).
+    planned_week: incelemenin bitmesi planlanan hafta, 1 = bu hafta.
     """
     if not projects:
         return {"entries": []}
@@ -100,12 +103,20 @@ def schedule(projects: list[dict], policy: dict, capacity: float, cfg: dict) -> 
         raise EngineError(f"bilinmeyen politika: {policy.get('name')} ({', '.join(POLICIES)})")
     today = pd.Timestamp(date.today())
     q = frame(projects, cfg, today.year)
-    res = simulate(q, name, cfg, max(today, q.arrival.max()), float(capacity))
+    start = max(today, q.arrival.max())
+    res = simulate(q, name, cfg, start, float(capacity))
     s = None if name == "fifo" else score(q, *POLICIES[name][:2])
+    q["lane"] = res.lane.values
+    q["wait_days"] = (start - q.arrival).dt.days
     entries = []
     for i in np.argsort(res.order.to_numpy()):
         sc = None if s is None or np.isnan(s[i]) else round(float(s[i]), 6)
-        entries.append({"application_id": q.application_id[i], "position": int(res.order[i]), "score": sc})
+        r = q.iloc[i]
+        entries.append({
+            "application_id": r.application_id, "position": int(res.order[i]), "score": sc, "lane": r.lane,
+            "reason": "Başvuru sırası (FIFO)" if r.lane == "fifo" else _reason(r),
+            "planned_week": int((res.done[i] - start).days // 7),  # ilk hafta biten = 1
+        })
     return {"entries": entries}
 
 

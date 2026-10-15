@@ -12,23 +12,26 @@ def app(i, tech, mw, submitted="2026-01-05", p_wd=0.03):
             "prediction": {"withdrawal_probability_12m": p_wd, "decision_distribution": [1 / 13] * 13}}
 
 
-def test_carbon_matches_formula_and_band():
+def test_carbon_returns_daily_band():
     r = engine.carbon(app(1, "solar", 40.0), {"name": "default", "parameters": {}}, CFG, year=2026)
-    assert r["tonnes_co2e"] == pytest.approx(40 * 24 * 0.105 * 0.13276, rel=1e-3)  # 2026 + 2 yil = 2028 faktoru
-    assert "bant" in r["methodology_reference"]
-    high = engine.carbon(app(1, "solar", 40.0), {"parameters": {"level": "high"}}, CFG, year=2026)
-    assert high["tonnes_co2e"] > r["tonnes_co2e"]
+    assert set(r) == {"daily_tco2", "methodology_reference"}
+    b = r["daily_tco2"]
+    assert b["central"] == pytest.approx(40 * 24 * 0.105 * 0.13276, rel=1e-3)  # 2026 + 2 yil = 2028 faktoru
+    assert 0 <= b["low"] <= b["central"] <= b["high"]
 
 
 def test_battery_is_unscored_not_invented():
     r = engine.carbon(app(1, "battery", 50.0), None, CFG, year=2026)
-    assert r["tonnes_co2e"] == 0.0 and r["methodology_reference"].startswith("SKORSUZ")
+    assert set(r) == {"unscored_reason", "methodology_reference"} and "depolama" in r["unscored_reason"]
 
 
-def test_effort_uses_rule():
+def test_effort_uses_rule_and_has_storage():
     assert engine.effort(app(1, "solar", 0.5), CFG)["reviewer_hours"] == 8
     assert engine.effort(app(1, "solar", 40.0), CFG)["reviewer_hours"] == 16
     assert engine.effort(app(1, "battery", 40.0), CFG)["reviewer_hours"] == 20
+    hybrid = app(1, "solar", 40.0)
+    hybrid["project_features"]["has_storage"] = True  # gunes + batarya ortak basvuru
+    assert engine.effort(hybrid, CFG)["reviewer_hours"] == 20
 
 
 def test_schedule_returns_unique_positions_for_every_project():
@@ -40,6 +43,8 @@ def test_schedule_returns_unique_positions_for_every_project():
     carbon = {e["application_id"]: e for e in engine.schedule(projects, {"name": "carbon"}, 20, CFG)["entries"]}
     assert carbon["app-2"]["position"] < carbon["app-1"]["position"]  # 40 MW, 0,5 MW'in onune gecer
     assert carbon["app-3"]["score"] is None  # batarya skorsuz
+    assert carbon["app-3"]["lane"] == "unscored" and "Skorsuz yol" in carbon["app-3"]["reason"]
+    assert all(e["planned_week"] >= 1 and e["reason"] for e in carbon.values())
 
 
 def test_unknown_inputs_are_rejected():
