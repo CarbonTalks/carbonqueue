@@ -1,20 +1,30 @@
 import React, {useState} from 'react';
 import {useApp} from '../state.jsx';
+import {API_URL} from '../api.js';
+import {LIVE_POLICIES, fmt} from '../live-data.js';
+import {useT, LANGS} from '../i18n.jsx';
 
 export default function Settings(){
-  const ctx=useApp(), [draft,setDraft]=useState(ctx.settings), [message,setMessage]=useState('');
+  const ctx=useApp(), {t,lang,setLang}=useT(), [draft,setDraft]=useState(ctx.settings), [message,setMessage]=useState('');
   const update=(key,value)=>{setDraft(s=>({...s,[key]:value}));setMessage('');};
+  const live=ctx.live.status==='ready'?ctx.live.data:null;
   return <div className="workspace-page px-gutter-desktop py-space-xl">
-    <header><span className="results-eyebrow">WORKSPACE</span><h1>Settings</h1><p>Customize your workspace and default queue view.</p></header>
-    <form onSubmit={e=>{e.preventDefault();e.stopPropagation();try{ctx.saveSettings({...draft,name:draft.name.trim()||'Demo workspace'});setMessage('Settings saved. Queue defaults applied.');}catch{setMessage('Settings could not be saved in this browser. Please try again.');}}}>
-      <section className="results-panel"><h2>Workspace preferences</h2><div className="settings-fields">
-        <label>Workspace name<input required maxLength={48} value={draft.name} onChange={e=>update('name',e.target.value)}/></label>
-        <label>Default review policy<select value={draft.policy} onChange={e=>update('policy',Number(e.target.value))}><option value={0}>FIFO</option><option value={1}>Carbon Only</option><option value={2}>Carbon + Withdrawal Risk</option><option value={3}>Carbon + Risk + Effort</option><option value={4}>CarbonQueue</option></select></label>
-        <label>Default queue view<select value={draft.view} onChange={e=>update('view',e.target.value)}><option value="table">Table View</option><option value="gantt">Queue Gantt</option></select></label>
-        <label className="settings-checkbox"><input type="checkbox" checked={draft.compact} onChange={e=>update('compact',e.target.checked)}/><span>Compact table rows</span></label>
-      </div><p>Saved in this browser. Saving also applies the selected policy and view to the current queue.</p></section>
-      <section className="results-panel"><h2>Demo reference configuration</h2><p>These values belong to the included sample dataset.</p><dl className="settings-reference"><div><dt>Weekly reviewer capacity</dt><dd>320 hours</dd></div><div><dt>Maximum-wait threshold</dt><dd>180 days</dd></div><div><dt>Historical reference cohort</dt><dd>2021</dd></div><div><dt>Data connection</dt><dd>Demo · no live connection</dd></div></dl></section>
-      <div className="settings-actions"><span role="status">{message}</span><button type="button" className="queue-control" onClick={()=>{setDraft(ctx.settings);setMessage('Unsaved changes discarded.');}}>Discard changes</button><button type="submit" className="settings-save">Save settings</button></div>
+    <header><span className="results-eyebrow">{t('WORKSPACE')}</span><h1>{t('Settings')}</h1><p>{t('Customize your workspace and default queue view.')}</p></header>
+    <form onSubmit={e=>{e.preventDefault();try{ctx.saveSettings({...draft,name:draft.name.trim()||'Demo workspace'});setMessage(t('Settings saved. Queue defaults applied.'));}catch{setMessage(t('Settings could not be saved in this browser. Please try again.'));}}}>
+      <section className="results-panel"><h2>{t('Workspace preferences')}</h2><div className="settings-fields">
+        <label>{t('Language')}<select value={lang} onChange={e=>setLang(e.target.value)}>{Object.keys(LANGS).map(code=><option key={code} value={code}>{code==='tr'?'Türkçe':'English'}</option>)}</select></label>
+        <label>{t('Workspace name')}<input required maxLength={48} value={draft.name} onChange={e=>update('name',e.target.value)}/></label>
+        <label>{t('Default review policy')}<select value={draft.policy} onChange={e=>update('policy',Number(e.target.value))}>{LIVE_POLICIES.map((p,i)=><option key={p.key} value={i}>{t(p.label)}</option>)}</select></label>
+        <label>{t('Default queue view')}<select value={draft.view} onChange={e=>update('view',e.target.value)}><option value="table">{t('Table view')}</option><option value="gantt">{t('Planned weeks')}</option></select></label>
+        <label className="settings-checkbox"><input type="checkbox" checked={draft.compact} onChange={e=>update('compact',e.target.checked)}/><span>{t('Compact table rows')}</span></label>
+      </div><p>{t('Saved in this browser.')}</p></section>
+      <section className="results-panel"><h2>{t('Data connection')}</h2><dl className="settings-reference">
+        <div><dt>{t('Backend')}</dt><dd>{API_URL} · {t(ctx.live.status==='ready'?'connected':ctx.live.status==='loading'?'connecting':'unavailable')}</dd></div>
+        <div><dt>{t('Live queue snapshot')}</dt><dd>{live?t('{d} · {r} ranked, {c} awaiting confirmation',{d:live.as_of,r:live.files.length,c:live.needs_confirmation.length}):'—'}</dd></div>
+        <div><dt>{t('Weekly reviewer capacity')}</dt><dd>{live?t('{h} hours (calibration year {y})',{h:fmt(live.calibration.capacity_hours_per_week,0),y:live.calibration.calibration_year}):'—'}</dd></div>
+        <div><dt>{t('Emission factors used (tCO₂e/MWh)')}</dt><dd>{live?Object.entries(live.emission_factor_tco2_per_mwh).map(([k,v])=>`${t(k)} ${v}`).join(' · '):'—'}</dd></div>
+      </dl></section>
+      <div className="settings-actions"><span role="status">{message}</span><button type="button" className="queue-control" onClick={()=>{setDraft(ctx.settings);setMessage(t('Unsaved changes discarded.'));}}>{t('Discard changes')}</button><button type="submit" className="settings-save">{t('Save settings')}</button></div>
     </form>
   </div>;
 }
