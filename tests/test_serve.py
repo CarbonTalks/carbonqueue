@@ -1,12 +1,22 @@
 """Backend tahmin fonksiyonu: cikti backend'in Prediction sozlesmesine uymali.
 
 Calistirma: PYTHONPATH=src python tests/test_serve.py  (data/models/model_live.cbm gerekir)
+Veri ya da model dosyasi yoksa (or. birlesik repo kopyasi) test atlanir.
 """
 import time
 
 import numpy as np
 
-from cq.serve import load_predictor
+from cq import serve
+from cq.serve import APPLICATIONS, MODEL, load_predictor
+
+if not (MODEL.exists() and APPLICATIONS.exists()):
+    try:
+        import pytest
+    except ImportError:
+        print("atlandi: veri ya da model dosyasi yok")
+        raise SystemExit(0)
+    pytest.skip("veri ya da model dosyasi yok", allow_module_level=True)
 
 P = load_predictor()
 HANWELL = {"technology": "solar", "capacity_mw": 40.0, "planning_authority": "Cherwell District Council",
@@ -41,6 +51,13 @@ def test_object_input():
     class Obj:  # backend ProjectFeatures nesnesi gibi
         technology, capacity_mw, planning_authority, applicant, submission_date = "solar", 0.4, "Cherwell", None, None
     check(P(Obj()))
+
+
+def test_module_level_predict_loads_once():
+    check(serve.predict(HANWELL))
+    first = serve._PREDICTOR
+    check(serve.predict({"technology": "battery", "capacity_mw": 52.0}))
+    assert serve._PREDICTOR is first  # backend koprusu her istekte cagirir; model yeniden yuklenmemeli
 
 
 def test_unsupported_technology():

@@ -5,6 +5,8 @@ Canli kuyruk: veri kesim tarihine (24.07.2026) kadar egitilen modelle tahmin.
 Hiperparametreler sabittir (cq.model.PARAMS); hicbir yilda ayarlanmaz.
 
 Calistirma: PYTHONPATH=src python scripts/make_predictions.py
+  --live-only       : yalnizca canli model ve canli tahmin dosyasi
+  --live-model-only : yalnizca canli model (backend icin); tahmin dosyalarina dokunmaz
 """
 import sys
 
@@ -41,7 +43,8 @@ if __name__ == "__main__":
     feats = build_features(apps)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
-    for year in [] if "--live-only" in sys.argv else SIM_YEARS:
+    live_only = "--live-only" in sys.argv or "--live-model-only" in sys.argv
+    for year in [] if live_only else SIM_YEARS:
         cutoff = pd.Timestamp(year - 1, 12, 31)
         model = train(apps, cutoff, feats)
         model.save_model(MODEL_DIR / f"model_{year - 1}.cbm")
@@ -51,5 +54,8 @@ if __name__ == "__main__":
 
     model = train(apps, SNAPSHOT, feats)
     model.save_model(MODEL_DIR / "model_live.cbm")
+    print("model_live.cbm kaydedildi", flush=True)
+    if "--live-model-only" in sys.argv:
+        sys.exit()
     live = apps[apps.live_queue]
     write(model, feats, live, SNAPSHOT, SNAPSHOT.year, OUT_DIR / "predictions_live.parquet")

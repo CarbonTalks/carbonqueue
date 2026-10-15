@@ -57,7 +57,20 @@ Y yılının simülasyon kuyruğu için tahminler. Y yılı içinde kuyrukta bul
 | `decision_dist` | list[float], 13 eleman | 30 günlük 12 dilimde ilk kararın çıkma olasılığı + son eleman "360 gün içinde karar yok". Toplamı 1 |
 | `is_fake` | bool | `True` ise sahte dosya |
 
-**Dosyalar gerçek model çıktısıdır (`is_fake=False`).** Y yılının dosyası, Y−1 sonunda kesilmiş veriyle eğitilen modelden gelir (2018–2022 kesimleri); canlı kuyruk dosyası veri kesim tarihine (24.07.2026) kadar eğitilen modelden. Kuyrukta önceden bekleyen dosyalar için tahmin, o ana kadar sonuçlanmamış olmaları koşuluyla yapılır (`as_of_date`). Model metrikleri: `reports/model_metrics.json`. Not: geri çekilme tahmini zayıf (ROC-AUC 0,57–0,66), karar süresi tahmini tüm geçmişin sabit dağılımından %22–25, daha güçlü taban çizgiden (son 3 yıl, kategoriye göre) yaklaşık %11 iyi (Brier); ortalama hata 2,3 dilime karşı 3,1–3,3 dilim. Dosyaların %25–27'si "360 gün içinde karar yok" diliminde olduğu için hata bu ufukta kesilmiş bir ölçümdür.
+**Dosyalar gerçek model çıktısıdır (`is_fake=False`).** Y yılının dosyası, Y−1 sonunda kesilmiş veriyle eğitilen modelden gelir (2018–2022 kesimleri); canlı kuyruk dosyası veri kesim tarihine (24.07.2026) kadar eğitilen modelden. Kuyrukta önceden bekleyen dosyalar için tahmin, o ana kadar sonuçlanmamış olmaları koşuluyla yapılır (`as_of_date`). Model metrikleri: `reports/model_metrics.json` (güncel model). Dosyaların %25–27'si "360 gün içinde karar yok" diliminde olduğu için hata bu ufukta kesilmiş bir ölçümdür.
+
+**İki model sürümü (14 Ekim 2026'dan itibaren).** Zamanla kayan üç özellik (`submit_year`, `uk_pending`, `uk_median_decision_days`) modelden çıkarıldı: canlı modeli güncel başvurularda kötümser (yer üstü güneş ≥5 MW için "12 ayda karar yok" %70; gerçek %57), geçmiş kesimlerde iyimser yapıyorlardı.
+
+| | Önceki model | Güncel model |
+|---|---|---|
+| Karar süresi Brier, güçlü taban çizgiye göre (2023 / 2024) | %11 / %11 iyi | %14 / %12 iyi |
+| Karar süresi Brier, sabit dağılıma göre | %25 / %22 iyi | %28 / %23 iyi |
+| Ortalama hata (dilim; taban çizgi 3,1 / 3,3) | 2,3 / 2,3 | 2,1 / 2,3 |
+| Geri çekilme ROC-AUC | 0,57 / 0,66 | 0,54 / 0,64 |
+
+- **Bu bölümdeki tahmin dosyaları (yıllık ve canlı) önceki modelden.** Simülasyon sonuçları ve canlı kuyruk sıralaması değişmesin diye yeniden üretilmedi (`make_predictions.py --live-model-only`).
+- **Backend'in kullandığı `model_live.cbm` güncel model.** Yeni yüklenen başvurular güncel modelle, canlı kuyruk dosyasındakiler önceki modelle tahmin edilir. Fark geri çekilme olasılığında ve karar süresi dağılımında (ör. Hanwell, "12 ayda karar yok": %73 → %66).
+- Finalden sonra bütün dosyalar güncel modelle birlikte yenilenecek (2023 simülasyon kazancı ön denemede 44.689 → 45.855 t).
 
 Simülasyon kuyruk büyüklükleri (İngiltere, başvuru düzeyinde): 2019: 155, 2020: 245, 2021: 718, 2022: 1.391, 2023: 1.851, canlı: 800.
 
