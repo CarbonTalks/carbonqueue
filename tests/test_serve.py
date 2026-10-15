@@ -7,6 +7,7 @@ import time
 
 import numpy as np
 
+from cq import serve
 from cq.serve import APPLICATIONS, MODEL, load_predictor
 
 if not (MODEL.exists() and APPLICATIONS.exists()):
@@ -50,6 +51,13 @@ def test_object_input():
     class Obj:  # backend ProjectFeatures nesnesi gibi
         technology, capacity_mw, planning_authority, applicant, submission_date = "solar", 0.4, "Cherwell", None, None
     check(P(Obj()))
+
+
+def test_module_level_predict_loads_once():
+    check(serve.predict(HANWELL))
+    first = serve._PREDICTOR
+    check(serve.predict({"technology": "battery", "capacity_mw": 52.0}))
+    assert serve._PREDICTOR is first  # backend koprusu her istekte cagirir; model yeniden yuklenmemeli
 
 
 def test_unsupported_technology():

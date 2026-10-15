@@ -9,6 +9,7 @@ Tahmin, basvuru anindaki duruma gore yapilir; gecmis ozellikler (kurum yuku, bas
 REPD verisinden basvuru tarihi itibariyla hesaplanir. Red olasiligi uretilmez.
 """
 import re
+import threading
 from datetime import date
 
 import numpy as np
@@ -18,7 +19,7 @@ from catboost import CatBoostClassifier
 from cq.dataset import OUT as APPLICATIONS
 from cq.dataset import SPECIAL_ROUTE, THRESHOLD_CHANGE
 from cq.features import build_features
-from cq.model import predict
+from cq.model import predict as model_predict
 from cq.repd import ROOT
 
 MODEL = ROOT / "data" / "models" / "model_live.cbm"
@@ -87,7 +88,7 @@ class Predictor:
 
     def __call__(self, project) -> dict:
         feats = build_features(self.apps, query=self.row(project))
-        pred = predict(self.model, feats, feats.index.values).iloc[0]
+        pred = model_predict(self.model, feats, feats.index.values).iloc[0]
         return {"withdrawal_probability_12m": float(pred.p_withdraw_12m),
                 "decision_distribution": [float(x) for x in pred.decision_dist]}
 
@@ -95,3 +96,19 @@ class Predictor:
 def load_predictor() -> Predictor:
     """Veri ve model bir kez yuklenir; donen nesne fonksiyon gibi cagrilir (senkron)."""
     return Predictor()
+
+
+_PREDICTOR: Predictor | None = None
+_LOCK = threading.Lock()
+
+
+def predict(project) -> dict:
+    """Modul duzeyinde tahmin fonksiyonu; veri ve model ilk cagrida bir kez yuklenir.
+
+    cq-backend'in model koprusu icin: python integration/ml_server.py --predictor cq.serve:predict
+    """
+    global _PREDICTOR
+    with _LOCK:
+        if _PREDICTOR is None:
+            _PREDICTOR = Predictor()
+    return _PREDICTOR(project)

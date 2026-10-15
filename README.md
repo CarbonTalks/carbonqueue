@@ -29,4 +29,5 @@ app = create_app(ml=load_predictor())
 - Girdi: `ProjectFeatures` (`technology`, `capacity_mw`, opsiyonel `planning_authority`, `applicant`, `submission_date`). Kurum adı REPD'deki ada eşlenir ("Cherwell District Council" → "Cherwell"); bulunamazsa kurum özellikleri boş kalır, tahmin yine üretilir.
 - Çıktı: `withdrawal_probability_12m` ve 13 elemanlı `decision_distribution` (12 aylık dilim + "12 ay içinde karar yok").
 - Desteklenmeyen teknolojide `ValueError` verir. Bir çağrı yaklaşık 0,3 saniye; veri ve model başlangıçta bir kez yüklenir.
+- Backend'in model köprüsüyle (cq-backend/integration/ml_server.py) ayrı süreçte: `PYTHONPATH=src python ../cq-backend/integration/ml_server.py --predictor cq.serve:predict --port 9001`. `predict` modeli ilk çağrıda bir kez yükler.
 - Test: `PYTHONPATH=src python tests/test_serve.py`
