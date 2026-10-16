@@ -5,80 +5,80 @@
   "n": 1630,
   "withdrawals": 52,
   "base_rate": 0.0319,
-  "pr_auc": 0.0446,
-  "roc_auc": 0.5667,
-  "brier": 0.03117,
+  "pr_auc": 0.0383,
+  "roc_auc": 0.5395,
+  "brier": 0.03112,
   "brier_baseline": 0.03114,
-  "mean_pred": 0.04,
-  "decision_brier": 0.6435,
+  "mean_pred": 0.0368,
+  "decision_brier": 0.6197,
   "decision_brier_baseline": 0.861,
   "decision_brier_recent_baseline": 0.7192,
-  "decision_bin_mae": 2.32,
+  "decision_bin_mae": 2.09,
   "decision_bin_mae_baseline": 4.51,
   "decision_bin_mae_recent_baseline": 3.12,
   "no_decision_share": 0.2503,
   "calibration_quintiles": [
    [
-    0.0131,
-    0.0337
+    0.0134,
+    0.0307
    ],
    [
-    0.0227,
-    0.0184
+    0.0251,
+    0.0276
    ],
    [
-    0.0334,
+    0.0344,
     0.0215
    ],
    [
-    0.0502,
-    0.0368
+    0.0456,
+    0.0491
    ],
    [
-    0.0804,
-    0.0491
+    0.0653,
+    0.0307
    ]
   ],
   "feature_importance_top10": [
    [
     "bin",
-    25.289300967232546
-   ],
-   [
-    "uk_pending",
-    7.636417141410959
+    26.040598469982015
    ],
    [
     "log_capacity_mw",
-    6.044451410790108
+    6.879770550215666
    ],
    [
     "solar_mounting",
-    5.4609988782385015
-   ],
-   [
-    "log_generation_mw",
-    5.023853715927631
-   ],
-   [
-    "category",
-    4.8541440979051504
-   ],
-   [
-    "auth_withdraw_rate",
-    4.636495947866377
+    6.46297578831129
    ],
    [
     "authority",
-    4.2851513393638045
+    6.183738063521932
    ],
    [
-    "auth_prior_apps",
-    4.246466020974032
+    "auth_withdraw_rate",
+    5.7041904213483345
+   ],
+   [
+    "log_generation_mw",
+    5.506250918182835
+   ],
+   [
+    "auth_median_decision_days",
+    4.866512861857404
    ],
    [
     "region",
-    3.5339619510538043
+    4.655754331989148
+   ],
+   [
+    "auth_prior_apps",
+    4.574829865515214
+   ],
+   [
+    "category",
+    4.557393110815909
    ]
   ],
   "breakdown": {
@@ -86,56 +86,56 @@
     "solar": {
      "n": 1207,
      "withdrawals": 34,
-     "roc_auc": 0.527,
-     "mean_pred": 0.0306,
+     "roc_auc": 0.503,
+     "mean_pred": 0.0322,
      "obs_rate": 0.0282,
-     "decision_brier": 0.602,
+     "decision_brier": 0.593,
      "decision_brier_recent_baseline": 0.71,
-     "decision_bin_mae": 1.85,
+     "decision_bin_mae": 1.75,
      "decision_bin_mae_recent_baseline": 2.88
     },
     "bioenergy_waste": {
      "n": 63,
      "withdrawals": 1,
      "roc_auc": null,
-     "mean_pred": 0.0538,
+     "mean_pred": 0.0487,
      "obs_rate": 0.0159,
-     "decision_brier": 0.898,
+     "decision_brier": 0.861,
      "decision_brier_recent_baseline": 0.892,
-     "decision_bin_mae": 3.94,
+     "decision_bin_mae": 3.62,
      "decision_bin_mae_recent_baseline": 3.78
     },
     "storage": {
      "n": 245,
      "withdrawals": 11,
-     "roc_auc": 0.538,
-     "mean_pred": 0.0716,
+     "roc_auc": 0.508,
+     "mean_pred": 0.0525,
      "obs_rate": 0.0449,
-     "decision_brier": 0.822,
+     "decision_brier": 0.776,
      "decision_brier_recent_baseline": 0.845,
-     "decision_bin_mae": 3.84,
+     "decision_bin_mae": 3.41,
      "decision_bin_mae_recent_baseline": 4.84
     },
     "onshore_wind": {
      "n": 109,
      "withdrawals": 5,
      "roc_auc": null,
-     "mean_pred": 0.063,
+     "mean_pred": 0.0446,
      "obs_rate": 0.0459,
-     "decision_brier": 0.55,
+     "decision_brier": 0.434,
      "decision_brier_recent_baseline": 0.436,
-     "decision_bin_mae": 2.96,
+     "decision_bin_mae": 1.99,
      "decision_bin_mae_recent_baseline": 1.39
     },
     "other_renewable": {
      "n": 6,
      "withdrawals": 1,
      "roc_auc": null,
-     "mean_pred": 0.0629,
+     "mean_pred": 0.0341,
      "obs_rate": 0.1667,
-     "decision_brier": 0.747,
+     "decision_brier": 0.562,
      "decision_brier_recent_baseline": 0.836,
-     "decision_bin_mae": 4.33,
+     "decision_bin_mae": 2.5,
      "decision_bin_mae_recent_baseline": 6.5
     }
    },
@@ -144,44 +144,44 @@
      "n": 79,
      "withdrawals": 7,
      "roc_auc": null,
-     "mean_pred": 0.0629,
+     "mean_pred": 0.0461,
      "obs_rate": 0.0886,
-     "decision_brier": 0.839,
+     "decision_brier": 0.78,
      "decision_brier_recent_baseline": 0.899,
-     "decision_bin_mae": 3.71,
+     "decision_bin_mae": 3.3,
      "decision_bin_mae_recent_baseline": 5.06
     },
     ">=20 MW": {
      "n": 338,
      "withdrawals": 8,
      "roc_auc": null,
-     "mean_pred": 0.0635,
+     "mean_pred": 0.0421,
      "obs_rate": 0.0237,
-     "decision_brier": 0.674,
+     "decision_brier": 0.617,
      "decision_brier_recent_baseline": 0.818,
-     "decision_bin_mae": 3.15,
+     "decision_bin_mae": 2.53,
      "decision_bin_mae_recent_baseline": 5.84
     },
     "<1 MW": {
      "n": 907,
      "withdrawals": 27,
-     "roc_auc": 0.503,
-     "mean_pred": 0.0286,
+     "roc_auc": 0.492,
+     "mean_pred": 0.0333,
      "obs_rate": 0.0298,
      "decision_brier": 0.562,
      "decision_brier_recent_baseline": 0.645,
-     "decision_bin_mae": 1.56,
+     "decision_bin_mae": 1.52,
      "decision_bin_mae_recent_baseline": 1.87
     },
     "1-5 MW": {
      "n": 127,
      "withdrawals": 3,
      "roc_auc": null,
-     "mean_pred": 0.0412,
+     "mean_pred": 0.0398,
      "obs_rate": 0.0236,
-     "decision_brier": 0.805,
+     "decision_brier": 0.768,
      "decision_brier_recent_baseline": 0.84,
-     "decision_bin_mae": 2.84,
+     "decision_bin_mae": 2.51,
      "decision_bin_mae_recent_baseline": 3.2
     }
    }
@@ -193,80 +193,80 @@
   "n": 1511,
   "withdrawals": 63,
   "base_rate": 0.0417,
-  "pr_auc": 0.092,
-  "roc_auc": 0.6558,
-  "brier": 0.03938,
+  "pr_auc": 0.0772,
+  "roc_auc": 0.6445,
+  "brier": 0.03956,
   "brier_baseline": 0.03996,
   "mean_pred": 0.0358,
-  "decision_brier": 0.639,
+  "decision_brier": 0.6338,
   "decision_brier_baseline": 0.824,
   "decision_brier_recent_baseline": 0.7165,
-  "decision_bin_mae": 2.33,
+  "decision_bin_mae": 2.26,
   "decision_bin_mae_baseline": 4.32,
   "decision_bin_mae_recent_baseline": 3.34,
   "no_decision_share": 0.2713,
   "calibration_quintiles": [
    [
-    0.0144,
-    0.0132
+    0.0147,
+    0.0066
    ],
    [
-    0.0226,
-    0.043
+    0.0237,
+    0.0364
    ],
    [
-    0.0306,
-    0.0199
+    0.0319,
+    0.0497
    ],
    [
-    0.0433,
-    0.053
+    0.0424,
+    0.0563
    ],
    [
-    0.0681,
-    0.0795
+    0.0664,
+    0.0596
    ]
   ],
   "feature_importance_top10": [
    [
     "bin",
-    26.29682049476156
-   ],
-   [
-    "log_capacity_mw",
-    6.871309008541295
-   ],
-   [
-    "uk_pending",
-    6.688056485841096
+    26.918402562723358
    ],
    [
     "solar_mounting",
-    5.995572492912031
+    7.379275137173012
    ],
    [
-    "category",
-    5.328701413064488
+    "log_capacity_mw",
+    6.859524236112985
    ],
    [
     "log_generation_mw",
-    4.448862877760033
+    6.070067229485877
+   ],
+   [
+    "auth_prior_apps",
+    5.152165472486685
    ],
    [
     "authority",
-    4.049216349064802
+    5.108821537455404
+   ],
+   [
+    "category",
+    4.934261521051982
+   ],
+   [
+    "auth_median_decision_days",
+    4.579103710248551
    ],
    [
     "auth_withdraw_rate",
-    3.821609680825036
+    4.408613467780308
    ],
    [
-    "region",
-    3.8199238677371063
-   ],
-   [
-    "submit_year",
-    3.606371370426118
+    "submit_month",
+    3.7778459574218863
    ]
   ],
   "breakdown": {
@@ -274,56 +274,56 @@
     "solar": {
      "n": 973,
      "withdrawals": 22,
-     "roc_auc": 0.476,
-     "mean_pred": 0.0263,
+     "roc_auc": 0.533,
+     "mean_pred": 0.0272,
      "obs_rate": 0.0226,
-     "decision_brier": 0.567,
+     "decision_brier": 0.563,
      "decision_brier_recent_baseline": 0.675,
-     "decision_bin_mae": 1.9,
+     "decision_bin_mae": 1.86,
      "decision_bin_mae_recent_baseline": 3.1
     },
     "storage": {
      "n": 402,
      "withdrawals": 38,
-     "roc_auc": 0.65,
-     "mean_pred": 0.0509,
+     "roc_auc": 0.534,
+     "mean_pred": 0.0498,
      "obs_rate": 0.0945,
-     "decision_brier": 0.827,
+     "decision_brier": 0.825,
      "decision_brier_recent_baseline": 0.854,
-     "decision_bin_mae": 3.22,
+     "decision_bin_mae": 3.12,
      "decision_bin_mae_recent_baseline": 4.18
     },
     "onshore_wind": {
      "n": 104,
      "withdrawals": 2,
      "roc_auc": null,
-     "mean_pred": 0.0613,
+     "mean_pred": 0.058,
      "obs_rate": 0.0192,
-     "decision_brier": 0.532,
+     "decision_brier": 0.512,
      "decision_brier_recent_baseline": 0.543,
-     "decision_bin_mae": 2.33,
+     "decision_bin_mae": 2.16,
      "decision_bin_mae_recent_baseline": 2.0
     },
     "bioenergy_waste": {
      "n": 23,
      "withdrawals": 0,
      "roc_auc": null,
-     "mean_pred": 0.0511,
+     "mean_pred": 0.0488,
      "obs_rate": 0.0,
-     "decision_brier": 0.817,
+     "decision_brier": 0.785,
      "decision_brier_recent_baseline": 0.805,
-     "decision_bin_mae": 4.39,
+     "decision_bin_mae": 4.04,
      "decision_bin_mae_recent_baseline": 4.39
     },
     "other_renewable": {
      "n": 9,
      "withdrawals": 1,
      "roc_auc": null,
-     "mean_pred": 0.0558,
+     "mean_pred": 0.0501,
      "obs_rate": 0.1111,
-     "decision_brier": 0.778,
+     "decision_brier": 0.748,
      "decision_brier_recent_baseline": 0.82,
-     "decision_bin_mae": 4.33,
+     "decision_bin_mae": 3.78,
      "decision_bin_mae_recent_baseline": 5.11
     }
    },
@@ -332,44 +332,44 @@
      "n": 339,
      "withdrawals": 8,
      "roc_auc": null,
-     "mean_pred": 0.0371,
+     "mean_pred": 0.0381,
      "obs_rate": 0.0236,
-     "decision_brier": 0.69,
+     "decision_brier": 0.673,
      "decision_brier_recent_baseline": 0.87,
-     "decision_bin_mae": 2.33,
+     "decision_bin_mae": 2.08,
      "decision_bin_mae_recent_baseline": 5.13
     },
     "1-5 MW": {
      "n": 136,
      "withdrawals": 3,
      "roc_auc": null,
-     "mean_pred": 0.0356,
+     "mean_pred": 0.0376,
      "obs_rate": 0.0221,
      "decision_brier": 0.61,
      "decision_brier_recent_baseline": 0.657,
-     "decision_bin_mae": 2.34,
+     "decision_bin_mae": 2.4,
      "decision_bin_mae_recent_baseline": 2.88
     },
     "<1 MW": {
      "n": 818,
      "withdrawals": 46,
-     "roc_auc": 0.712,
-     "mean_pred": 0.0329,
+     "roc_auc": 0.699,
+     "mean_pred": 0.0331,
      "obs_rate": 0.0562,
-     "decision_brier": 0.606,
+     "decision_brier": 0.603,
      "decision_brier_recent_baseline": 0.648,
-     "decision_bin_mae": 2.19,
+     "decision_bin_mae": 2.16,
      "decision_bin_mae_recent_baseline": 2.6
     },
     "5-20 MW": {
      "n": 64,
      "withdrawals": 2,
      "roc_auc": null,
-     "mean_pred": 0.0448,
+     "mean_pred": 0.0419,
      "obs_rate": 0.0312,
-     "decision_brier": 0.77,
+     "decision_brier": 0.764,
      "decision_brier_recent_baseline": 0.933,
-     "decision_bin_mae": 3.06,
+     "decision_bin_mae": 2.95,
      "decision_bin_mae_recent_baseline": 4.83
     }
    }
