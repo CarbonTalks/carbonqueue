@@ -11,7 +11,6 @@ Bu repo ekibin dört reposunu, geçmişleriyle birlikte tek yerde toplar:
 | [cq-sim](cq-sim) | K2 | Karbon motoru, efor kuralları, kuyruk politikaları, simülatör, canlı kuyruk sıralaması |
 | [cq-backend](cq-backend) | K3 | Belge okuma ve kanıtlı alan çıkarma (agent), API, kayıt |
 | [cq-website](cq-website) | K4 | Dashboard |
-| [integration](integration) | — | Parçaları birbirine bağlayan yardımcılar |
 
 Her klasörün kendi README'si ayrıntılı kurulum ve sözleşmeleri anlatır.
 
@@ -19,60 +18,67 @@ Her klasörün kendi README'si ayrıntılı kurulum ve sözleşmeleri anlatır.
 
 Gerekenler: Python 3.11+ (pandas, pyarrow, catboost, scikit-learn), [uv](https://docs.astral.sh/uv/) (backend Python 3.14 kullanır), Node.js.
 
+Önce veri, model ve simülasyon sonuçları üretilir (bir kez):
+
 ```sh
-# 1. Veri ve modeller (cq-model)
 cd cq-model
 pip install pandas pyarrow catboost scikit-learn
 python scripts/download_repd.py
 PYTHONPATH=src python -m cq.dataset
-PYTHONPATH=src python scripts/make_predictions.py        # ~5 dk
+PYTHONPATH=src python scripts/make_predictions.py        # ~5 dk, model_live.cbm dahil
 
-# 2. Simülasyon ve canlı kuyruk (cq-sim, ../cq-model çıktılarını okur)
 cd ../cq-sim
-PYTHONPATH=src python -m cqsim all
-PYTHONPATH=src python -m cqsim rank
-
-# 3. Model sunucusu (ayrı terminal, port 9001)
-cd ..
-python integration/ml_server.py
-
-# 4. Backend (ayrı terminal, port 8000)
-cd cq-backend
-uv sync --locked
-CQ_ML_URL=http://127.0.0.1:9001 uv run cq-backend
-
-# 5. Canlı kuyruğu backend'e yükle
-curl --fail -H 'Content-Type: application/json' \
-  --data-binary @../cq-sim/results/live-queue.json \
-  http://127.0.0.1:8000/queue/live/import
-
-# 6. Web sitesi (ayrı terminal, port 5173)
-cd ../cq-website
-npm install
-npm run dev
+PYTHONPATH=src python -m cqsim all                        # geçmiş simülasyon ve duyarlılık
+PYTHONPATH=src python -m cqsim rank                       # canlı kuyruk (results/live-queue.json)
 ```
 
-Windows PowerShell'de `PYTHONPATH=src` yerine `$env:PYTHONPATH="src"`, `CQ_ML_URL=...` yerine `$env:CQ_ML_URL="..."` kullanın.
+Sonra dört süreç, her biri ayrı terminalde ve `cq-backend` klasöründen başlatılarak:
+
+```sh
+# 1. Model köprüsü (port 9001, cq-model ortamı)
+cd ../cq-model && PYTHONPATH=src python ../cq-backend/integration/ml_server.py --predictor cq.serve:predict --port 9001
+
+# 2. Kuyruk motoru (port 9002)
+cd ../cq-sim && PYTHONPATH=src python -m cqsim serve
+
+# 3. Backend (port 8000); .env:
+#    CQ_ML_URL=http://127.0.0.1:9001
+#    CQ_QUEUE_ENGINE_URL=http://127.0.0.1:9002
+#    CQ_CORS_ORIGINS=http://localhost:5173
+#    CQ_SIMULATION_RESULTS_DIR=../cq-sim/results
+uv sync --locked && uv run cq-backend
+
+# 4. Dashboard (port 5173)
+cd ../cq-website && npm install && npm run dev
+```
+
+Canlı kuyruğu bir kez backend'e yükleyin (`cq-backend` klasöründen):
+
+```sh
+curl --fail -H 'Content-Type: application/json'   --data-binary @../cq-sim/results/live-queue.json   http://127.0.0.1:8000/queue/live/import
+```
+
+Windows PowerShell'de `PYTHONPATH=src` yerine `$env:PYTHONPATH="src"` kullanın.
 
 Belgeden alan çıkarma için `cq-backend/.env` dosyasına kendi `GOOGLE_API_KEY` değerinizi yazın (`cq-backend/.env.example`).
 
-## Bağlantıların durumu (14 Ekim 2026)
+## Bağlantıların durumu (17 Ekim 2026)
 
 | Bağlantı | Durum |
 |---|---|
 | cq-model → cq-sim (tahmin dosyaları) | Çalışıyor |
-| cq-sim → cq-backend (canlı kuyruk içe aktarma) | Çalışıyor: 765 sıralı, 35 teyit bekleyen dosya |
-| cq-model → cq-backend (tahmin, `integration/ml_server.py` üzerinden) | Çalışıyor |
-| cq-backend → belge çıkarma (Gemini) | API anahtarı gerektirir |
-| cq-backend → kuyruk motoru (`/queue/run`, `/simulation/run`) | Henüz yok: cq-sim için motor adaptörü yazılacak |
-| cq-website → cq-backend / cq-sim sonuçları | Henüz yok: dashboard örnek verilerle çalışıyor |
+| cq-sim → cq-backend (canlı kuyruk içe aktarma) | Çalışıyor |
+| cq-model → cq-backend (`cq.serve:predict`, model köprüsü üzerinden) | Çalışıyor |
+| cq-backend → kuyruk motoru (`cqsim serve`: karbon bandı, efor, kademe, gerekçe, planlanan hafta) | Çalışıyor |
+| cq-website → cq-backend (canlı kuyruk, proje, belge yükleme, geçmiş simülasyon) | Çalışıyor; arayüz Türkçe / İngilizce |
+| cq-backend → belge çıkarma (Gemini) | API anahtarı gerektirir; gerçek PDF ile test bekliyor |
 
-## Bilinen sorunlar
+## Bilinen sınırlamalar
 
-- Canlı model, yeni bir başvuru için "12 ay içinde karar yok" olasılığını yüksek veriyor (40 MW güneşte %55–78; gerçekte
-  2024 güneş başvurularında %17). cq-sim sonuçlarını etkilemez, çünkü motor bu dağılımı kullanmıyor.
-- Geri çekilme tahmini zayıf (ROC-AUC 0,57–0,66); sıralamaya etkisi %2'den az.
+- Geri çekilme tahmini zayıf (ROC-AUC 0,54–0,64); sıralamaya etkisi %2'den az.
+- Kapasite gözlenen medyan karar süresine kalibre edilir; en yavaş uç (P90) yeniden üretilemez.
 - Uzman saati ve maliyet verisi kamuya açık değil; efor kural tabanlı.
+- Projenin gerçekten işletmeye girme olasılığı (gerçekleşme modeli) denendi, mevcut veriyle güvenilir değil; kullanılmıyor.
 
 ## Alt repolarla senkron
 
