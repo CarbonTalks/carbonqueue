@@ -18,6 +18,9 @@ class QueueEntry(Contract):
     application_id: str
     position: int = Field(ge=1)
     score: float | None = None
+    lane: str | None = None
+    reason: str | None = None
+    planned_week: int | None = Field(default=None, ge=1)
 
 
 class QueueResult(Contract):
@@ -45,3 +48,23 @@ class SimulationResult(Contract):
     simulation_id: str = Field(default_factory=new_id)
     metrics: dict[str, float]
     references: list[str] = Field(default_factory=list)
+
+
+class SimulationRunRequest(Contract):
+    application_ids: list[str] | None = None
+    parameters: dict[str, Value] = Field(default_factory=dict)
+    year: int | None = Field(default=None, ge=2019, le=2023)
+    policy: str | None = None
+
+    def model_post_init(self, context: object) -> None:
+        historical = self.year is not None or self.policy is not None
+        if historical:
+            if (
+                self.year is None
+                or self.policy is None
+                or self.application_ids is not None
+                or self.parameters
+            ):
+                raise ValueError("Historical requests require only year and policy")
+        elif self.application_ids is None:
+            raise ValueError("Provide historical year/policy or legacy application_ids")

@@ -4,6 +4,7 @@ from uuid import uuid4
 
 import httpx
 from litestar import Litestar, Request, Response, get
+from litestar.config.cors import CORSConfig
 from litestar.di import NamedDependency, Provide
 from litestar.middleware import DefineMiddleware
 
@@ -17,7 +18,11 @@ from cq_backend.api.applications import (
     list_pending_applications,
 )
 from cq_backend.api.queue import get_live_queue, get_queue, import_live_queue, run_queue
-from cq_backend.api.simulations import get_simulation, run_simulation
+from cq_backend.api.simulations import (
+    get_historical_simulation,
+    get_simulation,
+    run_simulation,
+)
 from cq_backend.config import Settings
 from cq_backend.documents.docling import DoclingParser
 from cq_backend.domain.application import ProcessingStatus
@@ -154,12 +159,21 @@ def create_app(
             get_live_queue,
             import_live_queue,
             run_simulation,
+            get_historical_simulation,
             get_simulation,
         ],
         dependencies={"service": Provide(provide_service)},
         lifespan=[lifespan],
         exception_handlers={BackendError: handle_backend_error},
         middleware=[DefineMiddleware(RequestIDMiddleware)],
+        cors_config=CORSConfig(
+            allow_origins=list(settings.cors_origins),
+            allow_methods=["GET", "POST", "PATCH", "OPTIONS"],
+            allow_headers=["Content-Type"],
+            expose_headers=["X-Request-ID"],
+        )
+        if settings.cors_origins
+        else None,
         request_max_body_size=settings.max_file_bytes * settings.max_files
         + 1024 * 1024,
         multipart_form_part_limit=settings.max_files,

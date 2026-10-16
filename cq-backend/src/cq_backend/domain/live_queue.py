@@ -17,6 +17,7 @@ class LiveQueueRecord(Contract):
     submitted: date
     technology: str | None = None
     generation_mw: float | None = Field(default=None, gt=0, strict=True)
+    has_storage: bool | None = Field(default=None, strict=True)
 
 
 class LiveQueueSnapshot(Contract):
@@ -26,3 +27,27 @@ class LiveQueueSnapshot(Contract):
     lane_counts: dict[str, int]
     files: list[LiveQueueRecord] = Field(max_length=2000)
     needs_confirmation: list[LiveQueueRecord] = Field(max_length=2000)
+
+
+LIVE_QUEUE_DISPLAY_FIELDS = frozenset(
+    {
+        "app_id",
+        "authority",
+        "category",
+        "daily_tco2",
+        "effort_hours",
+        "generation_mw",
+        "has_storage",
+        "lane",
+        "p_withdraw_12m",
+        "planned_week",
+        "position",
+        "reason",
+        "site_name",
+        "stale",
+        "submitted",
+        "technology",
+        "wait_days",
+        "application_id",
+    }
+)

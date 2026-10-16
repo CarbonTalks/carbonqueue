@@ -26,7 +26,6 @@ class QueueEngine(Protocol):
     async def schedule(
         self, projects: list[Application], policy: QueuePolicy, capacity: float
     ) -> QueueResult: ...
-    async def simulate(self, config: SimulationInput) -> SimulationResult: ...
 
 
 class HTTPQueueEngine:
