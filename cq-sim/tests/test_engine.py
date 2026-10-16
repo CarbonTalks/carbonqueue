@@ -58,3 +58,52 @@ def test_simulate_returns_flat_metrics_from_results():
     r = engine.simulate_results({"application_ids": [], "parameters": {"year": 2023}, "projects": []}, CFG)
     assert r["metrics"]["gain_tco2_alpha_0.5_central"] == pytest.approx(44689.3)
     assert all(isinstance(v, float) for v in r["metrics"].values())
+
+
+def claim(i, tech, tonnes=None, mwh=None, submitted="2026-01-05"):
+    p = app(i, tech, None, submitted)
+    p["project_features"].update(annual_co2e_reduction_t=tonnes, annual_energy_mwh=mwh)
+    p["prediction"] = None  # REPD disi projede gecmis model yok: geri cekilme bilinmiyor
+    return p
+
+
+def test_claim_in_tonnes_gives_daily_rate():
+    r = engine.carbon(claim(1, "heat_pump", tonnes=730), None, CFG, year=2026)
+    assert r["daily_tco2"] == {"low": 2.0, "central": 2.0, "high": 2.0}
+    assert "beyan" in r["methodology_reference"]
+
+
+def test_claim_in_mwh_uses_emission_factor_band():
+    b = engine.carbon(claim(1, "energy_efficiency", mwh=3650), None, CFG, year=2026)["daily_tco2"]
+    assert b["central"] == pytest.approx(10 * 0.13276, rel=1e-3)  # 3650 MWh / 365 x 2028 merkezi faktor
+    assert b["low"] < b["central"] < b["high"]
+
+
+def test_tonnes_claim_wins_over_mwh_and_capacity_formula_wins_over_claim():
+    assert engine.carbon(claim(1, "ev_charging", tonnes=365, mwh=10_000), None, CFG, year=2026)["daily_tco2"]["central"] == 1.0
+    solar = app(1, "solar", 40.0)
+    solar["project_features"]["annual_co2e_reduction_t"] = 1_000_000  # dogrulanmis MW formulu beyandan once gelir
+    assert engine.carbon(solar, None, CFG, year=2026)["daily_tco2"]["central"] == pytest.approx(40 * 24 * 0.105 * 0.13276, rel=1e-3)
+
+
+def test_unscored_technology_with_claim_is_scored_from_claim():
+    battery = app(1, "battery", 50.0)
+    battery["project_features"]["annual_co2e_reduction_t"] = 3650
+    assert engine.carbon(battery, None, CFG, year=2026)["daily_tco2"]["central"] == 10.0
+
+
+def test_claim_projects_join_the_same_queue_and_effort_rule():
+    assert engine.effort(claim(1, "heat_pump", tonnes=100), CFG)["reviewer_hours"] == 8  # MW yok: taban puan
+    projects = [claim(1, "heat_pump", tonnes=50), claim(2, "industrial_electrification", tonnes=20_000),
+                app(3, "solar", 40.0), app(4, "battery", 20.0)]
+    entries = {e["application_id"]: e for e in engine.schedule(projects, {"name": "carbon"}, 20, CFG)["entries"]}
+    assert entries["app-2"]["position"] < entries["app-3"]["position"] < entries["app-1"]["position"]
+    assert entries["app-2"]["lane"] == "carbon" and entries["app-2"]["score"] > 0
+    assert entries["app-4"]["lane"] == "unscored"
+
+
+def test_claim_project_without_any_claim_is_rejected():
+    with pytest.raises(engine.EngineError):
+        engine.carbon(claim(1, "heat_pump"), None, CFG)
+    with pytest.raises(engine.EngineError):
+        engine.carbon(claim(1, "heat_pump", tonnes=0), None, CFG)

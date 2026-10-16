@@ -26,18 +26,29 @@ CATEGORY = {
 }
 UNSCORED_WHY = {"storage": "depolama", "bioenergy_waste": "biyoenerji / atik", "other_renewable": "diger yenilenebilir"}
 POLICY_ALIASES = {"FIFO": "fifo", "CARBONQUEUE": "carbonqueue"}
+# REPD disindaki her karbon azaltim projesi (isi pompasi, verimlilik, elektrifikasyon...) bu kategoriyle girer:
+# etkisi MW'tan degil, basvurunun kendi beyanindan (yillik tCO2e ya da yillik MWh) gelir.
+CLAIM = "claim_based"
+CLAIM_FIELDS = ("annual_co2e_reduction_t", "annual_energy_mwh")
 
 
 class EngineError(ValueError):
     """Gecersiz istek: sunucu 422 doner."""
 
 
+def _positive(value) -> float | None:
+    return float(value) if isinstance(value, (int, float)) and not isinstance(value, bool) and value > 0 else None
+
+
 def _features(project: dict) -> dict:
     f = project.get("project_features")
-    if not f or f.get("technology") is None or f.get("capacity_mw") is None:
-        raise EngineError("project_features.technology ve capacity_mw gerekli")
-    if f["technology"] not in CATEGORY:
-        raise EngineError(f"desteklenmeyen teknoloji: {f['technology']}")
+    if not f or f.get("technology") is None:
+        raise EngineError("project_features.technology gerekli")
+    if f["technology"] in CATEGORY:
+        if f.get("capacity_mw") is None:
+            raise EngineError(f"{f['technology']} icin capacity_mw gerekli")
+    elif not any(_positive(f.get(name)) for name in CLAIM_FIELDS):
+        raise EngineError(f"{f['technology']} icin beyan gerekli: {' ya da '.join(CLAIM_FIELDS)}")
     return f
 
 
@@ -49,16 +60,23 @@ def frame(projects: list[dict], cfg: dict, year: int) -> pd.DataFrame:
         submitted = f.get("submission_date") or p.get("created_at", str(date.today()))[:10]
         prediction = p.get("prediction") or {}
         rows.append({
-            "application_id": p.get("application_id"), "category": CATEGORY[f["technology"]],
+            "application_id": p.get("application_id"), "category": CATEGORY.get(f["technology"], CLAIM),
             "has_storage_field": f.get("has_storage"),
-            "app_generation_mw": float(f["capacity_mw"]), "arrival": pd.Timestamp(submitted),
+            "app_generation_mw": float(f["capacity_mw"]) if f.get("capacity_mw") is not None else np.nan,
+            "arrival": pd.Timestamp(submitted),
             "p_withdraw_12m": float(prediction.get("withdrawal_probability_12m", 0.0)),
+            "claim_t": _positive(f.get("annual_co2e_reduction_t")), "claim_mwh": _positive(f.get("annual_energy_mwh")),
         })
     q = pd.DataFrame(rows)
+    q[["claim_t", "claim_mwh"]] = q[["claim_t", "claim_mwh"]].astype(float)
     gen = q.app_generation_mw.where(q.category.isin(cfg["carbon"]["load_factor"]))
     # has_storage bos (bilinmiyor) ise yalnizca bataryanin kendisi depolama sayilir
     q["has_storage"] = (q.category == "storage") | q.has_storage_field.eq(True)
     q["daily_tco2"] = daily_tco2(q.category, gen, cfg, year)
+    # Uretim formulu olmayan dosyada (REPD disi ya da skorsuz teknoloji) beyan varsa etki beyandan gelir.
+    q["from_claim"] = q.daily_tco2.isna() & (q.claim_t.notna() | q.claim_mwh.notna())
+    claim_daily = (q.claim_t / 365).fillna(q.claim_mwh / 365 * emission_factors(cfg, year)["central"])
+    q.loc[q.from_claim, "daily_tco2"] = claim_daily[q.from_claim]
     q["scored"] = q.daily_tco2.notna()
     q["effort"] = effort_hours(q.app_generation_mw, q.has_storage, cfg)
     q["small"] = q.scored & (q.app_generation_mw < cfg["queue"]["small_project_mw"])
@@ -77,6 +95,14 @@ def carbon(project: dict, scenario: dict | None, cfg: dict, year: int | None = N
             "kuyrukta efor payi kadar kapasiteyle basvuru sirasina gore ilerler"),
             "methodology_reference": "cq-sim docs/carbon_sources.md"}
     ef = emission_factors(cfg, year)
+    if q.from_claim:
+        band = {k: round(float(q.claim_t / 365 if pd.notna(q.claim_t) else q.claim_mwh / 365 * v), 3)
+                for k, v in ef.items()}
+        source = (f"yillik {q.claim_t:g} tCO2e / 365" if pd.notna(q.claim_t) else
+                  f"yillik {q.claim_mwh:g} MWh / 365 x emisyon faktoru {year + cfg['carbon']['operation_lag_years']} "
+                  "(dusuk sebeke ortalamasi, merkezi uzun donem marjinal, yuksek gaz santrali)")
+        return {"daily_tco2": band, "methodology_reference": (
+            f"Basvurunun kendi beyani: {source}. Beyan dogrulanmamistir; kaynagi belge alintisinda, kontrolu uzmandadir.")}
     band = {k: round(float(q.daily_tco2 * v / ef["central"]), 3) for k, v in ef.items()}
     return {"daily_tco2": band, "methodology_reference": (
         f"tCO2e/gun = MW x 24 x yuk faktoru (DUKES 2026 tablo 6.3) x yer degistirme emisyon faktoru "
