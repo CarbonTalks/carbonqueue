@@ -84,3 +84,26 @@ Her varyantta kapasite yeniden kalibre edilir ve FIFO da aynı varsayımla yenid
 
 `max_wait_capacity_share` (varsayılan 0,5): zorunlu kademenin haftalık kapasiteden alabileceği azami pay.
 1,0 iken kuyruğun çoğu azami beklemeyi aşmışsa CarbonQueue FIFO'ya dönüşür.
+
+## Backend için kuyruk motoru (cq-sim → cq-backend)
+
+```sh
+PYTHONPATH=src python -m cqsim serve          # http://127.0.0.1:9002
+```
+
+Backend'de `CQ_QUEUE_ENGINE_URL=http://127.0.0.1:9002`. Uçlar backend'in `HTTPQueueEngine` sözleşmesini birebir uygular
+([engine.py](src/cqsim/engine.py)); hesaplar simülatörle aynıdır.
+
+| Uç | Ne döner |
+|---|---|
+| `POST /carbon` | `daily_tco2: {low, central, high}` (tCO₂e/gün; emisyon faktörü bugünün yılı + 2 yıl) ya da skorsuz teknolojide `unscored_reason`; her ikisinde `methodology_reference` |
+| `POST /effort` | `reviewer_hours`: kural tabanlı efor |
+| `POST /schedule` | `entries`: `position` (simülatördeki inceleme bitiş sırası), `score` (karbon skoru; skorsuzda ve FIFO'da boş), `lane`, `reason` (canlı kuyruktaki gerekçe metinleri), `planned_week` (1 = bu hafta). `capacity` = haftalık uzman saati. Politika adları: `fifo` (ya da `FIFO`), `carbon`, `carbon_withdrawal`, `carbon_withdrawal_effort`, `carbonqueue` |
+| `POST /simulate` | (Eski yol; backend artık geçmiş sonuçları `CQ_SIMULATION_RESULTS_DIR` üzerinden kendisi sunuyor.) Geçmiş kuyruk simülasyonunun hazır sonucu, düz metrikler (`parameters.year`, varsayılan 2023; `parameters.policy`, varsayılan `carbonqueue`). Yeni yüklenen dosyaların gerçek sonucu olmadığı için karbon kazancı onlar üzerinden hesaplanmaz |
+
+`has_storage` (güneş + batarya gibi ortak başvurular) efor kuralına girer; boşsa yalnızca bataryanın kendisi depolama sayılır.
+
+Teknoloji eşlemesi: `solar`, `onshore_wind` → skorlu; `battery` → depolama; `biomass` → biyoenerji; `hydro`, `tidal`, `wave` → diğer yenilenebilir.
+Son dördü skorsuzdur.
+
+Backend sözleşmesi (15 Ekim) skorsuz durumu, karbon bandını, kademe ve gerekçeyi ve `has_storage` alanını içeriyor; adaptör bunların hepsini kullanıyor.

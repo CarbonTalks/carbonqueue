@@ -4,6 +4,7 @@
   python -m cqsim all                                         -> butun yillar x politikalar + results/summary.md
   python -m cqsim rank                                        -> results/live-queue.json (canli kuyruk)
   python -m cqsim sensitivity                                 -> results/sensitivity.json + sensitivity.md
+  python -m cqsim serve                                       -> backend icin kuyruk motoru, http://127.0.0.1:9002
 """
 import argparse
 import json
@@ -63,6 +64,7 @@ if __name__ == "__main__":
     one.add_argument("--policy", choices=list(POLICIES), required=True)
     sub.add_parser("all")
     sub.add_parser("sensitivity")
+    sub.add_parser("serve").add_argument("--port", type=int, default=9002)
     sub.add_parser("rank").add_argument("--include-stale", action="store_true",
                                         help="stale_or_uncertain dosyalari da siraya koy (varsayilan: ayri listede)")
     for s in sub.choices.values():
@@ -83,6 +85,9 @@ if __name__ == "__main__":
               f"  teyit bekleyen={len(r['needs_confirmation'])}  kademeler={r['lane_counts']}")
         for f in r["files"][:15]:
             print(f"{f['position']['carbonqueue']:>4}  {f['site_name'][:34]:<34}  {f['reason']}")
+    elif args.cmd == "serve":
+        from cqsim.server import serve
+        serve(args.port, cfg)
     elif args.cmd == "sensitivity":
         rows = sensitivity.run(cfg, args.data)
         args.out.mkdir(parents=True, exist_ok=True)
