@@ -329,12 +329,10 @@ Run [integration/ml_server.py](integration/ml_server.py) with the model team's
 Python environment. It uses only the standard library, so the backend's Python
 3.14 and Docling dependencies do not need to be installed in that environment.
 
-The model team supplies a **synchronous callable** accepting the feature dictionary
-sent by the backend. It loads the trained model and builds its model-specific
-features, then returns the two prediction fields shown above. The existing
-`cq.model.predict(model, feats, app_ids, ...)` is not itself this callable; a wrapper
-must build those inputs and translate its outputs. No training or synthetic
-predictions are performed by this bridge.
+The predictor is cq-model's `cq.serve:predict`, a **synchronous callable** accepting
+the feature dictionary sent by the backend. It loads the trained model, builds its
+model-specific features, and returns the two prediction fields shown above. No
+training or synthetic predictions are performed by this bridge.
 
 ```sh
 # From cq-model, in its Python environment (pandas, pyarrow, catboost).
@@ -353,14 +351,15 @@ concurrent access to a shared model instance.
 
 ## Full demo stack
 
-Four processes, each in its own terminal, with the four repositories side by side:
+Four processes, each in its own terminal, with the four repositories side by side.
+Every terminal starts in this repository (`cq-backend`):
 
 ```sh
 # 1. Model (cq-model environment; generate data and model_live.cbm first, see cq-model README)
-cd cq-model && PYTHONPATH=src python ../cq-backend/integration/ml_server.py --predictor cq.serve:predict --port 9001
+cd ../cq-model && PYTHONPATH=src python ../cq-backend/integration/ml_server.py --predictor cq.serve:predict --port 9001
 
 # 2. Queue engine (cq-sim)
-cd cq-sim && PYTHONPATH=src python -m cqsim serve
+cd ../cq-sim && PYTHONPATH=src python -m cqsim serve
 
 # 3. Backend (this repository), with .env:
 #    CQ_ML_URL=http://127.0.0.1:9001
@@ -371,13 +370,15 @@ cd cq-sim && PYTHONPATH=src python -m cqsim serve
 uv run cq-backend
 
 # 4. Dashboard (cq-website)
-cd cq-website && npm install && npm run dev
+cd ../cq-website && npm install && npm run dev
 ```
 
-Load the live queue once:
+Load the live queue once, from `cq-backend`:
 
 ```sh
-curl --fail -H 'Content-Type: application/json'   --data-binary @../cq-sim/results/live-queue.json   http://127.0.0.1:8000/queue/live/import
+curl --fail -H 'Content-Type: application/json' \
+  --data-binary @../cq-sim/results/live-queue.json \
+  http://127.0.0.1:8000/queue/live/import
 ```
 
 Checked end to end on 15 October 2026: import → model prediction → carbon band or unscored
