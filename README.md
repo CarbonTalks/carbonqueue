@@ -106,4 +106,21 @@ Backend'de `CQ_QUEUE_ENGINE_URL=http://127.0.0.1:9002`. Uçlar backend'in `HTTPQ
 Teknoloji eşlemesi: `solar`, `onshore_wind` → skorlu; `battery` → depolama; `biomass` → biyoenerji; `hydro`, `tidal`, `wave` → diğer yenilenebilir.
 Son dördü skorsuzdur.
 
+### Beyana dayalı projeler
+
+REPD dışındaki her karbon azaltım projesi (ısı pompası, enerji verimliliği, elektrifikasyon, şarj altyapısı...) aynı
+kuyruğa girer. Etkisi MW'tan değil, başvurunun kendi beyanından gelir (`project_features` içinde):
+
+| Alan | Günlük etki (tCO₂e/gün) |
+|---|---|
+| `annual_co2e_reduction_t` (yıllık ton) | ton / 365; bant tek değer (düşük = merkezi = yüksek) |
+| `annual_energy_mwh` (yıllık temiz üretim ya da tasarruf) | MWh / 365 × emisyon faktörü bandı (yukarıdaki üç faktör) |
+
+- İkisi birden varsa ton beyanı kullanılır. Güneş ve rüzgârda MW formülü beyandan önce gelir.
+- Skorsuz teknolojide (batarya, biyoenerji...) beyan varsa skor beyandan hesaplanır.
+- `capacity_mw` gerekmez; efor kuralı MW yoksa taban puanı kullanır (8 saat, depolama varsa +4).
+- Bu projelerde tahmin modeli yoktur; `prediction` boşsa geri çekilme olasılığı 0 sayılır.
+- Beyan doğrulanmış değildir: `methodology_reference` bunu yazar, kaynağı belge alıntısında, kontrolü uzmandadır.
+- REPD teknolojisi olmayan ve beyanı da olmayan proje 422 ile reddedilir; backend onu insan incelemesine gönderir.
+
 Backend sözleşmesi (15 Ekim) skorsuz durumu, karbon bandını, kademe ve gerekçeyi ve `has_storage` alanını içeriyor; adaptör bunların hepsini kullanıyor.
