@@ -1,8 +1,11 @@
 """Kuyruk motoru HTTP sunucusu: cq-backend'in HTTPQueueEngine sozlesmesi.
 
-  POST /carbon    {"project": Application, "scenario": CarbonScenario} -> {"tonnes_co2e", "methodology_reference"}
+  POST /carbon    {"project": Application, "scenario": CarbonScenario}
+                  -> {"daily_tco2": {low, central, high}, "methodology_reference"}
+                     ya da skorsuzsa {"unscored_reason", "methodology_reference"}
   POST /effort    {"project": Application}                             -> {"reviewer_hours"}
-  POST /schedule  {"projects": [Application], "policy", "capacity"}    -> {"entries": [{application_id, position, score}]}
+  POST /schedule  {"projects": [Application], "policy", "capacity"}
+                  -> {"entries": [{application_id, position, score, lane, reason, planned_week}]}
   POST /simulate  {"application_ids", "parameters", "projects"}        -> {"metrics": {...}, "references": [...]}
 
 Backend'de: CQ_QUEUE_ENGINE_URL=http://127.0.0.1:9002
