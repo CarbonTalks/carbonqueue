@@ -123,4 +123,11 @@ kuyruğa girer. Etkisi MW'tan değil, başvurunun kendi beyanından gelir (`proj
 - Beyan doğrulanmış değildir: `methodology_reference` bunu yazar, kaynağı belge alıntısında, kontrolü uzmandadır.
 - REPD teknolojisi olmayan ve beyanı da olmayan proje 422 ile reddedilir; backend onu insan incelemesine gönderir.
 
+### Ülke
+
+`project_features.country` (ISO kodu; boşsa `GB`) emisyon faktörlerini ve yük faktörlerini seçer. Tanımlı ülkeler:
+İngiltere (`GB`, `UK`) ve Türkiye (`TR`, ETKB resmi faktörleri). Türkiye için yük faktörü tanımlı değildir; güneş ve
+rüzgâr projesi belgedeki yıllık üretim (MWh) beyanıyla hesaplanır. Tanımlı olmayan ülkede yalnızca tCO₂e beyanı
+kullanılır. Ayrıntı ve kaynaklar: [docs/carbon_sources.md](docs/carbon_sources.md).
+
 Backend sözleşmesi (15 Ekim) skorsuz durumu, karbon bandını, kademe ve gerekçeyi ve `has_storage` alanını içeriyor; adaptör bunların hepsini kullanıyor.

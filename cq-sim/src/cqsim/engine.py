@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 from cqsim.live import _reason
-from cqsim.prepare import ROOT, daily_tco2, effort_hours, emission_factors, score
+from cqsim.prepare import ROOT, effort_hours, emission_factors, score
 from cqsim.simulator import POLICIES, simulate
 
 # backend teknolojisi -> cq-sim kategorisi (cq-model/src/cq/serve.py ile ayni esleme)
@@ -30,6 +30,15 @@ POLICY_ALIASES = {"FIFO": "fifo", "CARBONQUEUE": "carbonqueue"}
 # etkisi MW'tan degil, basvurunun kendi beyanindan (yillik tCO2e ya da yillik MWh) gelir.
 CLAIM = "claim_based"
 CLAIM_FIELDS = ("annual_co2e_reduction_t", "annual_energy_mwh")
+# project_features.country (ISO 3166-1 alfa-2); bos ise Ingiltere: gecmis veri ve canli kuyruk Ingiltere'dir.
+DEFAULT_COUNTRY = "GB"
+COUNTRY_ALIASES = {"UK": "GB"}
+FACTOR_SOURCES = {
+    "GB": "dusuk sebeke ortalamasi, merkezi uzun donem marjinal (Green Book tablo 1), yuksek gaz santrali (DUKES 5.14)",
+    "TR": "dusuk Turkiye geneli elektrik uretimi (ETKB 2023), merkezi birlesik marj gunes/ruzgar, "
+          "yuksek faaliyet temelli marj (ETKB 2021, UNFCCC Tool 07)",
+}
+LEVELS = ("low", "central", "high")
 
 
 class EngineError(ValueError):
@@ -38,6 +47,22 @@ class EngineError(ValueError):
 
 def _positive(value) -> float | None:
     return float(value) if isinstance(value, (int, float)) and not isinstance(value, bool) and value > 0 else None
+
+
+def _country(f: dict) -> str:
+    code = str(f.get("country") or DEFAULT_COUNTRY).strip().upper()
+    return COUNTRY_ALIASES.get(code, code)
+
+
+def country_factors(cfg: dict, country: str, year: int) -> dict | None:
+    """Ulkenin yuk faktorleri ve {low, central, high} emisyon faktoru; ulke tanimli degilse None."""
+    c = cfg["carbon"]
+    src = c if country == DEFAULT_COUNTRY else c.get("country", {}).get(country)
+    if src is None:
+        return None
+    ef = emission_factors({"carbon": {"emission_factor": src["emission_factor"],
+                                      "operation_lag_years": c["operation_lag_years"]}}, year)
+    return {"load_factor": src.get("load_factor", {}), "ef": ef}
 
 
 def _features(project: dict) -> dict:
@@ -52,6 +77,23 @@ def _features(project: dict) -> dict:
     return f
 
 
+def _band(category: str, mw: float, claim_t, claim_mwh, factors: dict | None) -> tuple[dict | None, str]:
+    """Gunluk tCO2e bandi ve dayanagi. Oncelik: MW formulu (ulkenin yuk faktoru varsa), ton beyani, MWh beyani.
+    Bant yoksa ikinci deger skorsuz nedenidir."""
+    lf = factors["load_factor"].get(category) if factors else None
+    if lf and mw == mw and mw > 0:
+        return {k: mw * 24 * lf * factors["ef"][k] for k in LEVELS}, "capacity"
+    if claim_t:
+        return {k: claim_t / 365 for k in LEVELS}, "claim_t"
+    if claim_mwh and factors:
+        return {k: claim_mwh / 365 * factors["ef"][k] for k in LEVELS}, "claim_mwh"
+    if factors is None:
+        return None, "bu ulke icin emisyon faktoru tanimli degil; yillik tCO2e beyani gerekli"
+    if category in ("solar", "onshore_wind"):
+        return None, "bu ulke icin yuk faktoru tanimli degil; yillik uretim (MWh) beyani gerekli"
+    return None, f"{UNSCORED_WHY.get(category, category)}: bu teknoloji icin uretim karbonu hesaplanmiyor"
+
+
 def frame(projects: list[dict], cfg: dict, year: int) -> pd.DataFrame:
     """Backend uygulamalarini simulatorun kuyruk tablosuna cevirir (build_queue ile ayni kolonlar)."""
     rows = []
@@ -59,24 +101,23 @@ def frame(projects: list[dict], cfg: dict, year: int) -> pd.DataFrame:
         f = _features(p)
         submitted = f.get("submission_date") or p.get("created_at", str(date.today()))[:10]
         prediction = p.get("prediction") or {}
+        category = CATEGORY.get(f["technology"], CLAIM)
+        mw = float(f["capacity_mw"]) if f.get("capacity_mw") is not None else np.nan
+        claim_t, claim_mwh = _positive(f.get("annual_co2e_reduction_t")), _positive(f.get("annual_energy_mwh"))
+        country = _country(f)
+        band, basis = _band(category, mw, claim_t, claim_mwh, country_factors(cfg, country, year))
         rows.append({
-            "application_id": p.get("application_id"), "category": CATEGORY.get(f["technology"], CLAIM),
-            "has_storage_field": f.get("has_storage"),
-            "app_generation_mw": float(f["capacity_mw"]) if f.get("capacity_mw") is not None else np.nan,
-            "arrival": pd.Timestamp(submitted),
+            "application_id": p.get("application_id"), "category": category, "country": country,
+            "has_storage_field": f.get("has_storage"), "app_generation_mw": mw, "arrival": pd.Timestamp(submitted),
             "p_withdraw_12m": float(prediction.get("withdrawal_probability_12m", 0.0)),
-            "claim_t": _positive(f.get("annual_co2e_reduction_t")), "claim_mwh": _positive(f.get("annual_energy_mwh")),
+            "claim_t": claim_t, "claim_mwh": claim_mwh, "band": band, "basis": basis,
+            "daily_tco2": band["central"] if band else np.nan,
         })
     q = pd.DataFrame(rows)
-    q[["claim_t", "claim_mwh"]] = q[["claim_t", "claim_mwh"]].astype(float)
-    gen = q.app_generation_mw.where(q.category.isin(cfg["carbon"]["load_factor"]))
+    q[["claim_t", "claim_mwh", "daily_tco2"]] = q[["claim_t", "claim_mwh", "daily_tco2"]].astype(float)
     # has_storage bos (bilinmiyor) ise yalnizca bataryanin kendisi depolama sayilir
     q["has_storage"] = (q.category == "storage") | q.has_storage_field.eq(True)
-    q["daily_tco2"] = daily_tco2(q.category, gen, cfg, year)
-    # Uretim formulu olmayan dosyada (REPD disi ya da skorsuz teknoloji) beyan varsa etki beyandan gelir.
-    q["from_claim"] = q.daily_tco2.isna() & (q.claim_t.notna() | q.claim_mwh.notna())
-    claim_daily = (q.claim_t / 365).fillna(q.claim_mwh / 365 * emission_factors(cfg, year)["central"])
-    q.loc[q.from_claim, "daily_tco2"] = claim_daily[q.from_claim]
+    q["from_claim"] = q.basis.isin(["claim_t", "claim_mwh"])
     q["scored"] = q.daily_tco2.notna()
     q["effort"] = effort_hours(q.app_generation_mw, q.has_storage, cfg)
     q["small"] = q.scored & (q.app_generation_mw < cfg["queue"]["small_project_mw"])
@@ -90,24 +131,20 @@ def carbon(project: dict, scenario: dict | None, cfg: dict, year: int | None = N
     year = year or date.today().year
     q = frame([project], cfg, year).iloc[0]
     if not q.scored:
-        return {"unscored_reason": (
-            f"Skorsuz yol ({UNSCORED_WHY.get(q.category, q.category)}): bu teknoloji icin uretim karbonu hesaplanmiyor; "
-            "kuyrukta efor payi kadar kapasiteyle basvuru sirasina gore ilerler"),
-            "methodology_reference": "cq-sim docs/carbon_sources.md"}
-    ef = emission_factors(cfg, year)
-    if q.from_claim:
-        band = {k: round(float(q.claim_t / 365 if pd.notna(q.claim_t) else q.claim_mwh / 365 * v), 3)
-                for k, v in ef.items()}
-        source = (f"yillik {q.claim_t:g} tCO2e / 365" if pd.notna(q.claim_t) else
-                  f"yillik {q.claim_mwh:g} MWh / 365 x emisyon faktoru {year + cfg['carbon']['operation_lag_years']} "
-                  "(dusuk sebeke ortalamasi, merkezi uzun donem marjinal, yuksek gaz santrali)")
+        return {"unscored_reason": f"Skorsuz yol ({q.basis}); kuyrukta efor payi kadar kapasiteyle basvuru sirasina gore ilerler",
+                "methodology_reference": "cq-sim docs/carbon_sources.md"}
+    band = {k: round(float(v), 3) for k, v in q.band.items()}
+    factors = f"{q.country} emisyon faktoru {year + cfg['carbon']['operation_lag_years']}: {FACTOR_SOURCES.get(q.country, q.country)}"
+    if q.basis == "claim_t":
+        reference = f"Basvurunun kendi beyani: yillik {q.claim_t:g} tCO2e / 365"
+    elif q.basis == "claim_mwh":
+        reference = f"Basvurunun kendi beyani: yillik {q.claim_mwh:g} MWh / 365 x {factors}"
+    else:
         return {"daily_tco2": band, "methodology_reference": (
-            f"Basvurunun kendi beyani: {source}. Beyan dogrulanmamistir; kaynagi belge alintisinda, kontrolu uzmandadir.")}
-    band = {k: round(float(q.daily_tco2 * v / ef["central"]), 3) for k, v in ef.items()}
+            f"tCO2e/gun = MW x 24 x yuk faktoru (DUKES 2026 tablo 6.3) x yer degistirme {factors}. "
+            "cq-sim docs/carbon_sources.md")}
     return {"daily_tco2": band, "methodology_reference": (
-        f"tCO2e/gun = MW x 24 x yuk faktoru (DUKES 2026 tablo 6.3) x yer degistirme emisyon faktoru "
-        f"{year + cfg['carbon']['operation_lag_years']}: dusuk sebeke ortalamasi, merkezi uzun donem marjinal "
-        "(Green Book tablo 1), yuksek gaz santrali (DUKES 5.14). cq-sim docs/carbon_sources.md")}
+        f"{reference}. Beyan dogrulanmamistir; kaynagi belge alintisinda, kontrolu uzmandadir.")}
 
 
 def effort(project: dict, cfg: dict) -> dict:

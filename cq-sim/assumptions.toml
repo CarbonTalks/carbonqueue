@@ -39,6 +39,23 @@ operation_lag_years = 2
 2024 = 0.37660
 2025 = 0.36537
 
+# Ulke bazli faktorler (yalnizca backend motoru, project_features.country ile). Gecmis simulasyon ve canli kuyruk
+# Ingiltere'dir; yukaridaki tablolari kullanir. Ayni uc seviye mantigi: dusuk sebeke ortalamasi, merkezi yeni
+# yenilenebilirin yer degistirdigi marj, yuksek devredeki fosil santraller. Kaynaklar: docs/carbon_sources.md
+[carbon.country.TR]
+# Yuk faktoru icin resmi bir kaynak henuz yok: Turkiye'deki gunes/ruzgar projesi MW'tan degil, belgedeki yillik
+# uretim (MWh) beyanindan hesaplanir; beyan yoksa skorsuz yoldan gider.
+load_factor = {}
+
+[carbon.country.TR.emission_factor.low]      # Turkiye geneli elektrik uretimi, tCO2-esd./MWh (ETKB-EVCED-FRM-042, 2023)
+2023 = 0.434
+
+[carbon.country.TR.emission_factor.central]  # birlesik marj, gunes ve ruzgar, tCO2/MWh (ETKB-EVCED-FRM-039, 2021; UNFCCC Tool 07)
+2021 = 0.6345
+
+[carbon.country.TR.emission_factor.high]     # faaliyet temelli marj, tCO2/MWh (ETKB-EVCED-FRM-039, 2021)
+2021 = 0.7279
+
 [carbon.scenarios]
 # Yansima orani: iznin erken cikmasinin ne kadari isletmeye erken girmeye yansir. Siralamayi degistirmez.
 alpha = [0.2, 0.5, 1.0]

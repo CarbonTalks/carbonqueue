@@ -81,6 +81,33 @@ Bunlar şebeke ortalamasıdır ve düşük seviyeyle aynı büyüklüktedir. Dö
 içindir; DUKES 5.14'ün notu da iki serinin yöntem farkı yüzünden birbirini tutmadığını belirtir.
 <https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2026>
 
+## Türkiye (yalnızca backend motoru, `country = "TR"`)
+
+Geçmiş simülasyon ve canlı kuyruk İngiltere'dir. Yüklenen bir projenin ülkesi Türkiye ise motor aşağıdaki resmi faktörleri
+kullanır. Üç seviye İngiltere'dekiyle aynı mantıkta:
+
+| Seviye | Değer | Ne | Kaynak |
+|---|---|---|---|
+| Düşük | 0,434 tCO₂-eşd./MWh | Türkiye geneli elektrik üretimi emisyon faktörü, 2023 (ortalama, brüt üretim başına) | ETKB EVÇED, "Türkiye Elektrik Üretimi ve Elektrik Tüketim Noktası Emisyon Faktörleri Bilgi Formu", ETKB-EVÇED-FRM-042 Rev.01, hesaplama dönemi 2023, yayım 26.12.2025 |
+| Merkezi | 0,6345 tCO₂/MWh | Birleşik marj (güneş ve rüzgâr), 2021: yeni yenilenebilir üretimin yer değiştirdiği emisyon | ETKB EVÇED, "Türkiye Ulusal Elektrik Şebekesi Emisyon Faktörü Bilgi Formu", ETKB-EVÇED-FRM-039 Rev.03, hesaplama dönemi 2021, yayım 18.03.2024; UNFCCC CDM Tool 07 v07.0 |
+| Yüksek | 0,7279 tCO₂/MWh | Faaliyet temelli marj (devredeki fosil santraller), 2021 | Aynı form |
+
+Aynı formdaki diğer değerler: gelişim temelli marj 0,3541; birleşik marj (diğer yenilenebilir) 0,5410 tCO₂/MWh.
+Kaynak dosyalar: <https://enerji.gov.tr/Media/Dizin/EVCED/tr/%C3%87evreVe%C4%B0klim/%C4%B0klimDe%C4%9Fi%C5%9Fikli%C4%9Fi/TUESEmisyonFktr/Belgeler/TUESEF_Bilgi_Formu.pdf>
+ve <https://enerji.gov.tr/Media/Dizin/EVCED/tr/%C3%87evreVe%C4%B0klim/%C4%B0klimDe%C4%9Fi%C5%9Fikli%C4%9Fi/EmisyonFaktorleri/2023_Turkiye_Elektrik_UretimiveElektrik_Tuketim_Noktasi_Emisyon_Faktorleri.pdf>
+
+Notlar:
+- Marj faktörleri yalnızca CO₂, üretim faktörü CO₂-eşdeğeri; fark %1'in altında.
+- Tablolar tek yıllık; motor her yıl için en yakın önceki yılın değerini kullanır (İngiltere'deki gibi kuyruk yılı + 2
+  yıl aranır, Türkiye'de 2021 ve 2023 değerleri kullanılır).
+- Türkiye şebekesi kömür ağırlıklı olduğu için faktörler İngiltere'nin 3–5 katı: aynı MWh beyanı Türkiye'de çok daha
+  büyük günlük etki verir.
+- **Yük faktörü yok.** Resmi bir güneş/rüzgâr kapasite faktörü bulunamadı; yıl sonu kurulu güç ile yıllık üretimden
+  hesaplamak, kurulumun yıl içinde hızla arttığı yıllarda yanıltıcı. Bu yüzden Türkiye'deki güneş/rüzgâr projesi MW'tan
+  hesaplanmaz; belgedeki yıllık üretim (MWh) beyanı kullanılır, beyan yoksa proje skorsuz yoldan gider.
+- Tanımlı olmayan bir ülkede yalnızca yıllık tCO₂e beyanı kullanılabilir (ülke faktörü gerekmez); MWh beyanı ve MW
+  formülü için o ülkenin faktörleri `assumptions.toml` içinde `[carbon.country.XX]` altına eklenmelidir.
+
 ## Yansıma oranı (α)
 
 α bir kaynaktan gelmez; bizim varsayımımızdır: iznin N gün erken çıkmasının ne kadarının işletmeye N gün erken girmeye

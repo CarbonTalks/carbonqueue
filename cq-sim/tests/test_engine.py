@@ -107,3 +107,40 @@ def test_claim_project_without_any_claim_is_rejected():
         engine.carbon(claim(1, "heat_pump"), None, CFG)
     with pytest.raises(engine.EngineError):
         engine.carbon(claim(1, "heat_pump", tonnes=0), None, CFG)
+
+
+def in_country(project, country):
+    project["project_features"]["country"] = country
+    return project
+
+
+def test_turkish_energy_claim_uses_turkish_grid_factors():
+    b = engine.carbon(in_country(claim(1, "energy_efficiency", mwh=3650), "TR"), None, CFG, year=2026)
+    assert b["daily_tco2"] == {"low": pytest.approx(10 * 0.434), "central": pytest.approx(10 * 0.6345), "high": pytest.approx(10 * 0.7279)}
+    assert "ETKB" in b["methodology_reference"]
+
+
+def test_turkish_solar_without_load_factor_needs_an_energy_claim():
+    solar = in_country(app(1, "solar", 10.0), "TR")
+    r = engine.carbon(solar, None, CFG, year=2026)
+    assert "yuk faktoru" in r["unscored_reason"]
+    solar["project_features"]["annual_energy_mwh"] = 18_250  # belgedeki yillik uretim
+    assert engine.carbon(solar, None, CFG, year=2026)["daily_tco2"]["central"] == pytest.approx(50 * 0.6345)
+
+
+def test_country_aliases_and_default_are_great_britain():
+    gb = engine.carbon(app(1, "solar", 40.0), None, CFG, year=2026)
+    assert engine.carbon(in_country(app(1, "solar", 40.0), "uk"), None, CFG, year=2026) == gb
+    assert engine.carbon(in_country(app(1, "solar", 40.0), "GB"), None, CFG, year=2026) == gb
+
+
+def test_unknown_country_keeps_tonnes_claims_but_not_energy_claims():
+    assert engine.carbon(in_country(claim(1, "heat_pump", tonnes=365), "DE"), None, CFG, year=2026)["daily_tco2"]["central"] == 1.0
+    r = engine.carbon(in_country(claim(1, "heat_pump", mwh=1000), "DE"), None, CFG, year=2026)
+    assert "emisyon faktoru tanimli degil" in r["unscored_reason"]
+
+
+def test_same_project_ranks_higher_on_the_turkish_grid():
+    gb, tr = claim(1, "energy_efficiency", mwh=3650), in_country(claim(2, "energy_efficiency", mwh=3650), "TR")
+    entries = {e["application_id"]: e for e in engine.schedule([gb, tr], {"name": "carbon"}, 20, CFG)["entries"]}
+    assert entries["app-2"]["score"] > entries["app-1"]["score"]
