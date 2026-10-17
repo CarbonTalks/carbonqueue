@@ -93,6 +93,8 @@ kullanır. Üç seviye İngiltere'dekiyle aynı mantıkta:
 | Yüksek | 0,7279 tCO₂/MWh | Faaliyet temelli marj (devredeki fosil santraller), 2021 | Aynı form |
 
 Aynı formdaki diğer değerler: gelişim temelli marj 0,3541; birleşik marj (diğer yenilenebilir) 0,5410 tCO₂/MWh.
+Motor güneş, rüzgâr, gelgit ve dalga için güneş/rüzgâr birleşik marjını (0,6345), verimlilik, ısı pompası, hidro ve
+diğer projeler için "diğer yenilenebilir" birleşik marjını (0,5410) merkezi değer olarak kullanır.
 Kaynak dosyalar: <https://enerji.gov.tr/Media/Dizin/EVCED/tr/%C3%87evreVe%C4%B0klim/%C4%B0klimDe%C4%9Fi%C5%9Fikli%C4%9Fi/TUESEmisyonFktr/Belgeler/TUESEF_Bilgi_Formu.pdf>
 ve <https://enerji.gov.tr/Media/Dizin/EVCED/tr/%C3%87evreVe%C4%B0klim/%C4%B0klimDe%C4%9Fi%C5%9Fikli%C4%9Fi/EmisyonFaktorleri/2023_Turkiye_Elektrik_UretimiveElektrik_Tuketim_Noktasi_Emisyon_Faktorleri.pdf>
 
@@ -107,6 +109,32 @@ Notlar:
   hesaplanmaz; belgedeki yıllık üretim (MWh) beyanı kullanılır, beyan yoksa proje skorsuz yoldan gider.
 - Tanımlı olmayan bir ülkede yalnızca yıllık tCO₂e beyanı kullanılabilir (ülke faktörü gerekmez); MWh beyanı ve MW
   formülü için o ülkenin faktörleri `assumptions.toml` içinde `[carbon.country.XX]` altına eklenmelidir.
+
+## Diğer bütün ülkeler: Birleşmiş Milletler (UNFCCC) IFI veri seti
+
+Resmi faktörü `assumptions.toml` içinde tanımlı olmayan her ülke için motor, kalkınma finansmanı kuruluşlarının teknik
+çalışma grubunun (IFI TWG) UNFCCC sitesinde yayımladığı ortak veri setini kullanır:
+
+- **Harmonized IFI Default Grid Factors 2021 v3.2** (Nisan 2022), AHG-001. Kalkınma bankaları proje sera gazı
+  muhasebesinde varsayılan olarak bunu kullanır. Yöntem CDM Tool 07 birleşik marjıdır (faaliyet temelli marj +
+  gelişim temelli marj). <https://unfccc.int/climate-action/sectoral-engagement/ifis-harmonization-of-standards-for-ghg-accounting/ifi-twg-list-of-methodologies>
+  (dosya: <https://unfccc.int/sites/default/files/resource/Harmonized_IFI_Default_Grid_Factors_2021_v3.2_0.xlsx>)
+- Yöntem notu: "Methodological Approach for the Common Default Grid Emission Factor Dataset",
+  <https://unfccc.int/sites/default/files/resource/IFITWG_Methodological_approach_to_common_dataset.pdf>
+- [factors/ifi_grid_factors_v3.2.csv](../factors/ifi_grid_factors_v3.2.csv): veri setinin ISO 3166-1 alfa-2 kodlu kopyası
+  (gCO₂/kWh, 228 ülke/bölge). Ülke adları kodlara bir kez çevrildi; ülke olmayan adalar (Azorlar, Kanarya, Madeira,
+  Kanal Adaları) ve toplu satırlar (EU 27, World) dışarıda.
+
+| Seviye | Değer |
+|---|---|
+| Merkezi | Birleşik marj: güneş, rüzgâr, gelgit, dalga için "Intermittent Energy"; diğerleri için "Energy Efficiency" sütunu |
+| Yüksek | Faaliyet temelli marj (devredeki santraller); merkeziden küçükse merkezi |
+| Düşük | Merkeziyle aynı (veri setinde alt sınır yok) |
+
+Öncelik: ülkenin resmi faktörü (İngiltere, Türkiye) → IFI veri seti → hiçbiri yoksa yalnızca tCO₂e beyanı. Resmi
+faktörler IFI'den farklı olabilir (Türkiye: IFI kesintili 0,351, ETKB 0,6345 tCO₂/MWh; IFI daha eski verilere ve
+regresyona dayanır); ülkenin kendi resmi değeri tercih edilir. Veri setinde yük faktörü yoktur: bu ülkelerde güneş ve
+rüzgâr projesi yıllık üretim (MWh) beyanıyla hesaplanır.
 
 ## Yansıma oranı (α)
 

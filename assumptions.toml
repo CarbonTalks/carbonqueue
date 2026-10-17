@@ -56,6 +56,17 @@ load_factor = {}
 [carbon.country.TR.emission_factor.high]     # faaliyet temelli marj, tCO2/MWh (ETKB-EVCED-FRM-039, 2021)
 2021 = 0.7279
 
+# Kesintisiz kaynak ve verimlilik projeleri icin merkezi deger: birlesik marj, diger yenilenebilir (ayni form)
+[carbon.country.TR.emission_factor_firm.central]
+2021 = 0.5410
+
+# Tanimli olmayan her ulke: Birlesmis Milletler (UNFCCC) sitesinde yayimlanan IFI TWG "Harmonized IFI Default Grid
+# Factors 2021 v3.2" (Nisan 2022), CDM Tool 07 birlesik marji. factors/ifi_grid_factors_v3.2.csv, gCO2/kWh.
+# merkezi = birlesik marj (gunes/ruzgar/gelgit/dalga: kesintili; digerleri: enerji verimliligi), yuksek = faaliyet
+# temelli marj, dusuk = merkezi (veri setinde alt sinir yok).
+[carbon.ifi]
+file = "factors/ifi_grid_factors_v3.2.csv"
+
 [carbon.scenarios]
 # Yansima orani: iznin erken cikmasinin ne kadari isletmeye erken girmeye yansir. Siralamayi degistirmez.
 alpha = [0.2, 0.5, 1.0]

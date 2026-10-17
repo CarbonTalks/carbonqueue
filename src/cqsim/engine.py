@@ -4,8 +4,10 @@ Girdi ve cikti backend'in JSON sozlesmesidir (cq-backend/src/cq_backend/domain, 
 karbon gunluk bant (daily_tco2) ya da skorsuz nedeni (unscored_reason), kuyruk girdisinde lane / reason / planned_week.
 Hesaplar cq-sim'in geri kalaniyla aynidir: ayni karbon formulu, efor kurali, simulator ve gerekce metinleri.
 """
+import csv
 import json
 from datetime import date
+from functools import lru_cache
 
 import numpy as np
 import pandas as pd
@@ -35,10 +37,14 @@ DEFAULT_COUNTRY = "GB"
 COUNTRY_ALIASES = {"UK": "GB"}
 FACTOR_SOURCES = {
     "GB": "dusuk sebeke ortalamasi, merkezi uzun donem marjinal (Green Book tablo 1), yuksek gaz santrali (DUKES 5.14)",
-    "TR": "dusuk Turkiye geneli elektrik uretimi (ETKB 2023), merkezi birlesik marj gunes/ruzgar, "
-          "yuksek faaliyet temelli marj (ETKB 2021, UNFCCC Tool 07)",
+    "TR": "dusuk Turkiye geneli elektrik uretimi (ETKB 2023), merkezi birlesik marj (ETKB 2021, UNFCCC Tool 07), "
+          "yuksek faaliyet temelli marj (ETKB 2021)",
 }
+IFI_SOURCE = ("merkezi birlesik marj, yuksek faaliyet temelli marj: Harmonized IFI Default Grid Factors 2021 v3.2 "
+              "(UNFCCC, CDM Tool 07)")
 LEVELS = ("low", "central", "high")
+# Kesintili uretim; digerleri (verimlilik, isi pompasi, hidro...) kesintisiz/verimlilik marjini kullanir.
+INTERMITTENT = {"solar", "onshore_wind", "offshore_wind", "tidal", "wave"}
 
 
 class EngineError(ValueError):
@@ -54,15 +60,30 @@ def _country(f: dict) -> str:
     return COUNTRY_ALIASES.get(code, code)
 
 
-def country_factors(cfg: dict, country: str, year: int) -> dict | None:
-    """Ulkenin yuk faktorleri ve {low, central, high} emisyon faktoru; ulke tanimli degilse None."""
+@lru_cache(maxsize=4)
+def _ifi_table(path: str) -> dict:
+    with open(path, encoding="utf-8", newline="") as f:
+        return {row["iso2"]: row for row in csv.DictReader(f)}
+
+
+def country_factors(cfg: dict, country: str, year: int, kind: str = "intermittent") -> dict | None:
+    """Ulkenin yuk faktorleri, {low, central, high} emisyon faktoru (tCO2e/MWh) ve kaynagi; bilinmeyen ulkede None.
+    Once ulkenin resmi faktorleri (assumptions.toml), yoksa BM'deki IFI veri seti. kind: intermittent | firm."""
     c = cfg["carbon"]
     src = c if country == DEFAULT_COUNTRY else c.get("country", {}).get(country)
-    if src is None:
+    if src is not None:
+        lag = {"operation_lag_years": c["operation_lag_years"]}
+        ef = emission_factors({"carbon": {"emission_factor": src["emission_factor"], **lag}}, year)
+        if kind == "firm" and "emission_factor_firm" in src:
+            ef |= emission_factors({"carbon": {"emission_factor": src["emission_factor_firm"], **lag}}, year)
+        return {"load_factor": src.get("load_factor", {}), "ef": ef, "source": FACTOR_SOURCES.get(country, country)}
+    row = _ifi_table(str(ROOT / c["ifi"]["file"])).get(country) if "ifi" in c else None
+    if row is None:
         return None
-    ef = emission_factors({"carbon": {"emission_factor": src["emission_factor"],
-                                      "operation_lag_years": c["operation_lag_years"]}}, year)
-    return {"load_factor": src.get("load_factor", {}), "ef": ef}
+    central = float(row["cm_intermittent" if kind == "intermittent" else "cm_energy_efficiency"]) / 1000
+    high = max(float(row["om"]) / 1000, central)
+    return {"load_factor": {}, "ef": {"low": central, "central": central, "high": high},
+            "source": f"{row['name']}: {IFI_SOURCE}"}
 
 
 def _features(project: dict) -> dict:
@@ -105,12 +126,15 @@ def frame(projects: list[dict], cfg: dict, year: int) -> pd.DataFrame:
         mw = float(f["capacity_mw"]) if f.get("capacity_mw") is not None else np.nan
         claim_t, claim_mwh = _positive(f.get("annual_co2e_reduction_t")), _positive(f.get("annual_energy_mwh"))
         country = _country(f)
-        band, basis = _band(category, mw, claim_t, claim_mwh, country_factors(cfg, country, year))
+        kind = "intermittent" if f["technology"] in INTERMITTENT else "firm"
+        factors = country_factors(cfg, country, year, kind)
+        band, basis = _band(category, mw, claim_t, claim_mwh, factors)
         rows.append({
             "application_id": p.get("application_id"), "category": category, "country": country,
             "has_storage_field": f.get("has_storage"), "app_generation_mw": mw, "arrival": pd.Timestamp(submitted),
             "p_withdraw_12m": float(prediction.get("withdrawal_probability_12m", 0.0)),
             "claim_t": claim_t, "claim_mwh": claim_mwh, "band": band, "basis": basis,
+            "factor_source": factors["source"] if factors else None,
             "daily_tco2": band["central"] if band else np.nan,
         })
     q = pd.DataFrame(rows)
@@ -134,7 +158,7 @@ def carbon(project: dict, scenario: dict | None, cfg: dict, year: int | None = N
         return {"unscored_reason": f"Skorsuz yol ({q.basis}); kuyrukta efor payi kadar kapasiteyle basvuru sirasina gore ilerler",
                 "methodology_reference": "cq-sim docs/carbon_sources.md"}
     band = {k: round(float(v), 3) for k, v in q.band.items()}
-    factors = f"{q.country} emisyon faktoru {year + cfg['carbon']['operation_lag_years']}: {FACTOR_SOURCES.get(q.country, q.country)}"
+    factors = f"{q.country} emisyon faktoru {year + cfg['carbon']['operation_lag_years']}: {q.factor_source}"
     if q.basis == "claim_t":
         reference = f"Basvurunun kendi beyani: yillik {q.claim_t:g} tCO2e / 365"
     elif q.basis == "claim_mwh":
