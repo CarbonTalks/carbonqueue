@@ -43,8 +43,7 @@ operation_lag_years = 2
 # Ingiltere'dir; yukaridaki tablolari kullanir. Ayni uc seviye mantigi: dusuk sebeke ortalamasi, merkezi yeni
 # yenilenebilirin yer degistirdigi marj, yuksek devredeki fosil santraller. Kaynaklar: docs/carbon_sources.md
 [carbon.country.TR]
-# Yuk faktoru icin resmi bir kaynak henuz yok: Turkiye'deki gunes/ruzgar projesi MW'tan degil, belgedeki yillik
-# uretim (MWh) beyanindan hesaplanir; beyan yoksa skorsuz yoldan gider.
+# Resmi yuk faktoru yok: belgedeki yillik uretim (MWh) beyani, yoksa Ember ulke ortalamasi kullanilir.
 load_factor = {}
 
 [carbon.country.TR.emission_factor.low]      # Turkiye geneli elektrik uretimi, tCO2-esd./MWh (ETKB-EVCED-FRM-042, 2023)
@@ -66,6 +65,11 @@ load_factor = {}
 # temelli marj, dusuk = merkezi (veri setinde alt sinir yok).
 [carbon.ifi]
 file = "factors/ifi_grid_factors_v3.2.csv"
+
+# Resmi yuk faktoru tanimli olmayan ulkeler: Ember "Yearly Electricity Data" (CC-BY-4.0), 2021-2025 ortalamasi,
+# yillik uretim / (yil ortasi kurulu guc x 8760). Oncelik: resmi yuk faktoru > belgedeki uretim/azaltim beyani > Ember.
+[carbon.ember]
+file = "factors/ember_load_factors_2021-2025.csv"
 
 [carbon.scenarios]
 # Yansima orani: iznin erken cikmasinin ne kadari isletmeye erken girmeye yansir. Siralamayi degistirmez.

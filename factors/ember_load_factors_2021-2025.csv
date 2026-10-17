@@ -1,0 +1,137 @@
+iso2,name,solar,solar_years,onshore_wind,wind_years
+AE,United Arab Emirates,0.286,4.0,0.249,2.0
+AF,Afghanistan,0.205,4.0,,
+AL,Albania,0.203,3.0,,
+AM,Armenia,0.255,5.0,,
+AO,Angola,0.202,3.0,,
+AR,Argentina,0.287,5.0,0.481,5.0
+AT,Austria,0.132,5.0,0.24,5.0
+AU,Australia,0.17,5.0,0.288,5.0
+AZ,Azerbaijan,0.073,3.0,0.148,5.0
+BA,Bosnia Herzegovina,0.139,4.0,0.282,5.0
+BB,Barbados,0.154,4.0,,
+BD,Bangladesh,0.18,5.0,,
+BE,Belgium,0.116,5.0,0.289,5.0
+BF,Burkina Faso,0.112,4.0,,
+BG,Bulgaria,0.158,5.0,0.237,5.0
+BH,Bahrain,0.181,2.0,,
+BO,Bolivia,0.252,5.0,0.312,5.0
+BR,Brazil,0.175,5.0,0.408,5.0
+BY,Belarus,0.103,5.0,0.185,5.0
+CA,Canada,0.167,5.0,0.317,5.0
+CH,Switzerland,0.102,5.0,0.191,5.0
+CL,Chile,0.265,5.0,0.275,5.0
+CM,Cameroon,0.043,3.0,,
+CN,China,0.132,5.0,0.241,5.0
+CR,Costa Rica,0.145,5.0,0.411,5.0
+CU,Cuba,0.093,4.0,,
+CY,Cyprus,0.187,5.0,0.155,5.0
+CZ,Czechia,0.12,5.0,0.213,5.0
+DE,Germany,0.105,5.0,0.217,5.0
+DJ,Djibouti,,,0.13,2.0
+DK,Denmark,0.114,5.0,0.303,5.0
+DO,Dominican Republic,0.175,5.0,0.349,5.0
+DZ,Algeria,0.235,4.0,,
+EC,Ecuador,0.062,2.0,0.347,2.0
+EE,Estonia,0.139,5.0,0.23,5.0
+EG,Egypt,,,0.398,5.0
+ES,Spain,0.192,5.0,0.235,5.0
+ET,Ethiopia,,,0.23,5.0
+FI,Finland,0.092,5.0,0.301,5.0
+FR,France,0.135,5.0,0.237,5.0
+GB,United Kingdom,0.102,5.0,0.311,5.0
+GE,Georgia,0.051,2.0,,
+GF,French Guiana,0.105,3.0,,
+GH,Ghana,0.104,4.0,,
+GP,Guadeloupe,0.14,3.0,0.209,2.0
+GR,Greece,0.162,5.0,0.262,5.0
+GT,Guatemala,0.29,4.0,0.348,4.0
+GU,Guam,0.19,3.0,,
+HK,Hong Kong (SAR of China),0.113,4.0,,
+HN,Honduras,0.236,4.0,0.345,4.0
+HR,Croatia,0.129,5.0,0.26,5.0
+HU,Hungary,0.16,5.0,0.227,5.0
+ID,Indonesia,0.193,4.0,0.331,4.0
+IE,Ireland,0.081,5.0,0.277,5.0
+IL,Israel,0.208,5.0,0.228,4.0
+IN,India,0.185,5.0,0.208,5.0
+IR,Iran,0.166,5.0,0.379,5.0
+IT,Italy,0.132,5.0,0.206,5.0
+JM,Jamaica,0.138,4.0,0.311,4.0
+JO,Jordan,0.211,4.0,0.317,4.0
+JP,Japan,0.13,5.0,0.241,5.0
+KE,Kenya,0.165,5.0,0.565,5.0
+KH,Cambodia,0.182,5.0,,
+KP,North Korea,0.15,4.0,,
+KR,South Korea,0.17,5.0,0.197,5.0
+KW,Kuwait,0.225,5.0,,
+KZ,Kazakhstan,0.184,5.0,0.334,5.0
+LA,Lao PDR,0.159,4.0,,
+LB,Lebanon,0.209,4.0,,
+LK,Sri Lanka,0.134,3.0,0.348,3.0
+LT,Lithuania,0.071,5.0,0.238,5.0
+LU,Luxembourg,0.092,5.0,0.256,5.0
+LV,Latvia,0.131,4.0,0.242,5.0
+MA,Morocco,0.266,5.0,0.379,5.0
+MD,Moldova,0.055,3.0,0.159,5.0
+ME,Montenegro,,,0.293,5.0
+MG,Madagascar,0.178,2.0,,
+MK,North Macedonia,0.156,4.0,0.326,3.0
+ML,Mali,0.182,4.0,,
+MM,Myanmar,0.093,4.0,,
+MN,Mongolia,0.197,5.0,0.384,5.0
+MQ,Martinique,0.118,3.0,,
+MR,Mauritania,0.159,4.0,0.108,2.0
+MT,Malta,0.163,5.0,,
+MU,Mauritius,0.15,4.0,,
+MV,Maldives,0.126,2.0,,
+MX,Mexico,0.263,5.0,0.322,5.0
+MY,Malaysia,0.22,5.0,,
+MZ,Mozambique,0.088,4.0,,
+NA,Namibia,0.265,4.0,,
+NC,New Caledonia,0.137,4.0,0.081,3.0
+NE,Niger,0.039,2.0,,
+NG,Nigeria,0.088,5.0,,
+NI,Nicaragua,,,0.351,4.0
+NL,Netherlands,0.113,5.0,0.321,5.0
+NO,Norway,0.079,5.0,0.314,5.0
+NP,Nepal,0.111,4.0,,
+NZ,New Zealand,0.113,5.0,0.387,5.0
+OM,Oman,,,0.228,5.0
+PA,Panama,0.167,4.0,0.266,4.0
+PE,Peru,0.262,5.0,0.338,5.0
+PF,French Polynesia,0.111,3.0,,
+PH,The Philippines,0.118,5.0,0.339,5.0
+PK,Pakistan,,,0.264,5.0
+PL,Poland,0.097,5.0,0.292,5.0
+PR,Puerto Rico,0.135,5.0,0.184,5.0
+PS,Palestine (State of),0.177,4.0,,
+PT,Portugal,0.168,5.0,0.281,5.0
+QA,Qatar,0.232,4.0,,
+RE,Reunion,0.138,3.0,,
+RO,Romania,0.121,5.0,0.251,5.0
+RS,Serbia,0.045,4.0,0.269,5.0
+RU,Russia,0.144,5.0,0.201,5.0
+SA,Saudi Arabia,0.27,4.0,0.454,3.0
+SD,Sudan,0.074,4.0,,
+SE,Sweden,0.111,5.0,0.273,5.0
+SG,Singapore,0.132,5.0,,
+SI,Slovenia,0.126,5.0,,
+SK,Slovakia,0.122,5.0,,
+SN,Senegal,,,0.284,4.0
+SV,El Salvador,0.267,4.0,0.349,3.0
+TG,Togo,0.189,3.0,,
+TH,Thailand,0.22,5.0,0.254,5.0
+TN,Tunisia,0.166,5.0,0.16,5.0
+TR,Türkiye,0.185,5.0,0.344,5.0
+TW,Taiwan (China),0.135,5.0,0.318,5.0
+UA,Ukraine,0.084,2.0,0.184,2.0
+UG,Uganda,0.199,4.0,,
+US,United States,0.222,5.0,0.344,5.0
+UY,Uruguay,0.203,5.0,0.369,5.0
+UZ,Uzbekistan,0.231,4.0,,
+VE,Venezuela,,,0.046,4.0
+VN,Viet Nam,0.196,4.0,0.218,4.0
+YE,Yemen,0.215,4.0,,
+ZA,South Africa,0.235,5.0,0.378,5.0
+ZM,Zambia,0.157,4.0,,

@@ -129,8 +129,9 @@ kuyruğa girer. Etkisi MW'tan değil, başvurunun kendi beyanından gelir (`proj
 tanımlı ülkeler: İngiltere (`GB`, `UK`) ve Türkiye (`TR`, ETKB). Diğer 228 ülke ve bölge için Birleşmiş Milletler
 (UNFCCC) sitesindeki IFI ortak veri seti (Harmonized IFI Default Grid Factors 2021 v3.2,
 [factors/ifi_grid_factors_v3.2.csv](factors/ifi_grid_factors_v3.2.csv)) kullanılır: güneş/rüzgâr için kesintili
-kaynak, diğer projeler için verimlilik birleşik marjı. İngiltere dışında yük faktörü tanımlı değildir; güneş ve rüzgâr
-projesi belgedeki yıllık üretim (MWh) beyanıyla hesaplanır. Hiçbir tabloda olmayan ülkede yalnızca tCO₂e beyanı
-kullanılır. Ayrıntı ve kaynaklar: [docs/carbon_sources.md](docs/carbon_sources.md).
+kaynak, diğer projeler için verimlilik birleşik marjı. İngiltere dışında güneş ve rüzgâr projesi önce belgedeki yıllık
+üretim (MWh) beyanıyla, beyan yoksa Ember'in ülke ortalaması yük faktörüyle (2021–2025, 136 ülke,
+[factors/ember_load_factors_2021-2025.csv](factors/ember_load_factors_2021-2025.csv)) MW'tan hesaplanır. Hiçbir
+tabloda olmayan ülkede yalnızca tCO₂e beyanı kullanılır. Ayrıntı ve kaynaklar: [docs/carbon_sources.md](docs/carbon_sources.md).
 
 Backend sözleşmesi (15 Ekim) skorsuz durumu, karbon bandını, kademe ve gerekçeyi ve `has_storage` alanını içeriyor; adaptör bunların hepsini kullanıyor.
