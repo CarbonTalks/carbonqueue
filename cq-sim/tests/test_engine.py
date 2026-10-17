@@ -116,8 +116,12 @@ def in_country(project, country):
 
 def test_turkish_energy_claim_uses_turkish_grid_factors():
     b = engine.carbon(in_country(claim(1, "energy_efficiency", mwh=3650), "TR"), None, CFG, year=2026)
-    assert b["daily_tco2"] == {"low": pytest.approx(10 * 0.434), "central": pytest.approx(10 * 0.6345), "high": pytest.approx(10 * 0.7279)}
+    # verimlilik: birlesik marj "diger yenilenebilir"; gunes/ruzgar: birlesik marj gunes/ruzgar
+    assert b["daily_tco2"] == {"low": pytest.approx(10 * 0.434), "central": pytest.approx(10 * 0.5410), "high": pytest.approx(10 * 0.7279)}
     assert "ETKB" in b["methodology_reference"]
+    solar = in_country(claim(1, "solar", mwh=3650), "TR")
+    solar["project_features"]["capacity_mw"] = 2.0
+    assert engine.carbon(solar, None, CFG, year=2026)["daily_tco2"]["central"] == pytest.approx(10 * 0.6345)
 
 
 def test_turkish_solar_without_load_factor_needs_an_energy_claim():
@@ -135,8 +139,8 @@ def test_country_aliases_and_default_are_great_britain():
 
 
 def test_unknown_country_keeps_tonnes_claims_but_not_energy_claims():
-    assert engine.carbon(in_country(claim(1, "heat_pump", tonnes=365), "DE"), None, CFG, year=2026)["daily_tco2"]["central"] == 1.0
-    r = engine.carbon(in_country(claim(1, "heat_pump", mwh=1000), "DE"), None, CFG, year=2026)
+    assert engine.carbon(in_country(claim(1, "heat_pump", tonnes=365), "ZZ"), None, CFG, year=2026)["daily_tco2"]["central"] == 1.0
+    r = engine.carbon(in_country(claim(1, "heat_pump", mwh=1000), "ZZ"), None, CFG, year=2026)
     assert "emisyon faktoru tanimli degil" in r["unscored_reason"]
 
 
@@ -144,3 +148,19 @@ def test_same_project_ranks_higher_on_the_turkish_grid():
     gb, tr = claim(1, "energy_efficiency", mwh=3650), in_country(claim(2, "energy_efficiency", mwh=3650), "TR")
     entries = {e["application_id"]: e for e in engine.schedule([gb, tr], {"name": "carbon"}, 20, CFG)["entries"]}
     assert entries["app-2"]["score"] > entries["app-1"]["score"]
+
+
+def test_other_countries_use_the_un_ifi_dataset():
+    # Almanya, IFI v3.2: verimlilik birlesik marji 312,88; kesintili 523,39; faaliyet temelli marj 649,69 gCO2/kWh
+    eff = engine.carbon(in_country(claim(1, "energy_efficiency", mwh=3650), "DE"), None, CFG, year=2026)
+    assert eff["daily_tco2"] == {k: pytest.approx(v, abs=1e-3) for k, v in {"low": 3.1288, "central": 3.1288, "high": 6.4969}.items()}
+    assert "IFI" in eff["methodology_reference"] and "Germany" in eff["methodology_reference"]
+    wind = in_country(claim(2, "onshore_wind", mwh=3650), "DE")
+    wind["project_features"]["capacity_mw"] = 5.0
+    assert engine.carbon(wind, None, CFG, year=2026)["daily_tco2"]["central"] == pytest.approx(5.2339, abs=1e-3)
+
+
+def test_ifi_dataset_covers_many_countries():
+    from cqsim.engine import _ifi_table
+    table = _ifi_table(str(engine.ROOT / CFG["carbon"]["ifi"]["file"]))
+    assert len(table) > 200 and {"KE", "IN", "BR", "US", "DE"} <= set(table)
