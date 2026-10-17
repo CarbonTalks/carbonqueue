@@ -124,12 +124,18 @@ def test_turkish_energy_claim_uses_turkish_grid_factors():
     assert engine.carbon(solar, None, CFG, year=2026)["daily_tco2"]["central"] == pytest.approx(10 * 0.6345)
 
 
-def test_turkish_solar_without_load_factor_needs_an_energy_claim():
+def test_outside_great_britain_solar_uses_claim_then_ember_load_factor():
     solar = in_country(app(1, "solar", 10.0), "TR")
-    r = engine.carbon(solar, None, CFG, year=2026)
-    assert "yuk faktoru" in r["unscored_reason"]
-    solar["project_features"]["annual_energy_mwh"] = 18_250  # belgedeki yillik uretim
+    r = engine.carbon(solar, None, CFG, year=2026)  # beyan yok: Ember ulke ortalamasi (Turkiye gunes 0,185)
+    assert r["daily_tco2"]["central"] == pytest.approx(10 * 24 * 0.185 * 0.6345, abs=1e-3)
+    assert "Ember" in r["methodology_reference"]
+    solar["project_features"]["annual_energy_mwh"] = 18_250  # sahaya ozgu belge beyani once gelir
     assert engine.carbon(solar, None, CFG, year=2026)["daily_tco2"]["central"] == pytest.approx(50 * 0.6345)
+
+
+def test_implausible_ember_average_is_not_used():
+    r = engine.carbon(in_country(app(1, "solar", 10.0), "EG"), None, CFG, year=2026)  # Misir 0,34: sinir disi
+    assert "yuk faktoru" in r["unscored_reason"]
 
 
 def test_country_aliases_and_default_are_great_britain():

@@ -104,9 +104,8 @@ Notlar:
   yıl aranır, Türkiye'de 2021 ve 2023 değerleri kullanılır).
 - Türkiye şebekesi kömür ağırlıklı olduğu için faktörler İngiltere'nin 3–5 katı: aynı MWh beyanı Türkiye'de çok daha
   büyük günlük etki verir.
-- **Yük faktörü yok.** Resmi bir güneş/rüzgâr kapasite faktörü bulunamadı; yıl sonu kurulu güç ile yıllık üretimden
-  hesaplamak, kurulumun yıl içinde hızla arttığı yıllarda yanıltıcı. Bu yüzden Türkiye'deki güneş/rüzgâr projesi MW'tan
-  hesaplanmaz; belgedeki yıllık üretim (MWh) beyanı kullanılır, beyan yoksa proje skorsuz yoldan gider.
+- **Yük faktörü:** resmi bir güneş/rüzgâr yük faktörü yok. Belgede yıllık üretim (MWh) beyanı varsa o, yoksa Ember ülke
+  ortalaması kullanılır (aşağıda; Türkiye güneş 0,185, rüzgâr 0,344).
 - Tanımlı olmayan bir ülkede yalnızca yıllık tCO₂e beyanı kullanılabilir (ülke faktörü gerekmez); MWh beyanı ve MW
   formülü için o ülkenin faktörleri `assumptions.toml` içinde `[carbon.country.XX]` altına eklenmelidir.
 
@@ -133,8 +132,26 @@ Resmi faktörü `assumptions.toml` içinde tanımlı olmayan her ülke için mot
 
 Öncelik: ülkenin resmi faktörü (İngiltere, Türkiye) → IFI veri seti → hiçbiri yoksa yalnızca tCO₂e beyanı. Resmi
 faktörler IFI'den farklı olabilir (Türkiye: IFI kesintili 0,351, ETKB 0,6345 tCO₂/MWh; IFI daha eski verilere ve
-regresyona dayanır); ülkenin kendi resmi değeri tercih edilir. Veri setinde yük faktörü yoktur: bu ülkelerde güneş ve
-rüzgâr projesi yıllık üretim (MWh) beyanıyla hesaplanır.
+regresyona dayanır); ülkenin kendi resmi değeri tercih edilir. Veri setinde yük faktörü yoktur; o, aşağıdaki Ember
+tablosundan gelir.
+
+## Yük faktörü, İngiltere dışı: Ember
+
+İngiltere'de resmi DUKES yük faktörü kullanılır. Diğer ülkelerde güneş ve rüzgâr projesinin günlük etkisi şu sırayla
+hesaplanır: belgedeki yıllık üretim/azaltım beyanı (sahaya özgü) → yoksa ülkenin ortalama yük faktörüyle MW formülü.
+
+- Kaynak: Ember, "Yearly Electricity Data" (CC-BY-4.0), <https://ember-energy.org/data/yearly-electricity-data/>,
+  dosya `release_generation_yearly_global.csv` (Ekim 2026'da indirildi). Ember'in kaynakları ulusal istatistikler,
+  Eurostat, EIA, BM.
+- Hesap: yük faktörü = yıllık üretim (TWh) × 1000 / (yıl ortası kurulu güç (GW) × 8760); yıl ortası güç = önceki yıl sonu
+  ile o yıl sonunun ortalaması (hızla büyüyen kurulumda yıl sonu gücüyle bölmek faktörü düşük gösterir). 2021–2025
+  ortalaması; yıl ortası gücü 50 MW'ın altındaki yıllar sayılmaz; en az 2 yıl gerekir.
+- Fiziksel sınır: güneşte 0,30, rüzgârda 0,60 üstü ortalamalar (eksik raporlanmış kapasite) kullanılmaz: Kolombiya,
+  Mısır, Umman, Pakistan, Senegal güneşi. Bu ülkelerde proje yıllık üretim beyanıyla hesaplanır.
+- [factors/ember_load_factors_2021-2025.csv](../factors/ember_load_factors_2021-2025.csv): 136 ülke (güneş 127, rüzgâr 89).
+- Kontrol: İngiltere güneş 0,102 (DUKES 0,105). Ember'in rüzgârı kara + deniz toplamıdır (İngiltere 0,311, DUKES kara
+  0,248); denizüstü rüzgârı büyük ülkelerde kara rüzgârı için üst tahmindir.
+- Kurulu güç bazı ülkelerde DC (panel), bazılarında AC raporlanır; bu, güneş yük faktöründe birkaç puanlık fark yaratabilir.
 
 ## Yansıma oranı (α)
 

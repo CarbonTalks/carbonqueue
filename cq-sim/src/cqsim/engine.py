@@ -66,6 +66,14 @@ def _ifi_table(path: str) -> dict:
         return {row["iso2"]: row for row in csv.DictReader(f)}
 
 
+def _ember_load_factor(cfg: dict, country: str) -> dict:
+    """Ember 2021-2025 ortalamasi {kategori: yuk faktoru}; ulke ya da teknoloji yoksa bos."""
+    if "ember" not in cfg["carbon"]:
+        return {}
+    row = _ifi_table(str(ROOT / cfg["carbon"]["ember"]["file"])).get(country) or {}
+    return {k: float(row[k]) for k in ("solar", "onshore_wind") if row.get(k)}
+
+
 def country_factors(cfg: dict, country: str, year: int, kind: str = "intermittent") -> dict | None:
     """Ulkenin yuk faktorleri, {low, central, high} emisyon faktoru (tCO2e/MWh) ve kaynagi; bilinmeyen ulkede None.
     Once ulkenin resmi faktorleri (assumptions.toml), yoksa BM'deki IFI veri seti. kind: intermittent | firm."""
@@ -76,13 +84,15 @@ def country_factors(cfg: dict, country: str, year: int, kind: str = "intermitten
         ef = emission_factors({"carbon": {"emission_factor": src["emission_factor"], **lag}}, year)
         if kind == "firm" and "emission_factor_firm" in src:
             ef |= emission_factors({"carbon": {"emission_factor": src["emission_factor_firm"], **lag}}, year)
-        return {"load_factor": src.get("load_factor", {}), "ef": ef, "source": FACTOR_SOURCES.get(country, country)}
+        return {"load_factor": src.get("load_factor", {}), "lf_ember": _ember_load_factor(cfg, country),
+                "ef": ef, "source": FACTOR_SOURCES.get(country, country)}
     row = _ifi_table(str(ROOT / c["ifi"]["file"])).get(country) if "ifi" in c else None
     if row is None:
         return None
     central = float(row["cm_intermittent" if kind == "intermittent" else "cm_energy_efficiency"]) / 1000
     high = max(float(row["om"]) / 1000, central)
-    return {"load_factor": {}, "ef": {"low": central, "central": central, "high": high},
+    return {"load_factor": {}, "lf_ember": _ember_load_factor(cfg, country),
+            "ef": {"low": central, "central": central, "high": high},
             "source": f"{row['name']}: {IFI_SOURCE}"}
 
 
@@ -99,15 +109,19 @@ def _features(project: dict) -> dict:
 
 
 def _band(category: str, mw: float, claim_t, claim_mwh, factors: dict | None) -> tuple[dict | None, str]:
-    """Gunluk tCO2e bandi ve dayanagi. Oncelik: MW formulu (ulkenin yuk faktoru varsa), ton beyani, MWh beyani.
-    Bant yoksa ikinci deger skorsuz nedenidir."""
+    """Gunluk tCO2e bandi ve dayanagi. Oncelik: resmi yuk faktoruyle MW formulu, ton beyani, MWh beyani, Ember yuk
+    faktoruyle MW formulu. Bant yoksa ikinci deger skorsuz nedenidir."""
+    has_mw = mw == mw and mw > 0
     lf = factors["load_factor"].get(category) if factors else None
-    if lf and mw == mw and mw > 0:
+    if lf and has_mw:
         return {k: mw * 24 * lf * factors["ef"][k] for k in LEVELS}, "capacity"
     if claim_t:
         return {k: claim_t / 365 for k in LEVELS}, "claim_t"
     if claim_mwh and factors:
         return {k: claim_mwh / 365 * factors["ef"][k] for k in LEVELS}, "claim_mwh"
+    lf = factors["lf_ember"].get(category) if factors else None
+    if lf and has_mw:
+        return {k: mw * 24 * lf * factors["ef"][k] for k in LEVELS}, "capacity_ember"
     if factors is None:
         return None, "bu ulke icin emisyon faktoru tanimli degil; yillik tCO2e beyani gerekli"
     if category in ("solar", "onshore_wind"):
@@ -163,6 +177,10 @@ def carbon(project: dict, scenario: dict | None, cfg: dict, year: int | None = N
         reference = f"Basvurunun kendi beyani: yillik {q.claim_t:g} tCO2e / 365"
     elif q.basis == "claim_mwh":
         reference = f"Basvurunun kendi beyani: yillik {q.claim_mwh:g} MWh / 365 x {factors}"
+    elif q.basis == "capacity_ember":
+        return {"daily_tco2": band, "methodology_reference": (
+            f"tCO2e/gun = MW x 24 x yuk faktoru ({q.country}, Ember 2021-2025 ortalamasi, CC-BY-4.0) x yer degistirme "
+            f"{factors}. cq-sim docs/carbon_sources.md")}
     else:
         return {"daily_tco2": band, "methodology_reference": (
             f"tCO2e/gun = MW x 24 x yuk faktoru (DUKES 2026 tablo 6.3) x yer degistirme {factors}. "
